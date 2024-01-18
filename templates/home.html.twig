@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Web Geffrey {% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1 class="d-inline me-3"> {{ titulo }}</h1> <i class="fas fa-edit">   <img src="{{ asset('img/miLogo.png') }}" width="100px" alt="foto" /></i>
+      <!-- Main Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark  mb-5" style="background-color: #E8D025;">
+            <div class="container-fluid">
+              <h2>  <a class="navbar-brand" href="#"> INICIA SESION </a> </h2>
+               <HR>
+                <div>
+                    <ul>
+                        <li class="nav-item">
+                        <h2>  <a class="nav-link" style="margin-top: 20px;" href="#"> REGISTRATE </a> </h2>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+     </div>
+
+
+<h2> Formulario </h2>
+<div>
+  <h3>  <a class="navbar-brand m-3 text-primary" href="#"> Crear producto </a> </h3>
+        </div>
+           {# <div>
+            <h3>  <a class="navbar-brand" href="#"> Crear categoria </a> </h3>
+                </div> #}
+{% endblock %}
