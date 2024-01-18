@@ -1,33 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Web Geffrey {% endblock %}
+{% block title %} Web Geffrey {% endblock %}
 
 
 {% block body %}
-<div class="container">
-    <h1 class="d-inline me-3"> {{ titulo }}</h1> <i class="fas fa-edit">   <img src="{{ asset('img/miLogo.png') }}" width="100px" alt="foto" /></i>
-      <!-- Main Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark  mb-5" style="background-color: #E8D025;">
-            <div class="container-fluid">
-              <h2>  <a class="navbar-brand" href="#"> INICIA SESION </a> </h2>
-               <HR>
-                <div>
-                    <ul>
-                        <li class="nav-item">
-                        <h2>  <a class="nav-link" style="margin-top: 20px;" href="#"> REGISTRATE </a> </h2>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-     </div>
+<nav class="navbar navbar-expand-lg bg-body-tertiary p-3 m-0 border-0 bd-example m-0 border-0">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Entrar
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
+  <div class="container-fluid my-4">
+    <form class="d-flex"  role="search">
+      <input class="form-control me-2" type="search" placeholder="¿En que lugar te gustaria hacer una ruta?" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
 
-<h2> Formulario </h2>
-<div>
-  <h3>  <a class="navbar-brand m-3 text-primary" href="#"> Crear producto </a> </h3>
-        </div>
-           {# <div>
-            <h3>  <a class="navbar-brand" href="#"> Crear categoria </a> </h3>
-                </div> #}
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <div class="col">
+    <div class="card">
+    <img src="{{ asset('img/jaen.jpg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Jaén</h5>
+        <p class="card-text">Entre sus atractivos destacan la Catedral, joya arquitectónica del Renacimiento español y el Castillo de Santa Catalina, además de ser "Capital Mundial del Aceite de Oliva"</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+    <img src="{{ asset('img/Cordoba.jpg') }}"class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Cordoba</h5>
+        <p class="card-text"> Fue la capital de la Hispania Ulterior durante la República romana, de la provincia Bética durante el Imperio romano y del Califato de Córdoba durante la época musulmana</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+    <img src="{{ asset('img/granada.jpg') }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Granada</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+    <img src="{{ asset('img/malaga.jpg') }}"  class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Málaga</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
