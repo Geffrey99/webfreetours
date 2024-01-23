@@ -10,9 +10,19 @@
     background-color: #f5f5f5;
     padding: 10px;
     border-radius: 30px;
-    box-shadow: 0px 0px 10px #ccc;
+    box-shadow: 0px 0px 10px #9e9d9d;
     margin-top: -40px;
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: rgb(64, 15, 15);
 }
 
+.bienvenida h1 {
+    font-size: 40px;
+    font-weight: bold;
+    margin-left: 80px;
+}
+
+.redesSociales {
+    margin-right: 40px;
+    font-size: 20px;
+}
