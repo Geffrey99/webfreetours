@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VisitaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -30,8 +32,13 @@ class Visita
     #[ORM\Column(length: 255)]
     private ?string $gps = null;
 
-    #[ORM\ManyToOne(inversedBy: 'cod_visita')]
-    private ?RutaVisita $rutaVisita = null;
+    #[ORM\OneToMany(mappedBy: 'cod_visita', targetEntity: RutaVisita::class)]
+    private Collection $rutaVisitas;
+
+    public function __construct()
+    {
+        $this->rutaVisitas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -98,14 +105,32 @@ class Visita
         return $this;
     }
 
-    public function getRutaVisita(): ?RutaVisita
+    /**
+     * @return Collection<int, RutaVisita>
+     */
+    public function getRutaVisitas(): Collection
     {
-        return $this->rutaVisita;
+        return $this->rutaVisitas;
     }
 
-    public function setRutaVisita(?RutaVisita $rutaVisita): static
+    public function addRutaVisita(RutaVisita $rutaVisita): static
     {
-        $this->rutaVisita = $rutaVisita;
+        if (!$this->rutaVisitas->contains($rutaVisita)) {
+            $this->rutaVisitas->add($rutaVisita);
+            $rutaVisita->setCodVisita($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRutaVisita(RutaVisita $rutaVisita): static
+    {
+        if ($this->rutaVisitas->removeElement($rutaVisita)) {
+            // set the owning side to null (unless already changed)
+            if ($rutaVisita->getCodVisita() === $this) {
+                $rutaVisita->setCodVisita(null);
+            }
+        }
 
         return $this;
     }

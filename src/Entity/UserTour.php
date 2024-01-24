@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserTourRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: UserTourRepository::class)]
 #[Broadcast]
@@ -21,8 +22,8 @@ class UserTour
     #[ORM\ManyToOne(inversedBy: 'userTours')]
     private ?Tour $cod_tour = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $fecha_reserva = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $fecha_reserva = null;
 
     #[ORM\Column]
     private ?int $asistentes = null;
@@ -59,12 +60,12 @@ class UserTour
         return $this;
     }
 
-    public function getFechaReserva(): ?string
+    public function getFechaReserva(): ?\DateTimeInterface
     {
         return $this->fecha_reserva;
     }
 
-    public function setFechaReserva(string $fecha_reserva): static
+    public function setFechaReserva(\DateTimeInterface $fecha_reserva): static
     {
         $this->fecha_reserva = $fecha_reserva;
 

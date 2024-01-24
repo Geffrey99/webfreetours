@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\RutaVisitaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -17,79 +15,37 @@ class RutaVisita
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'rutaVisita', targetEntity: Ruta::class)]
-    private Collection $cod_ruta;
+    #[ORM\ManyToOne(inversedBy: 'rutaVisitas')]
+    private ?Ruta $cod_ruta = null;
 
-    #[ORM\OneToMany(mappedBy: 'rutaVisita', targetEntity: Visita::class)]
-    private Collection $cod_visita;
-
-    public function __construct()
-    {
-        $this->cod_ruta = new ArrayCollection();
-        $this->cod_visita = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'rutaVisitas')]
+    private ?Visita $cod_visita = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, Ruta>
-     */
-    public function getCodRuta(): Collection
+    public function getCodRuta(): ?Ruta
     {
         return $this->cod_ruta;
     }
 
-    public function addCodRutum(Ruta $codRutum): static
+    public function setCodRuta(?Ruta $cod_ruta): static
     {
-        if (!$this->cod_ruta->contains($codRutum)) {
-            $this->cod_ruta->add($codRutum);
-            $codRutum->setRutaVisita($this);
-        }
+        $this->cod_ruta = $cod_ruta;
 
         return $this;
     }
 
-    public function removeCodRutum(Ruta $codRutum): static
-    {
-        if ($this->cod_ruta->removeElement($codRutum)) {
-            // set the owning side to null (unless already changed)
-            if ($codRutum->getRutaVisita() === $this) {
-                $codRutum->setRutaVisita(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Visita>
-     */
-    public function getCodVisita(): Collection
+    public function getCodVisita(): ?Visita
     {
         return $this->cod_visita;
     }
 
-    public function addCodVisitum(Visita $codVisitum): static
+    public function setCodVisita(?Visita $cod_visita): static
     {
-        if (!$this->cod_visita->contains($codVisitum)) {
-            $this->cod_visita->add($codVisitum);
-            $codVisitum->setRutaVisita($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCodVisitum(Visita $codVisitum): static
-    {
-        if ($this->cod_visita->removeElement($codVisitum)) {
-            // set the owning side to null (unless already changed)
-            if ($codVisitum->getRutaVisita() === $this) {
-                $codVisitum->setRutaVisita(null);
-            }
-        }
+        $this->cod_visita = $cod_visita;
 
         return $this;
     }

@@ -29,18 +29,22 @@ class Ruta
     #[ORM\Column(length: 255)]
     private ?string $punto_inicio = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $participantes = null;
-
-    #[ORM\ManyToOne(inversedBy: 'cod_ruta')]
-    private ?RutaVisita $rutaVisita = null;
+    #[ORM\Column]
+    private ?int $participantes = null;
 
     #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: Tour::class)]
     private Collection $tours;
 
+    #[ORM\Column(length: 255)]
+    private ?string $programacion = null;
+
+    #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: RutaVisita::class)]
+    private Collection $rutaVisitas;
+
     public function __construct()
     {
         $this->tours = new ArrayCollection();
+        $this->rutaVisitas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,26 +100,14 @@ class Ruta
         return $this;
     }
 
-    public function getParticipantes(): ?string
+    public function getParticipantes(): ?int
     {
         return $this->participantes;
     }
 
-    public function setParticipantes(string $participantes): static
+    public function setParticipantes(int $participantes): static
     {
         $this->participantes = $participantes;
-
-        return $this;
-    }
-
-    public function getRutaVisita(): ?RutaVisita
-    {
-        return $this->rutaVisita;
-    }
-
-    public function setRutaVisita(?RutaVisita $rutaVisita): static
-    {
-        $this->rutaVisita = $rutaVisita;
 
         return $this;
     }
@@ -144,6 +136,48 @@ class Ruta
             // set the owning side to null (unless already changed)
             if ($tour->getCodRuta() === $this) {
                 $tour->setCodRuta(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProgramacion(): ?string
+    {
+        return $this->programacion;
+    }
+
+    public function setProgramacion(string $programacion): static
+    {
+        $this->programacion = $programacion;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RutaVisita>
+     */
+    public function getRutaVisitas(): Collection
+    {
+        return $this->rutaVisitas;
+    }
+
+    public function addRutaVisita(RutaVisita $rutaVisita): static
+    {
+        if (!$this->rutaVisitas->contains($rutaVisita)) {
+            $this->rutaVisitas->add($rutaVisita);
+            $rutaVisita->setCodRuta($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRutaVisita(RutaVisita $rutaVisita): static
+    {
+        if ($this->rutaVisitas->removeElement($rutaVisita)) {
+            // set the owning side to null (unless already changed)
+            if ($rutaVisita->getCodRuta() === $this) {
+                $rutaVisita->setCodRuta(null);
             }
         }
 

@@ -41,6 +41,8 @@ class RegistrationController extends AbstractController
                 )
             )
             ->setRoles(['ROLE_USER']);
+            // -setNombre($form->get('nombre')->getData())
+            // ->setFoto($form->get('foto')->getData());
 
             $entityManager->persist($user);
             $entityManager->flush();
