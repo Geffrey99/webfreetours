@@ -33,16 +33,29 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // codificar la contraseña en texto plano
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             )
-            ->setRoles(['ROLE_USER']);
-            // -setNombre($form->get('nombre')->getData())
-            // ->setFoto($form->get('foto')->getData());
+            ->setRoles(['ROLE_USER'])
+            ->setNombre($form->get('nombre')->getData())
+            ->setFoto($foto = $form->get('foto')->getData());
+            if ($foto) {
+                $originalFilename = pathinfo($foto->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$foto->guessExtension();
+                try {
+                    $foto->move(
+                        $this->getParameter('fotos_perfil'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $user->setFoto($newFilename);
+            }
 
             $entityManager->persist($user);
             $entityManager->flush();
