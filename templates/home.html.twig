@@ -5,6 +5,9 @@
 
 {% block body %}
 
+{##############################################
+################## PRIMERA CABEZERA############################ 
+
 <div class="hstack gap-3 classHome" >
   <div class="p-2"> <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top"></div>
   <div class="p-2"> <h2 class="link-dangerous">FreeTours.gz</h2></div>
@@ -40,6 +43,49 @@
   </div>
 
   
+######################################################################}
+
+
+
+
+
+  <!-- Background image -->
+  <div
+    id="intro-example"
+    class="p-5 text-center bg-image"
+    style="background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/041.webp');"
+  >
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.7);">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+          <h1 class="mb-3">FREETOURS.GZ</h1>
+          <h5 class="mb-4">Encuentra tu próxima ruta...</h5>
+          
+           
+         <form  data-mdb-ripple-init
+            class="btn btn-outline-light btn-lg m-2" class="d-flex"  role="search">
+            <input class="form-control me-2" type="search" placeholder="¿Málaga, Barcelona ó ....?" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+       </form>
+          <p
+          data-mdb-ripple-init
+            class="btn btn-outline-light btn-lg m-2">
+           Elige fecha: <input type="text" id="datepicker"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Background image -->
+</header>
+
+
+
+
+
+
+
+
 
 
 <div class="row row-cols-1 row-cols-md-2 g-4">
