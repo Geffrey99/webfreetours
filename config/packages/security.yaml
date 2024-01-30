@@ -3,9 +3,6 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
     
     providers:
         #users_in_memory: { memory: null }
@@ -25,6 +22,7 @@ security:
                 # "app_login" is the name of the route created previously
                 login_path: app_login
                 check_path: app_login
+                # success_handler: App\Security\AuthenticationSuccessHandler
             logout:
                 # "app_logout" is the name of the route created previously
                 path: app_logout
@@ -45,6 +43,9 @@ security:
 
 when@test:
     security:
+        # role_hierarchy:
+        #     ROLE_ADMIN:       ROLE_USER
+        #     ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
         password_hashers:
             # By default, password hashers are resource intensive and take time. This is
             # important to generate secure password hashes. In tests however, secure hashes

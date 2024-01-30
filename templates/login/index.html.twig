@@ -18,7 +18,7 @@
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
-                                    <form action="{{ path('app_login') }}" method="post">
+                                    <form action="{% if is_granted('ROLE_ADMIN') %}{{ path('admin_dashboard') }}{% else %}{{ path('app_login') }}{% endif %}" method="post">
                                         <div class="d-flex align-items-center mb-3 pb-1">
                                             <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                             <span class="h1 fw-bold mb-0">FreeTours.gz</span>
@@ -39,8 +39,8 @@
                                             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                                              {% endif %}
                                         <a class="small text-muted" href="#!">Forgot password?</a>
-                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a class="nav-link" href="{{ path('app_register') }}"
-                                            style="color: #393f81;">Register here</a></p>
+                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">No tienes cuenta? <a class="nav-link" href="{{ path('app_register') }}"
+                                            style="color: #393f81;">Registate aquí</a></p>
                                         <a href="#!" class="small text-muted">Terms of use.</a>
                                         <a href="#!" class="small text-muted">Privacy policy</a>
                                     </form>
@@ -52,7 +52,8 @@
             </div>
         </div>
     </section>
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"> #}
-    </form>
+        {# If you want to control the URL the user is redirected to on success#}
+        {% if is_granted('ROLE_ADMIN,ROLE_USER') %}
+            <input type="hidden" name="_target_path" value="admin" />
+        {% endif %}
 {% endblock %}

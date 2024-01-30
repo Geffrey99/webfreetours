@@ -6,5 +6,9 @@ controllers:
 app_logout:
     path:
         en: /logout
+        es: /desconexion
         fr: /deconnexion
     methods: GET
+# dashboard:
+#     path: /admin
+#     controller: App\Controller\DashboardController::index
