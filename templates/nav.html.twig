@@ -1,0 +1,46 @@
+<style>
+    /* Default height for small devices */
+    #intro-example {
+      height: 400px;
+    }
+
+    /* Height for devices larger than 992px */
+    @media (min-width: 992px) {
+      #intro-example {
+        height: 600px;
+      }
+    }
+  </style>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+      <button
+        data-mdb-collapse-init
+        class="navbar-toggler"
+        type="button"
+        data-mdb-target="#navbarExample01"
+        aria-controls="navbarExample01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExample01">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item active">
+           <img src="{{ asset('img/logo.png') }}" alt="Logo" width="80" >
+          </li>
+          <li class="nav-item">
+           <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+          </li>
+          <li class="nav-item">
+           <a class="nav-link" href="{{ path('app_login') }}">Inicia sesion</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_register') }}">Registrate</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

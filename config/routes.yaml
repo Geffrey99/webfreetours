@@ -9,6 +9,15 @@ app_logout:
         es: /desconexion
         fr: /deconnexion
     methods: GET
-# dashboard:
-#     path: /admin
-#     controller: App\Controller\DashboardController::index
+app_crear_ruta:
+    path: /app_crear_ruta
+    controller: App\Controller\CrearRutaController::index
+admin_dashboard:
+    path: /admin
+    controller: App\Controller\AdminController::index
+guide_dashboard:
+    path: /guide
+    controller: App\Controller\GuideController::index
+# cliente_dashboard:
+#     path: /client
+#     controller: App\Controller\ClienteController::index
