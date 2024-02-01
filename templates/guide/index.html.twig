@@ -3,7 +3,7 @@
 {% block title %}Guide | {parent}{% endblock %}
 
 {% block body %}
-<div class="hstack gap-3 classHome" >
+{# <div class="hstack gap-3 classHome" >
   <div class="p-2"> <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top"></div>
   <div class="p-2"> <h2 class="link-dangerous">FreeTours.gz</h2></div>
  
@@ -19,5 +19,46 @@
   <div class="vr"></div>
   <div class="p-2"> <a class="nav-link" href="{{ path('app_logout') }}">Cerrar Sesion</a></div>
 </div>
+ #}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <!-- Avatar -->
+      <li class="nav-item dropdown">
+        <a
+          data-mdb-dropdown-init
+          class="nav-link dropdown-toggle d-flex align-items-center"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          aria-expanded="false"
+        >
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp"
+            class="rounded-circle"
+            height="22"
+            alt="Portrait of a Woman"
+            loading="lazy"
+          />
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li>
+       {% if is_granted('IS_AUTHENTICATED_FULLY') %}      <p>Email: {{ app.user.email }}</p>{% endif %}
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Settings</a>
+          </li>
+          <li>
+           <a class="nav-link" href="{{ path('app_logout') }}">Cerrar Sesion</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
 
 {% endblock %}

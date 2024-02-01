@@ -1,11 +1,10 @@
-/* .classHome{
+ .classHome{
     background-color: #f5f5f5;
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
     box-shadow: 0px 0px 10px #ccc;
 }
-
+/*
 .bienvenida {
     background-color: #f5f5f5;
   
@@ -28,7 +27,7 @@
 } */
 
 
-    .cascading-right {
+    /* .cascading-right {
       margin-right: -50px;
     }
 
@@ -36,4 +35,19 @@
       .cascading-right {
         margin-right: 0;
       }
-    }
+    } */
+
+
+.imageHeader {
+   background-image: linear-gradient(45deg, black, transparent);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.margen {
+  margin-top: 1px;
+  margin-bottom: 1%;
+}
+
+
+/* */
