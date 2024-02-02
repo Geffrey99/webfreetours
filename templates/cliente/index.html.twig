@@ -4,5 +4,26 @@
 
 {% block body %}
 
+{# <div class="hstack gap-3 classHome" >
+  <div class="p-2"> <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top"></div>
+  <div class="p-2"> <h2 class="link-dangerous">BIENVENIDO   </h2>
+  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <p>{{ app.user.NOMBRE }}</p>
+    {% endif %}
+    </div>
+ 
+  <div class="p-2 ms-auto"> 
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <p>Email: {{ app.user.NOMBRE }}</p>
+    <p>Rol: {{ app.user.roles[0] }}</p>
+    {% if app.user.foto %}
+        <img src="{{ asset(app.user.foto) }}" alt="User Photo">
+    {% endif %}
+{% endif %}
+
+  <div class="vr"></div>
+  <div class="p-2"> <a class="nav-link" href="{{ path('app_logout') }}">Cerrar Sesion</a></div>
+</div> #}
+
 
 {% endblock %}

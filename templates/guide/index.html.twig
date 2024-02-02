@@ -2,27 +2,141 @@
 
 {% block title %}Guide | {parent}{% endblock %}
 
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/guide.css') }}">
+    {% endblock %}
+    
+    {% block javascripts %}
+  
+    <script src="js/perfilguia.js"></script>
+   
+    {% endblock %}
+
+
 {% block body %}
-{# <div class="hstack gap-3 classHome" >
-  <div class="p-2"> <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top"></div>
-  <div class="p-2"> <h2 class="link-dangerous">FreeTours.gz</h2></div>
- 
-  <div class="p-2 ms-auto"> 
-{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <p>Email: {{ app.user.email }}</p>
-    <p>Rol: {{ app.user.roles[0] }}</p>
-    {% if app.user.foto %}
-        <img src="{{ asset(app.user.foto) }}" alt="User Photo">
+<header>
+  <!-- Intro settings -->
+  <style>
+    /* Default height for small devices */
+    #intro-example {
+      height: 400px;
+    }
+
+    /* Height for devices larger than 992px */
+    @media (min-width: 992px) {
+      #intro-example {
+        height: 600px;
+      }
+    }
+  </style>
+
+  {# <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+      <button
+        data-mdb-collapse-init
+        class="navbar-toggler"
+        type="button"
+        data-mdb-target="#navbarExample01"
+        aria-controls="navbarExample01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExample01">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar --> #}
+
+  <!-- Background image -->
+  <div
+    id="intro-example"
+    class="p-5 text-center bg-image"
+    style="background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/041.webp');"
+  >
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.7);">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+          <h1 class="mb-3">Bienvenido
+           
+  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {{ app.user.NOMBRE }} </h1>
     {% endif %}
-{% endif %}
+   
+          <h5 class="mb-4">Best & free guide of responsive web design</h5>
+          <a
+            data-mdb-ripple-init
+            class="btn btn-outline-light btn-lg m-2"
+            href="https://www.youtube.com/watch?v=c9B4TPnak1A"
+            role="button"
+            rel="nofollow"
+            target="_blank"
+          >Start tutorial</a
+          >
+          <a
+            data-mdb-ripple-init
+            class="btn btn-outline-light btn-lg m-2"
+            href="https://mdbootstrap.com/docs/standard/"
+            target="_blank"
+            role="button"
+          >Download MDB UI KIT</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Background image -->
+</header>
+ <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container-fluid">
+      <button
+        data-mdb-collapse-init
+        class="navbar-toggler"
+        type="button"
+        data-mdb-target="#navbarExample01"
+        aria-controls="navbarExample01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExample01">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Pricing</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-  <div class="vr"></div>
-  <div class="p-2"> <a class="nav-link" href="{{ path('app_logout') }}">Cerrar Sesion</a></div>
-</div>
- #}
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+{# <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
   <div class="container-fluid">
     <ul class="navbar-nav">
       <!-- Avatar -->
@@ -58,7 +172,7 @@
     </ul>
   </div>
 </nav>
-
+ #}
 
 
 {% endblock %}
