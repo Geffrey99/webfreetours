@@ -1,20 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CrearRutaController!{% endblock %}
+{% block title %}Hello CrearRutaController! {% endblock %}
+
+
+  
+      {% block stylesheets %}
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css\jquery-ui.structure.css">
+    <link rel="stylesheet" href="css/jquery-ui.theme.css">
+    <link rel="stylesheet" href="css/richtext.min.css">
+    <link rel="stylesheet" href="css/image-uploader.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <link rel="stylesheet" href="css/estilo.css">
+    
+    {% endblock %}
+
+
+    {% block javascripts %}
+  
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js\jquery-ui.min.js"></script>
+    <script src="js/jquery.richtext.min.js"></script>
+    <script src="js/image-uploader.min.js"></script>
+
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="https://kit.fontawesome.com/91464fdedc.js" crossorigin="anonymous"></script>
+
+    <script src="js/crearRuta.js"></script>
+        {% endblock %}
+
+
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<body>
+    <div id="modal">
+        <div id="main">
+            <h1>Crear Ruta</h1>
+                <div id="tabs">
+                    <ul>
+                    <li><a href="#tabs-1">Información</a></li>
+                    <li><a href="#tabs-2">Visitas</a></li>
+                    </ul>
+                    <div id="tabs-1">
+                        <label for="titulo">Titulo:</label>
+                        <input type="text" name="titulo" id="inputTitulo"><br>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea name="descripcion" id="textarea" cols="1" rows="1"></textarea>
+                        <label for="subirImagen">Subir Imagen:</label>
+                        <div id="input-images"></div>
+                        <label for="puntoEncuentro">Punto de encuentro:</label><br>
+                        <label for="x">Punto X:</label>
+                        <input type="number" name="x" id="x">
+                        <label for="y">Punto Y:</label>
+                        <input type="number" name="y" id="y">
+                        <button id="btnMapa">Mapa</button><br>
+                        <label for="aforo">Aforo:</label>
+                        <input type="number" min="6" max="20">
+                    </div>
+                    <div id="tabs-2">
+                        <h4>HOLAAAA</h4>
+                    </div>
+                </div>
+                
+        </div>
+    </div>
+</body>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/webfreetours/src/Controller/CrearRutaController.php'|file_link(0) }}">src/Controller/CrearRutaController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/webfreetours/templates/crear_ruta/index.html.twig'|file_link(0) }}">templates/crear_ruta/index.html.twig</a></code></li>
-    </ul>
-</div>
 {% endblock %}

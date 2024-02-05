@@ -18,6 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 
+
 class DashboardController extends AbstractDashboardController
 {
     #[IsGranted('ROLE_ADMIN', statusCode: 403, exceptionCode: 10010)]
@@ -43,13 +44,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Gestión de datos');
         yield MenuItem::linkToCrud('Usuarios', 'fas fa-users', User::class);
         yield MenuItem::section('Gestión de rutas');
+        yield MenuItem::linkToRoute('CrearRuta', 'fa fa-edit', 'app_crear_ruta');
         yield MenuItem::linkToCrud('Rutas', 'fas fa-route', Ruta::class);
         yield MenuItem::section('Localización');
         yield MenuItem::linkToCrud('Provincias', 'fas fa-map-marked-alt', Provincia::class);
         yield MenuItem::linkToCrud('Localidades', 'fas fa-location', Localidad::class);
         yield MenuItem::section('Gestión de reservas');
-        yield MenuItem::linkToUrl('Otra página', 'fa fa-link', $this->generateUrl('app_crear_ruta') );
-        // Add the following line to load another page
+        yield MenuItem::section('Otra página');
+        yield MenuItem::linkToRoute('Otra página', 'fa fa-link', 'app_crear_ruta');
+        
        
     }
 
