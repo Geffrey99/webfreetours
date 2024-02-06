@@ -22,6 +22,8 @@ class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterf
 
         if (in_array('ROLE_ADMIN', $roles)) {
             return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
+        } if (in_array('ROLE_USER', $roles)) {
+            return new RedirectResponse($this->urlGenerator->generate('cliente_dashboard'));
         }
     
         return new RedirectResponse($this->urlGenerator->generate('guide_dashboard'));

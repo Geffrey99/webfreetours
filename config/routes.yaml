@@ -15,9 +15,9 @@ admin_dashboard:
 guide_dashboard:
     path: /guide
     controller: App\Controller\GuideController::index
-# cliente_dashboard:
-#     path: /client
-#     controller: App\Controller\ClienteController::index
+cliente_dashboard:
+    path: /cliente
+    controller: App\Controller\ClienteController::index
 app_crear_ruta:
     path: /crear/ruta
     controller: App\Controller\CrearRutaController::index
