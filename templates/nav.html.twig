@@ -1,8 +1,27 @@
-<div class="hstack gap-3 classHome" >
+{# <div class="hstack gap-3 classHome" >
   <div class="p-2"><a class="nav-link" href="{{ path('app_home') }}"> <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top"></a> </div>
   <div class="p-2"> <h2 class="link-dangerous">FREE TOURS OF SPAIN</h2></div>
  
   <div class="p-2 ms-auto"> <a class="nav-link" href="{{ path('app_register') }}">Registrate</a></div>
   <div class="vr"></div>
   <div class="p-2"> <a class="nav-link" href="{{ path('app_login') }}">Inicia sesion</a></div>
+</div>
+ #}
+
+<div class="hstack gap-3" >
+  <div class="p-2">
+    <a class="nav-link" href="{{ path('app_home') }}">
+      <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+   </a>
+  </div>
+
+  <div class="p-2"> <h2 class="link-dangerous">TOURS GRATIS POR ESPAÑA</h2></div>
+ 
+  <div class="p-2"> 
+  <a class="nav-link" href="{{ path('app_register') }}">Registrate</a>
+  </div>
+  <div class="vr"></div>
+  <div class="p-2"> 
+  <a class="nav-link" href="{{ path('app_login') }}">Inicia sesion</a>
+  </div>
 </div>

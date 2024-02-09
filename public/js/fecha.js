@@ -88,6 +88,6 @@ $( function() {
 
 
 
-   import { Dropdown, initMDB } from "mdb-ui-kit";
+  //  import { Dropdown, initMDB } from "mdb-ui-kit";
 
-   initMDB({ Dropdown });
+  //  initMDB({ Dropdown });

@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,12 +17,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 
 
+
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('email', EmailType::Class, [
+                'label' => false, //no me muestra el label
+                'error_bubbling' => true
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                                 'mapped' => false,
                 'constraints' => [
@@ -28,6 +34,7 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+                'label'=>false
             ])
             ->add('Password', PasswordType::class, [
                                 // instead of being set onto the object directly,
@@ -45,12 +52,15 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+                'label'=>false
             ])
-            ->add('nombre')
+            ->add('nombre', TextType::class, [
+                'label' => false //no me muestra el label
+            ])
             ->add('foto', FileType::class, [
-                'label' => 'Foto de perfil',
+                'label' => false,
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
             ]);
         }
     
@@ -60,6 +70,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'error_bubbling' => true
         ]);
     }
 }
