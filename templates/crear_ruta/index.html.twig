@@ -1,5 +1,5 @@
-{% extends '@EasyAdmin/page/content.html.twig' %}
-{% block title %}Hello CrearRutaController! {% endblock %}
+{% extends 'base.html.twig' %}
+{% block title %}CrearRuta {% endblock %}
 
 
   
@@ -40,11 +40,12 @@
 <body>
     <div id="modal">
         <div id="main">
-            <h1>Crear Ruta</h1>
+            <h1 class="titulo">Crear Ruta</h1>
                 <div id="tabs">
                     <ul>
-                    <li><a href="#tabs-1">Información</a></li>
+                    <li><a href="#tabs-1">Ruta</a></li>
                     <li><a href="#tabs-2">Visitas</a></li>
+                    <li><a href="#tabs-3">Programación</a> </li>
                     </ul>
                     <div id="tabs-1">
                         <label for="titulo">Titulo:</label>
@@ -67,7 +68,9 @@
                         <label for="fecha">Fecha fin: </label>
                         <input type="text" name="fechafin" id="fechafin" value="" />
                     </div>
-                   <div id="tabs-2">
+{#####_____________________PESTAÑA VISITAS_____________________________######}
+
+                 <div id="tabs-2">
                         <label for="salutation">Selecciona una ciudad</label>
                         <select name="salutation" id="salutation">
                           <option disabled selected>Click en una</option>
@@ -80,6 +83,8 @@
 
                         <br>
 
+
+                      <div id="items" class="items">
                         <ul id="sortable1" class="droptrue">
                             <li class="ui-state-default">Can be dropped..</li>
                             <li class="ui-state-default">..on an empty list</li>
@@ -87,7 +92,7 @@
                             <li class="ui-state-default">Item 4</li>
                             <li class="ui-state-default">Item 5</li>
                           </ul>
-                           
+                       
                           <ul id="sortable2" class="dropfalse">
                             <li class="ui-state-highlight">Cannot be dropped..</li>
                             <li class="ui-state-highlight">..on an empty list</li>
@@ -98,24 +103,52 @@
                            
                           <!-- <ul id="sortable3" class="droptrue">
                           </ul> -->
-                           
-                          <br style="clear:both">
-                        
+                      </div>
+
                     </div>
 
+{#---------------------------PESTAÑA PROGRAMACION---------------------------------------------------------------------#}
                     <div id="tabs-3">
 
 
-               <div>
+                        <div class="fechaPeriodo">
                             Periodo:  
-                            <label for="from">From</label>
+                            <label for="from">Desde</label>
                             <input type="text" id="from" name="from">
-                            <label for="to">to</label>
+                            <label for="to">a</label>
                             <input type="text" id="to" name="to">
                           </div>
                           
                           <div id="diasSemana">
-                            <input type="checkbox" id="lunes" name="dia" value="L">
+                            <div>
+                              <input type="checkbox" id="lunes" name="dia" value="L">
+                              <label for="lunes">Lunes</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="martes" name="dia" value="M">
+                              <label for="martes">Martes</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="miercoles" name="dia" value="X">
+                            <label for="miercoles">Miércoles</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="jueves" name="dia" value="J">
+                              <label for="jueves">Jueves</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="viernes" name="dia" value="V">
+                              <label for="viernes">Viernes</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="sabado" name="dia" value="S">
+                              <label for="sabado">Sábado</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="domingo" name="dia" value="D">
+                              <label for="domingo">Domingo</label>
+                            </div>
+                            <!-- <input type="checkbox" id="lunes" name="dia" value="L">
                             <label for="lunes">Lunes</label>
                             <input type="checkbox" id="martes" name="dia" value="M">
                             <label for="martes">Martes</label>
@@ -128,24 +161,34 @@
                             <input type="checkbox" id="sabado" name="dia" value="S">
                             <label for="sabado">Sábado</label>
                             <input type="checkbox" id="domingo" name="dia" value="D">
-                            <label for="domingo">Domingo</label>
+                            <label for="domingo">Domingo</label> -->
                           </div>
                           
+                          <div id="otrasOpcion">
                           <div>
+                            <label for="salutation">Hora </label>
                             <input type="time" id="time" />
-                            
-                            <label for="salutation">Seleciona un guia</label>
-                            <select name="salutation" id="salutation">
-                              <option disabled selected>....</option>
-                              <option>Messi</option>
-                              <option>cr7</option>
-                              <option>Neymar</option>
-                              <option>Etó</option>
-                              <option>Other</option>
-                            </select>
+                          </div>           
+                          <div>  
+  <form>
+    <label for="salutation">Selecciona un guía</label>
+    <select name="salutation" id="salutation">
+        <option disabled selected>....</option>
+        {% for guia in guias %}
+            <option>{{ guia.nombre }}</option>
+        {% endfor %}
+    </select>
+</form>
+                           </div> 
+   </div>
 
-                            <button id="guardar" onclick="guardarDatos(event)">Guardar</button>
-                          </div>
+   <br>
+                       <div class="btnn">
+                            <button class="bttnEstilo" id="guardar" onclick="guardarDatos(event)">Archivar</button>
+                      </div>                 
+                          
+                          
+                          <br>
                           
                           <table id="tabla" border="1">
                             <thead>
@@ -159,6 +202,7 @@
                             <tbody>
                             </tbody>
                           </table>
+                          
 
                     </div>
 
@@ -166,12 +210,13 @@
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button">Button</button>
-                    <button class="btn btn-primary" type="button">Button</button>
+                    <button class="btn btn-primary" type="button">CREAR RUTA</button>
+                    <button class="btn btn-warning" type="button">CREAR VISITAS</button>
                   </div>
                 
         </div>
     </div>
 </body>
+
 
 {% endblock %}

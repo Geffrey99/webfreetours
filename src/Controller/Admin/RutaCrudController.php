@@ -51,29 +51,26 @@ class RutaCrudController extends AbstractCrudController
   
         // ... el resto del código ...
     
-public function configureActions(Actions $actions): Actions {
-    $create = Action::new('create', 'Crear Ruta')
-    // Especifica la plantilla que quieres mostrar
-    ->setTemplatePath('crear_ruta/index.html.twig')
-    // Opcionalmente, puedes cambiar el color del botón
-    ->setCssClass('btn btn-success')
-    ->linkToCrudAction('new');
+public function configureActions(Actions $actions): Actions
+{
+    // $create = Action::new('create', 'Crear Ruta')
+    //     ->setTemplatePath('crear_ruta/index.html.twig') // Usa la ruta correcta a tu plantilla
+    //     ->setCssClass('btn btn-success')
+    //     ->linkToCrudAction('new');
 
-// Devuelve las acciones modificadas
-return $actions
-    // Reemplaza la acción CREATE original por la personalizada
-    ->remove(Crud::PAGE_INDEX, Action::NEW)
-    ->add(Crud::PAGE_INDEX, $create);
+    return $actions
+        ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action){
+            return $action->linkToRoute('app_crear_ruta', []);
+        }); // Agrega la acción personalizada al índice
 }
-}
+
+
 
 // public function createEntityFormBuilder($entityFqcn, $formOptions): FormBuilder
 //     {
 //         $formBuilder = parent::createEntityFormBuilder($entityFqcn, $formOptions);
 //         $this->overrideTemplate('new', 'crear_ruta/index.html.twig');
-
-
 //         return $formBuilder;
 //     }
 
-    
+}

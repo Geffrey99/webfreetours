@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Provincia;
 use App\Entity\Localidad;
 use App\Entity\Ruta;
+use App\Entity\Visita;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -43,15 +44,16 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Home', 'fa fa-home');
         yield MenuItem::section('Gestión de datos');
         yield MenuItem::linkToCrud('Usuarios', 'fas fa-users', User::class);
-        yield MenuItem::section('Gestión de rutas');
-        yield MenuItem::linkToRoute('CrearRuta', 'fa fa-edit', 'app_crear_ruta');
+        yield MenuItem::section('Gestión de tours');
+        // yield MenuItem::linkToRoute('CrearRuta', 'fa fa-edit', 'app_crear_ruta');
         yield MenuItem::linkToCrud('Rutas', 'fas fa-route', Ruta::class);
+        yield MenuItem::linkToCrud('Visitas', 'fa fa-building', Visita::class);
         yield MenuItem::section('Localización');
         yield MenuItem::linkToCrud('Provincias', 'fas fa-map-marked-alt', Provincia::class);
         yield MenuItem::linkToCrud('Localidades', 'fas fa-location', Localidad::class);
-        yield MenuItem::section('Gestión de reservas');
+        // yield MenuItem::section('Gestión de reservas');
         yield MenuItem::section('Otra página');
-        yield MenuItem::linkToRoute('Otra página', 'fa fa-link', 'app_crear_ruta');
+        yield MenuItem::linkToRoute('Planificacion', 'fa-regular fa-calendar', 'app_crear_ruta');
         
        
     }

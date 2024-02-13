@@ -5,7 +5,89 @@
 .titulo {
   text-align: center;
   font-family: none;
-  background-color: blanchedalmond;
+  background-color: #0000002b;
+  color: white;
 }
 
-/*  */
+#modal {
+  background-color: #8b8888;
+}
+
+.items{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 2%;
+
+}
+
+
+.fechaPeriodo {
+  text-align: center;
+  margin-bottom: 3%;
+}
+
+#diasSemana {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 3%;
+
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+input[type=checkbox] {
+  transform: scale(1.5);
+}
+
+.ui-dialog-titlebar-close {
+  background: rgb(255, 21, 0); 
+  border-radius: 30px;
+  padding: 15px 30px;  /* Ajusta el tamaño del botón según sea necesario */
+  transition: background 0.3s ease;  /* Agrega una transición suave al cambio de color */
+}
+
+/* Cambia el color al pasar el mouse por encima */
+.ui-dialog-titlebar-close:hover {
+  background: rgba(255, 21, 0, 0.61);  /* Cambia el color al pasar el mouse por encima */
+}
+
+#otrasOpcion{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 2%;
+}
+
+.btnn {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+  justify-content: space-around;
+}
+
+.bttnEstilo{
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: #b36262; /* Color rojo */
+  border-radius: 0px;
+  border: 2px solid #EDD8D8; /* Borde rojo */
+}
+
+.bttnEstilo:hover {
+  color: #EDD8D8;
+  background-color: transparent;
+}

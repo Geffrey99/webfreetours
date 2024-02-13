@@ -7,6 +7,9 @@ $(function(){
         width:"90%",
         heigth:"99vh"
     });
+    
+   
+    // Resto de tu código...
 
     $(textarea).richText({
         height: "auto",
@@ -202,3 +205,12 @@ function guardarDatos(e) {
 
     frm.reset ();
   }
+
+
+
+$(document).ready(function () {
+    var closeButton = $(".ui-dialog-titlebar-close");
+    closeButton.on("click", function () {
+        window.location.href = "/admin";
+    });
+});
