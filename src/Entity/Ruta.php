@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RutaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -40,6 +41,12 @@ class Ruta
 
     #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: RutaVisita::class)]
     private Collection $rutaVisitas;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $fecha_inicio = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $fecha_fin = null;
 
     public function __construct()
     {
@@ -180,6 +187,30 @@ class Ruta
                 $rutaVisita->setCodRuta(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFechaInicio(): ?\DateTimeInterface
+    {
+        return $this->fecha_inicio;
+    }
+
+    public function setFechaInicio(\DateTimeInterface $fecha_inicio): static
+    {
+        $this->fecha_inicio = $fecha_inicio;
+
+        return $this;
+    }
+
+    public function getFechaFin(): ?\DateTimeInterface
+    {
+        return $this->fecha_fin;
+    }
+
+    public function setFechaFin(\DateTimeInterface $fecha_fin): static
+    {
+        $this->fecha_fin = $fecha_fin;
 
         return $this;
     }
