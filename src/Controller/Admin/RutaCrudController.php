@@ -16,8 +16,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-
-
+use EaseCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class RutaCrudController extends AbstractCrudController
 {
@@ -29,12 +29,15 @@ class RutaCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
 {
     return [
-        IdField::new('id'),
+        IdField::new('id')->onlyOnDetail(),
         TextField::new('nombre'),
         TextEditorField::new('descripcion'),
-        // ImageField::new('imagen'),
+        ImageField::new('foto')
+                ->setBasePath($this->getParameter('fotos_visitas')) // Asegúrate de que esta ruta sea accesible públicamente
+                ->setUploadDir($this->getParameter('fotos_visitas')), 
         TextEditorField::new('punto_inicio'),
-        TextField::new('participantes'),
+        IntegerField::new('participantes'),
+        
         TextEditorField::new('programacion'),
         // ... otros campos ...
     ];

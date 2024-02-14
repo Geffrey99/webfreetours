@@ -11,16 +11,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+
+
 
 #[Route("/api/ruta", name: "ruta-")]
 class RutaApi extends AbstractController
 {
     private SerializerInterface $serializer;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
         $this->serializer = $serializer;
+        $this->entityManager = $entityManager;
     }
+
+
 
     #[Route("/findAll", name: "findAll", methods: ["GET"])]
     public function findAll(RutaRepository $rutaRepository): Response
@@ -45,28 +52,19 @@ class RutaApi extends AbstractController
     public function insert(Request $request): JsonResponse
     {
         // Obtener los datos en formato JSON
-        $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
+        // $data = json_decode($request->getContent(), true);
+        // $data = json_decode($request->request->get('data'), true);
         $ruta = new Ruta;
         $ruta->setNombre($data['nombre'] ?? null);
         $ruta->setDescripcion($data['descripcion'] ?? null);
-        // Obtén la imagen del formulario
-        $foto = $request->files->get('foto');
-
-        if ($foto) {
-            // Mueve la imagen a una carpeta en tu plataforma
-            $fotoNombre = md5(uniqid()).'.'.$foto->guessExtension();
-            $foto->move(
-                $this->getParameter('imagenes_directorio'),
-                $fotoNombre
-            );
-
-            // Convierte la imagen a base64
-            $data = file_get_contents($this->getParameter('imagenes_directorio').'/'.$fotoNombre);
-            $base64 = 'data:image/' . $foto->guessExtension() . ';base64,' . base64_encode($data);
-
-            // Guarda la cadena base64 en tu base de datos
-            $ruta->setFoto($base64);
-        }
+        $file = $request->files->get('foto');
+        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+        $file->move(
+            $this->getParameter('fotos_visitas'),
+            $fileName
+        );
+        $ruta->setFoto($fileName);
         $ruta->setPuntoInicio($data['punto_inicio'] ?? null);
         $ruta->setParticipantes($data['participantes'] ?? null);
         $ruta->setProgramacion($data['programacion'] ?? 'Valor_Predeterminado');
