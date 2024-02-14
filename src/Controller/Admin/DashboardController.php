@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
-
+use Doctrine\ORM\EntityManagerInterface;  
 
 class DashboardController extends AbstractDashboardController
 {
@@ -37,7 +37,6 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Webfreetours');
     }
 
- 
 
     public function configureMenuItems(): iterable
     {
@@ -53,7 +52,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Localidades', 'fas fa-location', Localidad::class);
         // yield MenuItem::section('Gestión de reservas');
         yield MenuItem::section('Otra página');
-        yield MenuItem::linkToRoute('Planificacion', 'fa-regular fa-calendar', 'app_crear_ruta');
+        yield MenuItem::linkToRoute('Planificacion', 'fa-regular fa-calendar', '');
         
        
     }

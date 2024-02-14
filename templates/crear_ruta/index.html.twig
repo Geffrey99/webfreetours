@@ -1,47 +1,52 @@
-{% extends 'base.html.twig' %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block content_title %}Crear Ruta {% endblock %}
 {% block title %}CrearRuta {% endblock %}
 
 
   
-      {% block stylesheets %}
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css\jquery-ui.structure.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.css">
-    <link rel="stylesheet" href="css/richtext.min.css">
-    <link rel="stylesheet" href="css/image-uploader.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="./css/jquery.datetimepicker.css">
+      {% block mystylesheets %}
+<link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery-ui.structure.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery-ui.theme.css') }}">
+<link rel="stylesheet" href="{{ asset('css/richtext.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/image-uploader.min.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.css') }}">
 
-    <link rel="stylesheet" href="css/estilo.css">
+<link rel="stylesheet" href="{{ asset('css/estilo.css') }}">
+
     
     {% endblock %}
 
 
-    {% block javascripts %}
+{% block myjavascripts %}
   
-    <script src="js/jquery-3.7.1.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    <script src="js\jquery-ui.min.js"></script>
-    <script src="js/jquery.richtext.min.js"></script>
-    <script src="js/image-uploader.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+<script src="{{ asset('js/image-uploader.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
     
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+ <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <script src="https://kit.fontawesome.com/91464fdedc.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/91464fdedc.js" crossorigin="anonymous"></script>
 
-    <script src="js/crearRuta.js"></script>
-    <script src="js/añadirRuta.js"></script>
-        {% endblock %}
+<script src="{{ asset('js/crearRuta.js') }}"></script>
+<script src="{{ asset('js/añadirRuta.js') }}"></script>
+
+{% endblock %}
 
 
 
 
-{% block body %}
+
+{% block main %}
 <body>
-    <div id="modal">
+    {# <div id="modal"> #}
         <div id="main">
-            <h1 class="titulo">Crear Ruta</h1>
+            {# <h1 class="titulo">Crear Ruta</h1> #}
                 <div id="tabs">
                     <ul>
                     <li><a href="#tabs-1">Ruta</a></li>
@@ -63,6 +68,7 @@
                         <label for="y">Punto Y:</label>
                         <input type="number" name="y" id="y">
                         <button id="btnMapa">Mapa</button><br>
+                        <div id="modal"></div>
                         <label for="aforo">Aforo:</label>
                         <input type="number" min="6" max="20" id="aforo">
                         <br>
@@ -207,7 +213,7 @@
                   </div>
                 
         </div>
-    </div>
+    {# </div> #}
 </body>
 
 

@@ -1,10 +1,10 @@
 $(function(){
     $("#modal").dialog({
-        autoOpen: true,
+        autoOpen: false,
         modal: true,
         draggable: false,
         position: { my: "top", at: "top", of: window },
-        width:"90%",
+        width:"50%",
         heigth:"99vh"
     });
     
@@ -25,7 +25,7 @@ $(function(){
     $("#btnMapa").click(function () {
         var mapa=$('<div id="map"></div>').appendTo('#modal').dialog({
             modal: true,
-            width:"90%",        
+            width:"50%",        
             draggable: false,
             open: function (event, ui) {
                 var mymap = L.map('map').setView([40.2668, -3.6638], 6);
@@ -48,9 +48,9 @@ $(function(){
                 $(this).remove();
             }
         });
-        $("#map").parent().css({height: "60vh",top : "15vh"});
+        $("#map").parent().css({height: "60vh",top : "25vh"});
         $("#map").css({height: "110%"});
-
+// $("body").append(mapa);
     });
 
     
@@ -208,9 +208,9 @@ function guardarDatos(e) {
 
 
 
-$(document).ready(function () {
-    var closeButton = $(".ui-dialog-titlebar-close");
-    closeButton.on("click", function () {
-        window.location.href = "/admin";
-    });
-});
+// $(document).ready(function () {
+//     var closeButton = $(".ui-dialog-titlebar-close");
+//     closeButton.on("click", function () {
+//         window.location.href = "/admin";
+//     });
+// });

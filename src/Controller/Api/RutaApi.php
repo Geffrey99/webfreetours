@@ -69,10 +69,10 @@ class RutaApi extends AbstractController
         $ruta->setParticipantes($data['participantes'] ?? null);
         $ruta->setProgramacion($data['programacion'] ?? 'Valor_Predeterminado');
         $fecha_inicio = \DateTime::createFromFormat('d/m/Y H:i:s', $data['fecha_inicio']);
-if ($fecha_inicio === false) {
-    throw new \Exception('La fecha de inicio no es válida: ' . $data['fecha_inicio']);
-}
-$ruta->setFechaInicio($fecha_inicio);
+        if ($fecha_inicio === false) {
+              throw new \Exception('La fecha de inicio no es válida: ' . $data['fecha_inicio']);
+            }
+            $ruta->setFechaInicio($fecha_inicio);
 
         $ruta->setFechaInicio($fecha_inicio);
         
