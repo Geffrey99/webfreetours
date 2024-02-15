@@ -80,7 +80,7 @@
 {#####_____________________PESTAÑA VISITAS_____________________________######}
 
                  <div id="tabs-2">
-                        <label for="salutation">Selecciona una ciudad</label>
+                        <label for="salutation">Selecciona una localidad</label>
                         <select name="salutation" id="salutation">
                           <option disabled selected>Click en una</option>
                           <option>Jaen</option>
@@ -91,30 +91,39 @@
                         </select>
 
                         <br>
-
+                
+                <div class="titulosVisitas">
+                       <label for="">Lugares disponibles</label>
+                       <label for="">Lugares elegidos</label>
+                </div>
 
                       <div id="items" class="items">
                         <ul id="sortable1" class="droptrue">
-                            <li class="ui-state-default">Can be dropped..</li>
-                            <li class="ui-state-default">..on an empty list</li>
-                            <li class="ui-state-default">Item 3</li>
-                            <li class="ui-state-default">Item 4</li>
-                            <li class="ui-state-default">Item 5</li>
-                          </ul>
-                       
-                          <ul id="sortable2" class="dropfalse">
-                            <li class="ui-state-highlight">Cannot be dropped..</li>
-                            <li class="ui-state-highlight">..on an empty list</li>
-                            <li class="ui-state-highlight">Item 3</li>
-                            <li class="ui-state-highlight">Item 4</li>
-                            <li class="ui-state-highlight">Item 5</li>
-                          </ul>
+                         
+                          {% for visita in visitas %}
+                          <li class="">
+                            <div class="image-container">
+                              <img src="{{ asset('public/img/visitas/' ~ visita.foto) }}" alt="{{ visita.nombre }}">
+                              <p class="text-center" >{{ visita.nombre }}</p>
+                            </div>
+                          </li>
+                          {% endfor %}
+                        </ul>
+
+
+                        <ul id="sortable2" class="droptrue">
+                          <li class="ui-state-highlight">Cannot be dropped..</li>
+                          <li class="ui-state-highlight">..on an empty list</li>
+                          <li class="ui-state-highlight">Item 3</li>
+                          <li class="ui-state-highlight">Item 4</li>
+                          <li class="ui-state-highlight">Item 5</li>
+                        </ul>
                            
                           <!-- <ul id="sortable3" class="droptrue">
                           </ul> -->
-                      </div>
-
                     </div>
+
+                  </div>
 
 {#---------------------------PESTAÑA PROGRAMACION---------------------------------------------------------------------#}
                     <div id="tabs-3">

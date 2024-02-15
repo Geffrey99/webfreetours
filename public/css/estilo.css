@@ -1,6 +1,67 @@
 
-#sortable1, #sortable2, #sortable3 { list-style-type: none; margin: 0; float: left; margin-right: 10px; background: #eee; padding: 5px; width: 143px;}
-#sortable1 li, #sortable2 li, #sortable3 li { margin: 5px; padding: 5px; font-size: 1.2em; width: 120px; }
+/* #sortable1, #sortable2, #sortable3 { list-style-type: none; margin: 0; float: left; margin-right: 10px; background: #eee; padding: 5px; width: 143px;}
+#sortable1 li, #sortable2 li, #sortable3 li { margin: 5px; padding: 5px; font-size: 1.2em; width: 120px; } */
+
+/* #sortable1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 10px;
+  list-style-type: none;
+} */
+
+
+.titulosVisitas {
+  DISPLAY: FLEX;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #7e4f46;
+  text-emphasis-style: none;
+  -webkit-text-stroke: medium;
+}
+
+
+#sortable1 {
+  width: 60em;
+  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 10px;
+  list-style-type: none;
+  flex-wrap: wrap;
+  align-content: space-between;
+  min-width: 8em !important;
+  overflow-y: auto;
+  max-height: 245px;
+  border: solid rgba(0, 128, 0, 0.477);
+}
+
+#sortable2 {
+  width: 300px;
+  overflow-y: auto;
+  max-height: 245px;
+  display: flex;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 10px;
+  list-style-type: none;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  border: solid rgba(255, 0, 0, 0.511);
+} /* Establece la altura máxima de la lista */
+
+
+
+.image-container {
+  width: 100px;
+  height: auto;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+}
+
+
 
 .titulo {
   text-align: center;

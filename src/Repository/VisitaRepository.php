@@ -21,6 +21,32 @@ class VisitaRepository extends ServiceEntityRepository
         parent::__construct($registry, Visita::class);
     }
 
+
+    // public function findVisitasByLocalidadAndNombre($localidad, $nombre): array
+    // {
+    //     return $this->createQueryBuilder('v')
+    //         ->select('v.foto', 'v.nombre', 'v.descripcion')
+    //         ->andWhere('v.cod_localidad = :localidad')
+    //         ->andWhere('v.nombre = :nombre')
+    //         ->setParameter('localidad', $localidad)
+    //         ->setParameter('nombre', $nombre)
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+    
+
+    public function findAllVisitas(): array
+{
+    return $this->createQueryBuilder('v')
+        ->select('v.foto', 'v.nombre', 'v.descripcion')
+        ->getQuery()
+        ->getResult();
+}
+
+
+
+
+
 //    /**
 //     * @return Visita[] Returns an array of Visita objects
 //     */

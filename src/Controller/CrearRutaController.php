@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;  // Asegúrate de importar la clase necesaria
+use App\Repository\VisitaRepository;  // Asegúrate de importar la clase necesaria
 
 class CrearRutaController extends AbstractController
 {
@@ -18,14 +20,17 @@ class CrearRutaController extends AbstractController
     }
 
     #[Route('/crear/ruta', name: 'app_crear_ruta')]
-    public function index(): Response
+    public function index(VisitaRepository $visitaRepository): Response
     {
         // Llama a la función seleccionarGuias para obtener la lista de guías
         $guias = $this->seleccionarGuias();
+       
+        $visitas = $visitaRepository->findAllVisitas();
 
         return $this->render('crear_ruta/index.html.twig', [
             'controller_name' => 'CrearRutaController',
             'guias' => $guias, // Pasa la lista de guías a la plantilla
+        'visitas' => $visitas,
         ]);
     }
 
