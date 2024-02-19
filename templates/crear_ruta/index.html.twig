@@ -35,7 +35,9 @@
 
 <script src="{{ asset('js/crearRuta.js') }}"></script>
 <script src="{{ asset('js/añadirRuta.js') }}"></script>
-
+<script src="{{ asset('js/extraerVisitas.js') }}"></script>
+<script src="{{ asset('js/añadirVisita.js') }}"></script>
+<script src="{{ asset('js/añadirProgr.js') }}"></script>
 {% endblock %}
 
 
@@ -79,55 +81,42 @@
                     </div>
 {#####_____________________PESTAÑA VISITAS_____________________________######}
 
-                 <div id="tabs-2">
-                        <label for="salutation">Selecciona una localidad</label>
-                        <select name="salutation" id="salutation">
-                          <option disabled selected>Click en una</option>
-                          <option>Jaen</option>
-                          <option>Cordoba</option>
-                          <option>Malaga</option>
-                          <option>Cadiz</option>
-                          <option>Sevilla</option>
-                        </select>
-
-                        <br>
-                
-                <div class="titulosVisitas">
-                       <label for="">Lugares disponibles</label>
-                       <label for="">Lugares elegidos</label>
-                </div>
-
-                      <div id="items" class="items">
-                        <ul id="sortable1" class="droptrue">
-                         
-                          {% for visita in visitas %}
-                          <li class="">
-                            <div class="image-container">
-                              <img src="{{ asset('public/img/visitas/' ~ visita.foto) }}" alt="{{ visita.nombre }}">
-                              <p class="text-center" >{{ visita.nombre }}</p>
-                            </div>
-                          </li>
-                          {% endfor %}
-                        </ul>
-
-
-                        <ul id="sortable2" class="droptrue">
-                          <li class="ui-state-highlight">Cannot be dropped..</li>
-                          <li class="ui-state-highlight">..on an empty list</li>
-                          <li class="ui-state-highlight">Item 3</li>
-                          <li class="ui-state-highlight">Item 4</li>
-                          <li class="ui-state-highlight">Item 5</li>
-                        </ul>
-                           
-                          <!-- <ul id="sortable3" class="droptrue">
-                          </ul> -->
-                    </div>
-
+                <div id="tabs-2">
+                  <label for="">Selecciona una localidad</label>
+                  <select name="" id="salutation" class="salutation">
+                    <option disabled selected>Click en una</option>
+                    {% for localidad in localidades %}
+                      <option value="{{ localidad.id }}">{{ localidad.nombre }}</option>
+                    {% endfor %}
+                  </select>
+                  <br>
+                  <div class="titulosVisitas">
+                    <label for="">Lugares disponibles</label>
+                    <label for="">Lugares elegidos</label>
                   </div>
+                  <div id="items" class="items">
+                    <ul id="sortable1" class="droptrue">
+                      {% for visita in visitas %}
+                        <li class="visita" data-localidad="{{ visita.cod_localidad}}" data-visita-id="{{ visita.id }}">
+                          <div class="image-container">
+                            <img src="{{ asset('public/img/visitas/' ~ visita.foto) }}" alt="{{ visita.nombre }}">
+                            <p class="text-center">{{ visita.nombre }}</p>
+                          </div>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                    <ul id="sortable2" class="droptrue">
+                      {# <li class="ui-state-highlight">Cannot be dropped..</li>
+                      <li class="ui-state-highlight">..on an empty list</li>
+                      <li class="ui-state-highlight">Item 3</li>
+                      <li class="ui-state-highlight">Item 4</li>
+                      <li class="ui-state-highlight">Item 5</li> #}
+                    </ul>
+                  </div>
+                </div>
 
 {#---------------------------PESTAÑA PROGRAMACION---------------------------------------------------------------------#}
                     <div id="tabs-3">
-
 
                         <div class="fechaPeriodo">
                             Periodo:  
@@ -175,26 +164,24 @@
                             <input type="time" id="time" />
                           </div>           
                           <div>  
-                  <form>
-              <label for="salutation">Selecciona un guía</label>
-              <select name="salutation" id="salutation">
-                <option disabled selected>....</option>
-                 {% for guia in guias %}
-                  <option>{{ guia.nombre }}</option>
-                {% endfor %}
-              </select>
-              </form>
-                </div> 
-              </div>
+                          <form>
+                          <label for="selectGuia">Selecciona un guía</label>
+                           <select name="selectGuia" id="selectGuia">
+                           <option disabled selected>....</option>
+                             {% for guia in guias %}
+                             <option>{{ guia.nombre }}</option>
+                             {% endfor %}
+                            </select> 
+                           </form>
+                          </div> 
+                         </div>
 
-                <br>
-                       <div class="btnn">
+                        <br>
+                        <div class="btnn">
                             <button class="bttnEstilo" id="guardar" onclick="guardarDatos(event)">Archivar</button>
-                      </div>                 
-                          
-                          
+                        </div>                 
+
                           <br>
-                          
                           <table id="tabla" border="1">
                             <thead>
                               <tr>
@@ -216,9 +203,8 @@
 
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary" type="button" id="btnRuta" >CREAR RUTA</button>
-                    <button class="btn btn-warning" type="button">CREAR VISITAS</button>
-                    <button class="btn btn-warning" type="button">CREAR PROGRAMACION</button>
-
+                    <button class="btn btn-warning" type="button" Id="btnCrearVisitasTour">CREAR VISITAS</button>
+                    <button class="btn btn-warning" type="button" id="btnCrearProgramacion">CREAR TOUR</button>
                   </div>
                 
         </div>

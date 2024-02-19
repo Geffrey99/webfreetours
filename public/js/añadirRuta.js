@@ -1,4 +1,7 @@
 $(document).ready(function() {
+   
+    var rutaId;
+   
     $('#btnRuta').click(function(e) {
         e.preventDefault();
     
@@ -22,6 +25,8 @@ $(document).ready(function() {
             contentType: false,  // Indicar a jQuery que no establezca el tipo de contenido
             success: function(data) {
                 console.log('Success:', data);
+                var rutaId = data.id;
+                localStorage.setItem('rutaId', data.id);
             },
             error: function(error) {
                 console.error('Error:', error);
@@ -30,6 +35,15 @@ $(document).ready(function() {
     });
 
 });
+
+
+
+//AÑADIR VISITA
+
+
+
+
+
 
 // $(document).ready(function() {
 //     // Botón Ruta

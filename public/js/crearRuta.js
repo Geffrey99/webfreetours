@@ -65,23 +65,23 @@ $('#fechafin').datetimepicker({
     lang: "es",
 });
 
-$( "#salutation" ).selectmenu();
+// $( "#salutation" ).selectmenu();
     
     
-$( "ul.droptrue" ).sortable({
-    connectWith: "ul"
-  });
+// $( "ul.droptrue" ).sortable({
+//     connectWith: "ul"
+//   });
 
-  $( "ul.dropfalse" ).sortable({
-    connectWith: "ul",
-    dropOnEmpty: false
-  });
+//   $( "ul.dropfalse" ).sortable({
+//     connectWith: "ul",
+//     dropOnEmpty: false
+//   });
 
-  $( "#sortable1, #sortable2, #sortable3" ).disableSelection();
+//   $( "#sortable1, #sortable2, #sortable3" ).disableSelection();
 
 //#######################----PESTAÑA ITEMS
 
-$( "#salutation" ).selectmenu();
+// $( "#salutation" ).selectmenu();
     
     
 $( "ul.droptrue" ).sortable({
@@ -188,7 +188,7 @@ function guardarDatos(e) {
     }
     var diasTexto = diasSeleccionados.join(", ");
     var hora = time.value;
-    var guia = salutation.value; // Aquí estaba el error
+    var guia = selectGuia.value; // Aquí estaba el error
     // Obtener la tabla donde se guardarán los datos
     var tabla = document.getElementById("tabla");
     // Crear una nueva fila en la tabla

@@ -22,23 +22,35 @@ class VisitaRepository extends ServiceEntityRepository
     }
 
 
-    // public function findVisitasByLocalidadAndNombre($localidad, $nombre): array
+    // public function findVisitasByLocalidad($localidadId)
     // {
     //     return $this->createQueryBuilder('v')
-    //         ->select('v.foto', 'v.nombre', 'v.descripcion')
-    //         ->andWhere('v.cod_localidad = :localidad')
-    //         ->andWhere('v.nombre = :nombre')
-    //         ->setParameter('localidad', $localidad)
-    //         ->setParameter('nombre', $nombre)
+    //         ->innerJoin('v.cod_localidad', 'l')
+    //         ->where('l.id = :localidadId')
+    //         ->setParameter('localidadId', $localidadId)
+    //         ->select('v.nombre as visita_nombre', 'l.nombre as localidad_nombre')
     //         ->getQuery()
     //         ->getResult();
     // }
     
 
-    public function findAllVisitas(): array
+    public function findVisitasByLocalidad($localidadId)
+    {
+        return $this->createQueryBuilder('v')
+            ->innerJoin('v.cod_localidad', 'l')
+            ->where('l.id = :localidadId')
+            ->setParameter('localidadId', $localidadId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    
+
+public function findAllVisitas(): array
 {
     return $this->createQueryBuilder('v')
-        ->select('v.foto', 'v.nombre', 'v.descripcion')
+        ->select('v.id','v.foto', 'v.nombre', 'v.descripcion', 'l.id as cod_localidad')
+        ->join('v.cod_localidad', 'l')
         ->getQuery()
         ->getResult();
 }

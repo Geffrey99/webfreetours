@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\RutaVisita;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Visita;
+use App\Entity\Ruta;
 
 /**
  * @extends ServiceEntityRepository<RutaVisita>
@@ -20,6 +22,18 @@ class RutaVisitaRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RutaVisita::class);
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    /**
 //     * @return RutaVisita[] Returns an array of RutaVisita objects

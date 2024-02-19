@@ -45,4 +45,15 @@ class LocalidadRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function findAllLocalidades(): array
+{
+    return $this->createQueryBuilder('l')
+        ->select('l.id', 'l.nombre')
+        ->getQuery()
+        ->getResult();
+}
+
+
+
 }
