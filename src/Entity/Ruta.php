@@ -36,8 +36,8 @@ class Ruta
     #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: Tour::class)]
     private Collection $tours;
 
-    #[ORM\Column(length: 255)]
-    private ?string $programacion = null;
+    #[ORM\Column(type: "json")]
+    private ?array $programacion = null;
 
     #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: RutaVisita::class)]
     private Collection $rutaVisitas;
@@ -149,15 +149,15 @@ class Ruta
         return $this;
     }
 
-    public function getProgramacion(): ?string
+    public function getProgramacion(): ?array
     {
         return $this->programacion;
     }
-
-    public function setProgramacion(string $programacion): static
+    
+    public function setProgramacion(array $programacion): static
     {
         $this->programacion = $programacion;
-
+    
         return $this;
     }
 

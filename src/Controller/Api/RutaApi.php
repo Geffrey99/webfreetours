@@ -67,7 +67,7 @@ class RutaApi extends AbstractController
         $ruta->setFoto($fileName);
         $ruta->setPuntoInicio($data['punto_inicio'] ?? null);
         $ruta->setParticipantes($data['participantes'] ?? null);
-        $ruta->setProgramacion($data['programacion'] ?? 'Valor_Predeterminado');
+        $ruta->setProgramacion($data['programacion'] ?? []);
         $fecha_inicio = \DateTime::createFromFormat('d/m/Y H:i:s', $data['fecha_inicio']);
         if ($fecha_inicio === false) {
               throw new \Exception('La fecha de inicio no es válida: ' . $data['fecha_inicio']);
@@ -92,9 +92,58 @@ class RutaApi extends AbstractController
         $this->entityManager->flush();
 
 
+    //     //  Ahora, asignar la programación a la entidad Ruta
+    //   $ruta->setProgramacion($data['programacion'] ?? []);
+
+    //      // Actualizar la entidad Ruta en la base de datos
+    //   $this->entityManager->flush();
+
         // Devuelve una respuesta JSON con el ID de la nueva entidad creada y el código de estado HTTP 201 (Created)
         return new JsonResponse(['id' => $ruta->getId()], JsonResponse::HTTP_CREATED);
     }
+
+
+    #[Route("/assign_programacion", name: "assign_programacion", methods: ["POST"])]
+    public function assignProgramacion(Request $request): JsonResponse
+    {
+        // Obtener los datos en formato JSON
+        $data = json_decode($request->getContent(), true);
+    
+        // Obtener el ID de la ruta desde los datos enviados por el cliente
+        $rutaId = $data['rutaId'] ?? null;
+    
+        // Verificar si se proporcionó el ID de la ruta
+        if ($rutaId === null) {
+            return new JsonResponse(['error' => 'ID de ruta no proporcionado'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+    
+        // Obtener la ruta existente por su ID
+        $ruta = $this->entityManager->getRepository(Ruta::class)->find($rutaId);
+    
+        if (!$ruta) {
+            return new JsonResponse(['error' => 'Ruta no encontrada'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    
+        // Obtener los datos de programación
+        $programacionData = $data['programacion'] ?? [];
+    
+        // Asignar la programación a la entidad Ruta
+        $ruta->setProgramacion($programacionData);
+    
+        // Actualizar la entidad Ruta en la base de datos
+        $this->entityManager->flush();
+    
+        // Devolver una respuesta JSON exitosa
+        return new JsonResponse(['message' => 'Programación asignada con éxito'], JsonResponse::HTTP_OK);
+    }
+    
+
+
+
+
+
+
+
 
     #[Route("/update/{id}", name: "update", methods: ["PUT"])]
     public function update(Request $request, $id, RutaRepository $rutaRepository): Response

@@ -170,43 +170,72 @@ $.datepicker.regional['es'] = {
 
 
 
-//###########----GUARDAR PROGRAMACION EN LA TABLA DE CRUD 
-function guardarDatos(e) {
-    // Evitar que el formulario se envíe
-    e.preventDefault();
-    // Obtener los elementos del formulario
-    var from = document.getElementById("from");
-    var to = document.getElementById("to");
-    var dias = document.querySelectorAll("#diasSemana input:checked");
-    var time = document.getElementById("time");
-    var salutation = document.getElementById("salutation");
-    // Obtener los valores de los elementos
-    var rango = from.value + " - " + to.value;
-    var diasSeleccionados = [];
-    for (var i = 0; i < dias.length; i++) {
-      diasSeleccionados.push(dias[i].value);
-    }
-    var diasTexto = diasSeleccionados.join(", ");
-    var hora = time.value;
-    var guia = selectGuia.value; // Aquí estaba el error
-    // Obtener la tabla donde se guardarán los datos
-    var tabla = document.getElementById("tabla");
-    // Crear una nueva fila en la tabla
-    var fila = tabla.insertRow();
-    // Crear las celdas de la fila y asignarles los valores
-    var celdaRango = fila.insertCell();
-    celdaRango.textContent = rango;
-    var celdaDias = fila.insertCell();
-    celdaDias.textContent = diasTexto;
-    var celdaHora = fila.insertCell();
-    celdaHora.textContent = hora;
-    var celdaGuia = fila.insertCell();
-    celdaGuia.textContent = guia;
+// //###########----GUARDAR PROGRAMACION EN LA TABLA DE CRUD 
+// function guardarDatos(e) {
+//     // Evitar que el formulario se envíe
+//     e.preventDefault();
+//     // Obtener los elementos del formulario
+//     var from = document.getElementById("from");
+//     var to = document.getElementById("to");
+//     var dias = document.querySelectorAll("#diasSemana input:checked");
+//     var time = document.getElementById("time");
+//     var salutation = document.getElementById("salutation");
+//     // Obtener los valores de los elementos
+//     var rango = from.value + " - " + to.value;
+//     var diasSeleccionados = [];
+//     for (var i = 0; i < dias.length; i++) {
+//       diasSeleccionados.push(dias[i].value);
+//     }
+//     var diasTexto = diasSeleccionados.join(", ");
+//     var hora = time.value;
+//     var guia = selectGuia.value; // Aquí estaba el error
+//     // Obtener la tabla donde se guardarán los datos
+//     var tabla = document.getElementById("tabla");
+//     // Crear una nueva fila en la tabla
+//     var fila = tabla.insertRow();
+//     // Crear las celdas de la fila y asignarles los valores
+//     var celdaRango = fila.insertCell();
+//     celdaRango.textContent = rango;
+//     var celdaDias = fila.insertCell();
+//     celdaDias.textContent = diasTexto;
+//     var celdaHora = fila.insertCell();
+//     celdaHora.textContent = hora;
+//     var celdaGuia = fila.insertCell();
+//     celdaGuia.textContent = guia;
 
-    frm.reset ();
-  }
+//     recogerDatos();
+//   }
 
+//   function recogerDatos() {
+//     // Inicializa un array vacío para almacenar los datos de cada fila
+//     var datos = [];
 
+//     // Itera sobre cada fila de la tabla
+//     $("#tabla tbody tr").each(function() {
+//         console.log("Iterando sobre una fila");
+//         var fila = $(this);
+
+//         // Recoge los datos de la fila
+//         var rangoFecha = fila.children("td:eq(0)").text();
+//         var dias = fila.children("td:eq(1)").text();
+//         var hora = fila.children("td:eq(2)").text();
+//         var guia = fila.children("td:eq(3)").text();
+
+//         // Añade un objeto con los datos de la fila al array
+//         datos.push({
+//             rangoFecha: rangoFecha,
+//             dias: dias,
+//             hora: hora,
+//             guia: guia
+//         });
+//     });
+
+//     // Convierte el array de datos a una cadena JSON
+//     var json = JSON.stringify(datos);
+
+//     // Muestra la cadena JSON en la consola
+//     console.log(json);
+// }
 
 // $(document).ready(function () {
 //     var closeButton = $(".ui-dialog-titlebar-close");
