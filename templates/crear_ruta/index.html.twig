@@ -26,29 +26,31 @@
 <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
 <script src="{{ asset('js/image-uploader.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
-    
-    
- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>    
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://kit.fontawesome.com/91464fdedc.js" crossorigin="anonymous"></script>
+
+
+{# <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> #}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <script src="{{ asset('js/crearRuta.js') }}"></script>
 <script src="{{ asset('js/añadirRuta.js') }}"></script>
 <script src="{{ asset('js/extraerVisitas.js') }}"></script>
 <script src="{{ asset('js/añadirVisita.js') }}"></script>
 <script src="{{ asset('js/añadirProgr.js') }}"></script>
+{# <script src="{{ asset('js/generarTour.js') }}"></script> #}
 {% endblock %}
-
-
-
 
 
 {% block main %}
 <body>
     {# <div id="modal"> #}
         <div id="main">
-            {# <h1 class="titulo">Crear Ruta</h1> #}
+{#####_________________________________________PESTAÑA CREAR/RUTA_____________________________######}
                 <div id="tabs">
                     <ul>
                     <li><a href="#tabs-1">Ruta</a></li>
@@ -74,12 +76,10 @@
                         <label for="aforo">Aforo:</label>
                         <input type="number" min="6" max="20" id="aforo">
                         <br>
-                        <label for="fecha">Fecha inicio: </label>
-                        <input type="text" name="fecha" id="fecha" value="" />        
-                        <label for="fecha">Fecha fin: </label>
-                        <input type="text" name="fechafin" id="fechafin" value="" />
+                        <label for="fechaRuta">Fecha inicio y fin </label> 
+                        <input type="text" id="daterange" name="daterange" value="" />
                     </div>
-{#####_____________________PESTAÑA VISITAS_____________________________######}
+{#####_________________________________________PESTAÑA VISITAS____________________________________________________######}
 
                 <div id="tabs-2">
                   <label for="">Selecciona una localidad</label>
@@ -106,26 +106,17 @@
                       {% endfor %}
                     </ul>
                     <ul id="sortable2" class="droptrue">
-                      {# <li class="ui-state-highlight">Cannot be dropped..</li>
-                      <li class="ui-state-highlight">..on an empty list</li>
-                      <li class="ui-state-highlight">Item 3</li>
-                      <li class="ui-state-highlight">Item 4</li>
-                      <li class="ui-state-highlight">Item 5</li> #}
+                      
                     </ul>
                   </div>
                 </div>
 
-{#---------------------------PESTAÑA PROGRAMACION---------------------------------------------------------------------#}
+{#_____________________________________________PESTAÑA PROGRAMACION__________________________________________________#}
                     <div id="tabs-3">
-
                         <div class="fechaPeriodo">
-                            Periodo:  
-                            <label for="from">Desde</label>
-                            <input type="text" id="from" name="from">
-                            <label for="to">a</label>
-                            <input type="text" id="to" name="to">
+                        <label for="periodo">Periodo</label> 
+                       <input type="text" name="datefilter" value="" />
                           </div>
-                          
                           <div id="diasSemana">
                             <div>
                               <input type="checkbox" id="lunes" name="dia" value="L">
@@ -155,9 +146,7 @@
                               <input type="checkbox" id="domingo" name="dia" value="D">
                               <label for="domingo">Domingo</label>
                             </div>
-                         
                           </div>
-                          
                           <div id="otrasOpcion">
                           <div>
                             <label for="salutation">Hora </label>
@@ -169,19 +158,16 @@
                            <select name="selectGuia" id="selectGuia">
                            <option disabled selected>....</option>
                              {% for guia in guias %}
-                             <option>{{ guia.nombre }}</option>
+                             <option value="{{guia.id}}" >{{ guia.nombre }}</option>
                              {% endfor %}
                             </select> 
                            </form>
                           </div> 
                          </div>
-
                         <br>
                         <div class="btnn">
                          <button class="bttnEstilo" id="guardar">Archivar</button>
-                      
                         </div>                 
-
                           <br>
                           <table id="tabla" border="1">
                             <thead>
@@ -195,22 +181,16 @@
                             <tbody>
                             </tbody>
                           </table>
-                          
-
                     </div>
-
-
                 </div>
-
+{##________________________________________BOTONES CONTROLERS_______________________________________________________##}                
                 <div class="d-grid gap-2">
                     <button class="btn btn-primary" type="button" id="btnRuta" >CREAR RUTA</button>
                     <button class="btn btn-warning" type="button" Id="btnCrearVisitasTour">CREAR VISITAS</button>
-                    <button class="btn btn-warning" type="button" id="btnCrearProgramacion">CREAR TOUR</button>
-                  </div>
-                
+                    <button class="btn btn-warning" type="button" id="btnCrearProgramacion">CREAR PROGRAMACION</button>
+                    <button class="btn btn-danger" type="button" id="btnTour">GENERAR TOUR</button>
+                  </div>         
         </div>
     {# </div> #}
 </body>
-
-
 {% endblock %}

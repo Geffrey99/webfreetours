@@ -27,6 +27,9 @@ class Tour
     #[ORM\OneToMany(mappedBy: 'cod_tour', targetEntity: UserTour::class)]
     private Collection $userTours;
 
+    #[ORM\Column(length: 255)]
+    private ?string $id_guide = null;
+
     public function __construct()
     {
         $this->userTours = new ArrayCollection();
@@ -87,6 +90,18 @@ class Tour
                 $userTour->setCodTour(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdGuide(): ?string
+    {
+        return $this->id_guide;
+    }
+
+    public function setIdGuide(string $id_guide): static
+    {
+        $this->id_guide = $id_guide;
 
         return $this;
     }

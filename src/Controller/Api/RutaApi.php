@@ -4,6 +4,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Ruta;
+use App\Entity\Tour;
 use App\Repository\RutaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -68,7 +69,7 @@ class RutaApi extends AbstractController
         $ruta->setPuntoInicio($data['punto_inicio'] ?? null);
         $ruta->setParticipantes($data['participantes'] ?? null);
         $ruta->setProgramacion($data['programacion'] ?? []);
-        $fecha_inicio = \DateTime::createFromFormat('d/m/Y H:i:s', $data['fecha_inicio']);
+        $fecha_inicio = \DateTime::createFromFormat('Y-m-d', $data['fecha_inicio']);
         if ($fecha_inicio === false) {
               throw new \Exception('La fecha de inicio no es válida: ' . $data['fecha_inicio']);
             }
@@ -76,7 +77,7 @@ class RutaApi extends AbstractController
 
         $ruta->setFechaInicio($fecha_inicio);
         
-        $fecha_fin = \DateTime::createFromFormat('d/m/Y H:i:s', $data['fecha_fin']);
+        $fecha_fin = \DateTime::createFromFormat('Y-m-d', $data['fecha_fin']);
         if ($fecha_fin === false) {
             // La fecha no pudo ser parseada, maneja el error aquí
             throw new \Exception('La fecha de fin no es válida.');
@@ -130,21 +131,44 @@ class RutaApi extends AbstractController
         // Asignar la programación a la entidad Ruta
         $ruta->setProgramacion($programacionData);
     
+        foreach ($data['programacion'] as $programacion) {
+            // Convertir las fechas al formato 'Y-m-d'
+            echo date_default_timezone_get(); 
+            list($fechaInicio, $fechaFin) = explode(' - ', $programacion['rangoFecha']);
+            $fechaInicio = \DateTime::createFromFormat('d/m/Y', $fechaInicio);
+            $fechaFin = \DateTime::createFromFormat('d/m/Y', $fechaFin);
+    
+            // Crear un objeto DateInterval para representar un día
+            $unDia = new \DateInterval('P1D');
+    
+            // Crear un objeto DatePeriod para representar el rango de fechas
+            $rangoFechas = new \DatePeriod($fechaInicio, $unDia, $fechaFin->add($unDia));
+    
+            foreach ($rangoFechas as $fecha) {
+                // Crear una nueva instancia de Tour
+                $tour = new Tour();
+    
+                // Establecer los atributos del tour
+                $tour->setCodRuta($ruta);
+                $fecha_hora = \DateTime::createFromFormat('Y-m-d H:i', $fecha->format('Y-m-d') . ' ' . $programacion['hora'], new \DateTimeZone('Europe/Berlin'));
+                // var_dump($fecha_hora);
+                var_dump($fecha_hora->format('Y-m-d H:i:s'));
+                $tour->setFechaHora($fecha_hora);
+                $tour->setIdGuide($programacion['guia']);
+    
+                // Persistir el tour en la base de datos
+                $this->entityManager->persist($tour);
+            }
+        }
+    
         // Actualizar la entidad Ruta en la base de datos
         $this->entityManager->flush();
     
         // Devolver una respuesta JSON exitosa
-        return new JsonResponse(['message' => 'Programación asignada con éxito'], JsonResponse::HTTP_OK);
+        return new JsonResponse(['message' => 'Programación asignada Y TOUR CREADOS CON EXITO'], JsonResponse::HTTP_OK);
     }
     
-
-
-
-
-
-
-
-
+    
     #[Route("/update/{id}", name: "update", methods: ["PUT"])]
     public function update(Request $request, $id, RutaRepository $rutaRepository): Response
     {

@@ -1,0 +1,15 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block content_title %}Planificacion {% endblock %}
+{% block myjavascripts %}
+
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.min.js'></script>
+    <script src="{{ asset('js/calendar.js') }}"></script>
+  
+{% endblock %}
+
+{% block main %}
+    <div style="max-width: 1000px; margin: auto" id='calendar'></div>
+{% endblock %}

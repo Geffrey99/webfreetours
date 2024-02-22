@@ -1,23 +1,47 @@
 $(document).ready(function() {
+
+    var fechaInicio = moment(localStorage.getItem('fechaInicio'), 'YYYY-MM-DD');
+    var fechaFin = moment(localStorage.getItem('fechaFin'), 'YYYY-MM-DD');
+    
+    //INPUT DE PROGRAMACION
+    $('input[name="datefilter"]').daterangepicker({
+        autoUpdateInput: false,
+        minDate: fechaInicio, // Establecer la fecha mínima permitida
+        maxDate: fechaFin, // Establecer la fecha máxima permitida
+    }).on('apply.daterangepicker', function(ev, picker) {
+        if (picker.startDate.isBefore(fechaInicio) || picker.endDate.isAfter(fechaFin)) {
+            alert('La fecha seleccionada está fuera del rango permitido.');
+        } else {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        }
+    }).on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
+
     // Evento click para el botón de guardar
     $("#guardar").click(function(e) {
         e.preventDefault();
 
-        var from = $("#from").val();
-        var to = $("#to").val();
+        var rangoFechas = $('input[name="datefilter"]').data('daterangepicker');
+        var from = rangoFechas.startDate.format('DD/MM/YYYY');
+        var to = rangoFechas.endDate.format('DD/MM/YYYY');
         var diasSeleccionados = $("#diasSemana input:checked").map(function() {
             return $(this).val();
         }).get();
         var diasTexto = diasSeleccionados.join(", ");
         var hora = $("#time").val();
-        var guia = $("#selectGuia").val();
+        var guiaId = $("#selectGuia").val();
+        var guiaNombre = $("#selectGuia option:selected").text();
+        
 
         // Agregar fila a la tabla
         var fila = $("<tr>").appendTo("#tabla tbody");
+        fila.data("guiaId", guiaId);
         $("<td>").text(from + " - " + to).appendTo(fila);
         $("<td>").text(diasTexto).appendTo(fila);
         $("<td>").text(hora).appendTo(fila);
-        $("<td>").text(guia).appendTo(fila);
+        $("<td>").text(guiaNombre).appendTo(fila);
     });
 
     // Evento click para el botón de recoger datos y enviarlos al servidor
@@ -31,14 +55,15 @@ $(document).ready(function() {
             var rangoFecha = fila.find("td:nth-child(1)").text();
             var dias = fila.find("td:nth-child(2)").text();
             var hora = fila.find("td:nth-child(3)").text();
-            var guia = fila.find("td:nth-child(4)").text();
+            // var guia = fila.find("td:nth-child(4)").text();
+            var guiaId = fila.data("guiaId");
 
             // Añadir un objeto con los datos de la fila al array
             datos.push({
                 rangoFecha: rangoFecha,
                 dias: dias,
                 hora: hora,
-                guia: guia
+                guia: guiaId
             });
         });
         var rutaId = localStorage.getItem('rutaId');

@@ -55,191 +55,150 @@ $(function(){
 
     
 //######_______SELECCIONAR LA FECHA Y HORA (INICIO Y FIN) DEL EVENTO (DATETIMEPICKER)
-$('#fecha').datetimepicker({
-    format: "d/m/Y H:m:s",
-    lang: "es",
-});
-
-$('#fechafin').datetimepicker({
-    format: "d/m/Y H:m:s",
-    lang: "es",
-});
-
-// $( "#salutation" ).selectmenu();
-    
-    
-// $( "ul.droptrue" ).sortable({
-//     connectWith: "ul"
-//   });
-
-//   $( "ul.dropfalse" ).sortable({
-//     connectWith: "ul",
-//     dropOnEmpty: false
-//   });
-
-//   $( "#sortable1, #sortable2, #sortable3" ).disableSelection();
-
-//#######################----PESTAÑA ITEMS
-
-// $( "#salutation" ).selectmenu();
-    
-    
-$( "ul.droptrue" ).sortable({
-    connectWith: "ul"
-  });
-
-  $( "ul.dropfalse" ).sortable({
-    connectWith: "ul",
-    dropOnEmpty: false
-  });
-
-  $( "#sortable1, #sortable2, #sortable3" ).disableSelection();
-
-
-//#####################------VENTANA PROGRAMACION
-
-
-$("#from").datepicker({
-    defaultDate: "+1w",
-    changeMonth: true,
-    numberOfMonths: 1,
-    minDate:1,
-    maxDate:30
-})
-.on( "change", function() {
-    to.datepicker( "option", "minDate", getDate( this ) );
- }),
-$("#to").show();
-$("#to").datepicker({
-    defaultDate: "+1w",
-    changeMonth: true,
-    numberOfMonths: 1,
-    minDate:1,
-    maxDate:30
-})
-.on( "change", function() {
-    from.datepicker( "option", "maxDate", getDate( this ) );
-    });
-    function getDate( element ) {
-        var date;
-      try {
-      date = $.datepicker.parseDate( dateFormat, element.value );
-      } catch( error ) {
-      date = null;
-      }
-       
-      return date;
-      }
 
 
 
-});
+$(function() {
 
-
-
-
-//Transformando el datepicker en español
-$.datepicker.regional['es'] = {
-    closeText: 'Cerrar',
-    prevText: '< Ant',
-    nextText: 'Sig >',
-    currentText: 'Hoy',
-    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-    monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-    weekHeader: 'Sm',
-    dateFormat: 'dd/mm/yy',
-    firstDay: 1,
-    isRTL: false,
-    showMonthAfterYear: false,
-    yearSuffix: ''
+    var localeConfig = {
+        "format": 'DD/MM/YYYY',
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "Desde",
+        "toLabel": "Hasta",
+        "customRangeLabel": "Personalizado",
+        "weekLabel": "S",
+        "daysOfWeek": [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        "monthNames": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        "firstDay": 1
     };
-    $.datepicker.setDefaults($.datepicker.regional['es']);
-   $(function () {
-   $("#fecha").datepicker();
-   });
+
+    var minDate, maxDate;
 
 
 
 
 
 
-
-
-
-
-// //###########----GUARDAR PROGRAMACION EN LA TABLA DE CRUD 
-// function guardarDatos(e) {
-//     // Evitar que el formulario se envíe
-//     e.preventDefault();
-//     // Obtener los elementos del formulario
-//     var from = document.getElementById("from");
-//     var to = document.getElementById("to");
-//     var dias = document.querySelectorAll("#diasSemana input:checked");
-//     var time = document.getElementById("time");
-//     var salutation = document.getElementById("salutation");
-//     // Obtener los valores de los elementos
-//     var rango = from.value + " - " + to.value;
-//     var diasSeleccionados = [];
-//     for (var i = 0; i < dias.length; i++) {
-//       diasSeleccionados.push(dias[i].value);
-//     }
-//     var diasTexto = diasSeleccionados.join(", ");
-//     var hora = time.value;
-//     var guia = selectGuia.value; // Aquí estaba el error
-//     // Obtener la tabla donde se guardarán los datos
-//     var tabla = document.getElementById("tabla");
-//     // Crear una nueva fila en la tabla
-//     var fila = tabla.insertRow();
-//     // Crear las celdas de la fila y asignarles los valores
-//     var celdaRango = fila.insertCell();
-//     celdaRango.textContent = rango;
-//     var celdaDias = fila.insertCell();
-//     celdaDias.textContent = diasTexto;
-//     var celdaHora = fila.insertCell();
-//     celdaHora.textContent = hora;
-//     var celdaGuia = fila.insertCell();
-//     celdaGuia.textContent = guia;
-
-//     recogerDatos();
-//   }
-
-//   function recogerDatos() {
-//     // Inicializa un array vacío para almacenar los datos de cada fila
-//     var datos = [];
-
-//     // Itera sobre cada fila de la tabla
-//     $("#tabla tbody tr").each(function() {
-//         console.log("Iterando sobre una fila");
-//         var fila = $(this);
-
-//         // Recoge los datos de la fila
-//         var rangoFecha = fila.children("td:eq(0)").text();
-//         var dias = fila.children("td:eq(1)").text();
-//         var hora = fila.children("td:eq(2)").text();
-//         var guia = fila.children("td:eq(3)").text();
-
-//         // Añade un objeto con los datos de la fila al array
-//         datos.push({
-//             rangoFecha: rangoFecha,
-//             dias: dias,
-//             hora: hora,
-//             guia: guia
-//         });
-//     });
-
-//     // Convierte el array de datos a una cadena JSON
-//     var json = JSON.stringify(datos);
-
-//     // Muestra la cadena JSON en la consola
-//     console.log(json);
-// }
-
-// $(document).ready(function () {
-//     var closeButton = $(".ui-dialog-titlebar-close");
-//     closeButton.on("click", function () {
-//         window.location.href = "/admin";
-//     });
+//__________fecha de ruta
+// $('input[name="daterange"]').daterangepicker({
+//     autoUpdateInput: false,
+//     minDate: moment().add(1, 'days'), // A partir del día siguiente
+//     locale: localeConfig
+// }).on('apply.daterangepicker', function(ev, picker) {
+//     $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+//     minDate = picker.startDate;
+//     maxDate = picker.endDate;
+// }).on('cancel.daterangepicker', function(ev, picker) {
+//     $(this).val('');
+    
 // });
+
+//_________fecha periodos de ruta 
+
+// $('input[name="datefilter"]').daterangepicker({
+//     autoUpdateInput: false,
+//     // locale: localeConfig
+// }).on('apply.daterangepicker', function(ev, picker) {
+//     if (picker.startDate.isBefore(fechaInicio) || picker.endDate.isAfter(fechaFin)) {
+//         alert('La fecha seleccionada está fuera del rango permitido.');
+//     } else {
+//         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+//     }
+// }).on('cancel.daterangepicker', function(ev, picker) {
+//     $(this).val('');
+// });
+
+
+
+
+    // var dateFormat = "dd/mm/yy";
+
+    // $('#fecha, #fechafin').datepicker({
+    //     dateFormat: dateFormat,
+    //     onClose: function(selectedDate) {
+    //         if (this.id === 'fecha') {
+    //             $('#from').datepicker('option', 'minDate', selectedDate);
+    //         } else if (this.id === 'fechafin') {
+    //             $('#to').datepicker('option', 'maxDate', selectedDate);
+    //         }
+    //     }
+    // });
+
+    // $('#from').datepicker({
+    //     dateFormat: dateFormat,
+    //     onClose: function(selectedDate) {
+    //         var minDate = $('#fecha').datepicker('getDate');
+    //         var maxDate = $('#fechafin').datepicker('getDate');
+    //         if (new Date(selectedDate) < minDate || new Date(selectedDate) > maxDate) {
+    //             alert('La fecha seleccionada está fuera del rango permitido.');
+    //             $(this).datepicker('setDate', minDate);
+    //         }
+    //     }
+    // });
+
+    // $('#to').datepicker({
+    //     dateFormat: dateFormat,
+    //     onClose: function(selectedDate) {
+    //         var minDate = $('#fecha').datepicker('getDate');
+    //         var maxDate = $('#fechafin').datepicker('getDate');
+    //         if (new Date(selectedDate) < minDate || new Date(selectedDate) > maxDate) {
+    //             alert('La fecha seleccionada está fuera del rango permitido.');
+    //             $(this).datepicker('setDate', maxDate);
+    //         }
+    //     }
+    // });
+});
+
+
+
+    // Transformando el datepicker en español
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '< Ant',
+        nextText: 'Sig >',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+});
+
+
+
+
+
+
+

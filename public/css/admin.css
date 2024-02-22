@@ -1,0 +1,32 @@
+
+body{
+    color: rgb(131 12 12);
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+.sidebar {
+    background-color: rgb(131 12 12);
+}
+.main-content{
+    background-color: rgb(255, 255, 255);
+
+}
+
+.content-header{
+    background-color: rgb(255, 255, 255);
+}
+.content-wrapper{
+    background-color: rgb(255, 255, 255);
+
+}
+article.content {
+    background-color: rgb(255, 255, 255);
+
+}
+article.content-header{
+    background-color: rgb(255, 255, 255);
+}
+aside.content-top{
+    background-color: rgb(131 12 12);
+}

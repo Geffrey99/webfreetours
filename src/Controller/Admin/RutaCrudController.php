@@ -18,6 +18,8 @@ use symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EaseCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\JsonField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
 class RutaCrudController extends AbstractCrudController
 {
@@ -37,8 +39,9 @@ class RutaCrudController extends AbstractCrudController
                 ->setUploadDir($this->getParameter('fotos_visitas')), 
         TextEditorField::new('punto_inicio'),
         IntegerField::new('participantes'),
-        
-        TextEditorField::new('programacion'),
+        DateTimeField::new('fecha_inicio'),
+        // JsonField::new('programacion'),
+
         // ... otros campos ...
     ];
 }
@@ -67,7 +70,28 @@ public function configureActions(Actions $actions): Actions
         }); // Agrega la acción personalizada al índice
 }
 
+public function configureCrud(Crud $crud): Crud
+{
+    return $crud
+        // ...
 
+        // the max number of entities to display per page
+        ->setPaginatorPageSize(5)
+        // the number of pages to display on each side of the current page
+        // e.g. if num pages = 35, current page = 7 and you set ->setPaginatorRangeSize(4)
+        // the paginator displays: [Previous]  1 ... 3  4  5  6  [7]  8  9  10  11 ... 35  [Next]
+        // set this number to 0 to display a simple "< Previous | Next >" pager
+        ->setPaginatorRangeSize(4)
+        // ->setAutofocusSearch()
+        ->setPaginatorFetchJoinCollection(true)
+        // ->setSearchFields(['nombre'])
+
+        // // these are advanced options related to Doctrine Pagination
+        // // (see https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/tutorials/pagination.html)
+        // ->setPaginatorUseOutputWalkers(true)
+        // ->setPaginatorFetchJoinCollection(true)
+    ;
+}
 
 // public function createEntityFormBuilder($entityFqcn, $formOptions): FormBuilder
 //     {

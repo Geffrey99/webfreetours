@@ -1,4 +1,22 @@
 $(document).ready(function() {
+
+
+        
+    $( "ul.droptrue" ).sortable({
+    connectWith: "ul"
+  });
+
+    $( "ul.dropfalse" ).sortable({
+    connectWith: "ul",
+    dropOnEmpty: false
+  });
+
+    $( "#sortable1, #sortable2, #sortable3" ).disableSelection();
+
+
+
+
+
     $('#btnCrearVisitasTour').click(function() {
         console.log("dfdfsdfs");
         var visitasIds = $('#sortable2 .visita').map(function() {

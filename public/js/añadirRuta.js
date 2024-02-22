@@ -1,10 +1,27 @@
 $(document).ready(function() {
    
     var rutaId;
+
+    var fechaInicio, fechaFin;
+        $('input[name="daterange"]').daterangepicker({
+            autoUpdateInput: false,
+            minDate: moment().add(1, 'days'), // A partir del día siguiente
+            // locale: localeConfig
+        }).on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+            // Aquí puedes obtener las fechas de inicio y fin
+            fechaInicio = picker.startDate.format('DD/MM/YYYY').split('/').reverse().join('-');
+            fechaFin = picker.endDate.format('DD/MM/YYYY').split('/').reverse().join('-');
+            localStorage.setItem('fechaInicio', fechaInicio);
+            localStorage.setItem('fechaFin', fechaFin);
+        }).on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+        
    
     $('#btnRuta').click(function(e) {
         e.preventDefault();
-    
+    debugger;
         // VAR jsonData= JSON.stringify({
         // Crear un objeto FormData para enviar los datos del formulario
         let formData = new FormData();
@@ -13,8 +30,12 @@ $(document).ready(function() {
         formData.append('foto', $('input[type="file"][id^="images-"]')[0].files[0]);
         formData.append('punto_inicio', '(' + $('#x').val() + ', ' + $('#y').val() + ')');
         formData.append('participantes', $('#aforo').val());
-        formData.append('fecha_inicio', $('#fecha').val());
-        formData.append('fecha_fin', $('#fechafin').val());
+        formData.append('fecha_inicio', fechaInicio);
+        formData.append('fecha_fin', fechaFin);
+        
+        console.log('Fecha de inicio:', fechaInicio);
+console.log('Fecha de fin:', fechaFin);
+console.log('Datos del formulario:', formData);
     
         // Enviar los datos a la API
         $.ajax({
