@@ -1,3 +1,5 @@
+// const { swal } = require("js./sweetalert.min");
+
 $(document).ready(function() {
    
     var rutaId;
@@ -34,26 +36,86 @@ $(document).ready(function() {
         formData.append('fecha_fin', fechaFin);
         
         console.log('Fecha de inicio:', fechaInicio);
-console.log('Fecha de fin:', fechaFin);
-console.log('Datos del formulario:', formData);
+        console.log('Fecha de fin:', fechaFin);
+        console.log('Datos del formulario:', formData);
     
+        // Verificar si los campos requeridos están llenos
+        if (!validarCampos()) {
+            return;
+        }
         // Enviar los datos a la API
         $.ajax({
             url: '/api/ruta/insert',
             type: 'POST',
             data: formData,
-            processData: false,  // Indicar a jQuery que no procese los datos
-            contentType: false,  // Indicar a jQuery que no establezca el tipo de contenido
+            processData: false,  
+            contentType: false,  
             success: function(data) {
                 console.log('Success:', data);
                 var rutaId = data.id;
                 localStorage.setItem('rutaId', data.id);
+                swal({
+                    icon: 'success',
+                    title: '¡Ruta creada!',
+                    text: 'La ruta se ha creado correctamente.',
+                });
             },
             error: function(error) {
                 console.error('Error:', error);
-            }
+                swal({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Hubo un problema al crear la ruta. Inténtalo de nuevo.',
+                });
+            },
         });
     });
+
+
+
+
+    function validarCampos() {
+        // Obtener los valores de los campos
+        const nombre = $('#inputTitulo').val().trim();
+        const descripcion = $('#textarea').val().trim();
+        const foto = $('input[type="file"][id^="images-"]')[0].files[0];
+        const puntoInicioX = $('#x').val().trim();
+        const puntoInicioY = $('#y').val().trim();
+        const participantes = $('#aforo').val().trim();
+        const fechaInicio = obtenerFechaInicio(); // Debes implementar esta función
+        const fechaFin = obtenerFechaFin(); // Debes implementar esta función
+    
+        // Verificar si los campos requeridos están llenos
+        if (nombre === '' || descripcion === '' || !foto || puntoInicioX === '' || puntoInicioY === '' || participantes === '' || !fechaInicio || !fechaFin) {
+            // Mostrar mensaje de error con SweetAlert
+            swal({
+                icon: 'error',
+                title: 'Error',
+                text: 'Por favor, completa todos los campos requeridos.',
+            });
+            return false; // Detener el envío del formulario
+        }
+    
+        // Todos los campos están llenos, continuar con el envío del formulario
+        return true;
+    }
+
+
+    function obtenerFechaInicio() {
+        // Lógica para obtener la fecha de inicio
+        // ...
+        return '2024-00-00'; // Ejemplo
+    }
+    
+    function obtenerFechaFin() {
+        // Lógica para obtener la fecha de fin
+        // ...
+        return '2024-00-00'; // Ejemplo
+    }
+
+
+
+
 
 });
 

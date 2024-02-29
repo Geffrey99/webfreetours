@@ -75,9 +75,19 @@ $(document).ready(function() {
             data: JSON.stringify({  rutaId: rutaId , programacion: datos }),
             success: function(response) {
                 console.log(response); // Hacer algo con la respuesta del servidor si es necesario
+                swal({
+                    icon: 'success',
+                    title: '¡Programacion de ruta!' .rutaId + ' creada correctamente!',
+                    text: 'Tours creados.',
+                });
             },
             error: function(error) {
                 console.error(error);
+                swal({
+                    icon: 'error',
+                    title: '¡Error!',
+                    text: 'Hubo un problema al crear la programacion. Inténtalo de nuevo.',
+                });
             }
         });
     });

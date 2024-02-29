@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+    {{ form_row(form.cod_user) }}
+    {# Muestra el campo de selección de usuario #}
+
+    {# Aquí no necesitas mostrar el campo de selección de tour ya que es fijo #}
+
+    {{ form_row(form.fecha_reserva) }}
+    {# Muestra el campo de fecha de reserva #}
+
+    {{ form_row(form.asistentes) }}
+    {# Muestra el campo de número de asistentes #}
+
+    {{ form_row(form.num_gente_reserva) }} 
+
+    {{ form_row(form.save) }}
+    {# Muestra el botón de enviar #}
+{{ form_end(form) }}

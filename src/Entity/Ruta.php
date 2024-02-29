@@ -214,4 +214,47 @@ class Ruta
 
         return $this;
     }
+
+    // En tu entidad Ruta
+public function __toString(): string
+{
+    // Suponiendo que 'nombre' es la propiedad que quieres mostrar
+    return $this->nombre;
+}
+
+// public function serializeToJson(): string
+// {
+//     $data = [
+//         'id' => $this->id,
+//         'nombre' => $this->nombre,
+//         'descripcion' => $this->descripcion,
+//         'foto' => $this->foto,
+//         'punto_inicio' => $this->punto_inicio,
+//         'participantes' => $this->participantes,
+//         'programacion' => $this->programacion,
+//         'fecha_inicio' => $this->fecha_inicio,
+//         'fecha_fin' => $this->fecha_fin,
+//         // ... (other properties)
+//     ];
+
+//     return json_encode($data);
+// }
+
+// // Deserialize the entity
+// public function unserialize(string $data): void
+// {
+//     $values = unserialize($data);
+//     $this->id = $values['id'];
+//     $this->nombre = $values['nombre'];
+//     $this->descripcion = $values['descripcion'];
+//     $this->foto = $values['foto'];
+//     $this->punto_inicio = $values['punto_inicio'];
+//     $this->participantes = $values['participantes'];
+//     $this->programacion = $values['programacion'];
+//     $this->fecha_inicio = $values['fecha_inicio'];
+//     $this->fecha_fin = $values['fecha_fin'];
+//     // ... (other properties)
+// }
+
+
 }

@@ -6,6 +6,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use App\Entity\Ruta;
+use App\Entity\Tour;
+Use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -20,6 +22,8 @@ use EaseCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\JsonField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 
 class RutaCrudController extends AbstractCrudController
 {
@@ -35,14 +39,22 @@ class RutaCrudController extends AbstractCrudController
         TextField::new('nombre'),
         TextEditorField::new('descripcion'),
         ImageField::new('foto')
-                ->setBasePath($this->getParameter('fotos_visitas')) // Asegúrate de que esta ruta sea accesible públicamente
-                ->setUploadDir($this->getParameter('fotos_visitas')), 
+                ->setBasePath('public/img/visitas/') // Asegúrate de que esta ruta sea accesible públicamente
+                ->setUploadDir('public/public/img/visitas/'), 
         TextEditorField::new('punto_inicio'),
         IntegerField::new('participantes'),
         DateTimeField::new('fecha_inicio'),
-        // JsonField::new('programacion'),
-
-        // ... otros campos ...
+        CollectionField::new('rutaVisitas')
+            ->setLabel('Visitas')
+            ->onlyOnDetail() // Esto mostrará las visitas solo en la página de detalles
+            // ->formatValue(function ($value) {
+            //     $value = $value->toArray();
+            //     return array_map(function ($rutaVisita) {
+            //         // Aquí puedes personalizar qué datos de las rutaVisitas quieres mostrar
+            //         // Por ejemplo, si rutaVisita tiene una propiedad 'nombre', podrías hacer:
+            //         return $rutaVisita->getId();
+            //     }, $value);
+            // }),
     ];
 }
 

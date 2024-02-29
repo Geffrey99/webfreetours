@@ -4,6 +4,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Tour;
+use App\Entity\Ruta;
 use App\Repository\RutaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,9 +39,37 @@ class TourApi extends AbstractController
         $toursArray = [];
         foreach ($tours as $tour) {
             $toursArray[] = [
-                'id' => $tour->getId(),
+                // 'id' => $tour->getId(),
                 'title' => $tour->getCodRuta()->getNombre() . ' - ' . $tour->getFechaHora()->format('H:i'),
-                'hora' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
+               // 'hora' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
+               'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
+                // Agrega aquí otros campos según sea necesario
+            ];
+        }
+    
+        // Devuelve los datos en formato JSON
+        return new JsonResponse($toursArray);
+    }
+
+    #[Route('/gettour/{id}', name: 'api_tour')]
+    public function getToursByRuta($id): Response
+    {
+        // Obtén la ruta desde tu repositorio
+        $ruta = $this->entityManager->getRepository(Ruta::class)->find($id);
+    
+        if (!$ruta) {
+            throw $this->createNotFoundException('No se encontró la ruta con id '.$id);
+        }
+    
+        // Obtén los tours relacionados con la ruta
+        $tours = $ruta->getTours(); // Asume que tienes un método getTours en tu entidad Ruta
+    
+        // Convierte los tours a un formato que puedas utilizar
+        $toursArray = [];
+        foreach ($tours as $tour) {
+            $toursArray[] = [
+                 'id' => $tour->getId(),
+                'title' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
                 'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
                 // Agrega aquí otros campos según sea necesario
             ];
@@ -49,4 +78,8 @@ class TourApi extends AbstractController
         // Devuelve los datos en formato JSON
         return new JsonResponse($toursArray);
     }
+    
+
+    // Devuelve los datos en formato JSON
+
 }    

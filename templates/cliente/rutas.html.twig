@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cliente{% endblock %}
+
+{% block body %}
+
+{#......................................CABEZERA.....................................................................#}
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+<div class="hstack gap-3">
+    <!-- Logo y título -->
+    <div class="p-2">
+        <a class="nav-link" href="{{ path('app_cliente') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+        </a>
+        
+    </div>
+    <div class="p-2">
+        <h2 class="link-dangerous">FREE TOURS POR ESPAÑA</h2>
+    </div>
+
+    <!-- Opciones -->
+    <div class="p-2">
+        <a class="nav-link link-success">Rutas</a>
+    </div>
+    <div class="p-2">
+        <a class="nav-link" id="reservas-link"  href="{{ path('app_cliente_ver_reservas') }}">Ver Reservas</a>
+    </div>
+    <div class="p-2">
+        <a class="nav-link" id="otraOpcion-link" href="#">Otra opcion</a>
+    </div>
+
+    <!-- Botón de cerrar sesión -->
+  <div class="p-2 dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ app.user.email }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#">Ajustes</a></li>
+        <li><a class="dropdown-item" href="#">Correo</a></li>
+        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
+    </ul>
+</div>
+</div>
+  {% endif %}
+
+
+<div class="container">
+    <div class="row">
+        {% for ruta in rutas.rutas %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ asset('public/img/visitas/' ~ ruta.foto) }}" class="card-img-top" alt="{{ ruta.nombre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ruta.nombre }} {{ruta.id}} </h5>
+                        <p class="card-text">{{ ruta.descripcion|raw }}</p>
+                      <a href="#" data-id="{{ ruta.id }}" class="btn btn-primary reservar-tour">Reservar Tour</a>
+
+                    </div>
+                </div>
+            </div>
+            {% if loop.index is divisible by(3) %}
+                </div><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="modal fade" id="tourModal" tabindex="-1" aria-labelledby="tourModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tourModalLabel">Detalles del Tour</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="tourModalBody">
+        <!-- Los detalles del tour se llenarán aquí -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <a href="#" id="reservarButton" class="btn btn-primary">Reservar</a>
+      </div>
+    </div>
+  </div>
+</div>
+{# <div class="container">
+    <div class="row">
+        {% for ruta in rutas %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ruta['nombre'] }}</h5>
+                        <p class="card-text">{{ ruta['descripcion'] }}</p>
+                        <a href="#" class="btn btn-primary">Ver programación</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div> #}
+
+
+{% endblock %}

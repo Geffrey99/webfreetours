@@ -12,12 +12,25 @@ app_logout:
 admin_dashboard:
     path: /admin
     controller: App\Controller\AdminController::index
+app_crear_ruta:
+    path: /crear/ruta
+    controller: App\Controller\CrearRutaController::index
 guide_dashboard:
     path: /guide
     controller: App\Controller\GuideController::index
 cliente_dashboard:
     path: /cliente
     controller: App\Controller\ClienteController::index
-app_crear_ruta:
-    path: /crear/ruta
-    controller: App\Controller\CrearRutaController::index
+app_cliente_ver_rutas:
+    path: /cliente/verRutas
+    controller: App\Controller\ClienteController::verRutas
+reservar_tour:
+    path: /reservar/{tourId}
+    controller: 'App\Controller\ClienteController::reservar'
+    methods: GET|POST
+
+app_cliente_ver_reservas:
+    path: /cliente/verReservas
+    controller: App\Controller\ClienteController::verReservas
+
+

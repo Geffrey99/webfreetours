@@ -15,7 +15,7 @@ $(document).ready(function() {
                     var events = data.map(function(event) {
                         return {
                             title: event.title,
-                            hora: event.hora,
+                            // hora: event.hora,
                             start: event.start,
                             // Agrega aquí otros campos según sea necesario
                         };
@@ -33,15 +33,8 @@ $(document).ready(function() {
                 html: `
                 <div style="overflow: hidden; font-size: 12px; position: relative; cursor: pointer; font-family: 'Inter', sans-serif;">
                     <div><strong>${info.event.title}</strong></div>
-                    <div>Hora: ${info.event.hora}</div>
-                    <div>Fecha: ${info.event.start.toLocaleDateString(
-                        "es-ES",
-                        {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                        }
-                    )}</div>
+                    
+                   
                 </div>
                 `
             };

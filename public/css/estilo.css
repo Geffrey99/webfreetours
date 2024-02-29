@@ -152,3 +152,30 @@ input[type=checkbox] {
   color: #EDD8D8;
   background-color: transparent;
 }
+
+.primerLinea {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  color: black;
+  font-family: 'Font Awesome 5 Free';
+}
+
+.subt{
+  color: black;
+  font-family: 'Font Awesome 5 Free';
+}
+
+#btnMapa {
+  background-color: #dfdf52;
+  width: 150px;
+  border-style: dotted;
+  border-color: red;
+  font-family: unset;
+}
+
+#btnMapa:hover {
+  background-color: #e9e933;
+  color: red;
+  border-color: red;
+}

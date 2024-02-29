@@ -30,3 +30,15 @@ article.content-header{
 aside.content-top{
     background-color: rgb(131 12 12);
 }
+#main-menu .menu .menu-item-contents {
+    color: #ffffff;
+}
+.user-menu-wrapper a.user-details {
+    color: #ffffff;
+}
+.main-header #header-logo a {
+    color: #ffcd00;
+}
+#main-menu .menu .menu-header {
+    color: #a4bd03;
+}

@@ -41,8 +41,11 @@
 <script src="{{ asset('js/añadirRuta.js') }}"></script>
 <script src="{{ asset('js/extraerVisitas.js') }}"></script>
 <script src="{{ asset('js/añadirVisita.js') }}"></script>
+
 <script src="{{ asset('js/añadirProgr.js') }}"></script>
 {# <script src="{{ asset('js/generarTour.js') }}"></script> #}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 {% endblock %}
 
 
@@ -58,26 +61,48 @@
                     <li><a href="#tabs-3">Programación</a> </li>
                     </ul>
                     <div id="tabs-1">
+                    <div class="primerLinea">
+                      <div>
                         <label for="titulo">Titulo:</label>
-                        <input type="text" name="titulo" id="inputTitulo"><br>
-                        <label for="descripcion">Descripción:</label>
+                        <input type="text" name="titulo" id="inputTitulo" required>
+                      </div>
+                      <div>
+                        <label for="fechaRuta">Fecha inicio y fin </label> 
+                        <input type="text" id="daterange" name="daterange" required value="" /> 
+                        </div>
+                        <div>
+                        <label for="aforo" required >Aforo:</label>
+                        <input type="number" min="6" max="20" id="aforo"> 
+                        </div>
+                        </div>
+                         <br>
+                      
+                        <div class="primerLinea">
+                        <div>
+                          <label for="puntoEncuentro" class="subt">Punto de encuentro:</label>
+                        <button id="btnMapa">Mapa</button>
+                        </div>
+                        <div>
+                        <label for="x" required>EjeX:</label>
+                        <input type="number" name="x" id="x">
+                        </div>
+                        <div>
+                        <label for="y" required>EjeY:</label>
+                        <input type="number" name="y" id="y">
+                      </div>
+                      </div>
+                      <br>
+                        <div id="modal"></div>
+                        <label for="descripcion" class="subt">Descripción:</label>
                         <textarea name="descripcion" id="textarea" cols="1" rows="1"></textarea>
-                        <label for="subirImagen">Subir Imagen:</label>
+                        <label for="subirImagen" class="subt">Subir Imagen:</label>
                           <form action="url" enctype="multipart/form-data" id="foto">
                         <div id="input-images" class"input-images"></div>
                         </form>
-                        <label for="puntoEncuentro">Punto de encuentro:</label><br>
-                        <label for="x">Punto X:</label>
-                        <input type="number" name="x" id="x">
-                        <label for="y">Punto Y:</label>
-                        <input type="number" name="y" id="y">
-                        <button id="btnMapa">Mapa</button><br>
-                        <div id="modal"></div>
-                        <label for="aforo">Aforo:</label>
-                        <input type="number" min="6" max="20" id="aforo">
+                      
+                        
                         <br>
-                        <label for="fechaRuta">Fecha inicio y fin </label> 
-                        <input type="text" id="daterange" name="daterange" value="" />
+                           <button class="btn btn-primary" type="button" id="btnRuta" >CREAR RUTA</button>
                     </div>
 {#####_________________________________________PESTAÑA VISITAS____________________________________________________######}
 
@@ -109,6 +134,8 @@
                       
                     </ul>
                   </div>
+                  <br>
+                    <button class="btn btn-primary" type="button" Id="btnCrearVisitasTour">CREAR VISITAS</button>
                 </div>
 
 {#_____________________________________________PESTAÑA PROGRAMACION__________________________________________________#}
@@ -181,16 +208,27 @@
                             <tbody>
                             </tbody>
                           </table>
+                          <br>
+                     <button class="btn btn-danger" type="button" id="btnCrearProgramacion">CREAR PROGRAMACION Y GENERAR TOUR</button>
                     </div>
+                      
                 </div>
+
 {##________________________________________BOTONES CONTROLERS_______________________________________________________##}                
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" id="btnRuta" >CREAR RUTA</button>
-                    <button class="btn btn-warning" type="button" Id="btnCrearVisitasTour">CREAR VISITAS</button>
-                    <button class="btn btn-warning" type="button" id="btnCrearProgramacion">CREAR PROGRAMACION</button>
-                    <button class="btn btn-danger" type="button" id="btnTour">GENERAR TOUR</button>
+                
+                
+                   
+                    {# <button class="btn btn-danger" type="button" id="btnTour">GENERAR TOUR</button> #}
                   </div>         
         </div>
+        
+{# <div id="errorModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="errorMessage"></p>
+    </div>
+</div> #}
     {# </div> #}
 </body>
 {% endblock %}

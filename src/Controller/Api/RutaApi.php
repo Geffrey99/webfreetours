@@ -26,6 +26,7 @@ class RutaApi extends AbstractController
     {
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
+
     }
 
 
@@ -34,6 +35,7 @@ class RutaApi extends AbstractController
     public function findAll(RutaRepository $rutaRepository): Response
     {
         $rutas = $rutaRepository->findAll();
+    
         $data = $this->serializer->serialize($rutas, 'json');
         return new Response($data, Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
@@ -84,20 +86,8 @@ class RutaApi extends AbstractController
         }
         $ruta->setFechaFin($fecha_fin);
         
-        
-        
-        // $ruta->setFechaFin($data['fecha_fin'] ?? null);
-        // $ruta->setPuntoInicio($data['punto_inicio'] ?? null);
-
         $this->entityManager->persist($ruta);
         $this->entityManager->flush();
-
-
-    //     //  Ahora, asignar la programación a la entidad Ruta
-    //   $ruta->setProgramacion($data['programacion'] ?? []);
-
-    //      // Actualizar la entidad Ruta en la base de datos
-    //   $this->entityManager->flush();
 
         // Devuelve una respuesta JSON con el ID de la nueva entidad creada y el código de estado HTTP 201 (Created)
         return new JsonResponse(['id' => $ruta->getId()], JsonResponse::HTTP_CREATED);
