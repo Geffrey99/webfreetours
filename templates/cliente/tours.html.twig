@@ -1,17 +1,82 @@
-{{ form_start(form) }}
-    {{ form_row(form.cod_user) }}
-    {# Muestra el campo de selección de usuario #}
+{% extends 'base.html.twig' %}
 
-    {# Aquí no necesitas mostrar el campo de selección de tour ya que es fijo #}
+{% block title %}Cliente{% endblock %}
 
-    {{ form_row(form.fecha_reserva) }}
-    {# Muestra el campo de fecha de reserva #}
+{% block javascripts %}
+    {{ parent() }}
+     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    {{ form_row(form.asistentes) }}
-    {# Muestra el campo de número de asistentes #}
+ <script src="{{ asset('js/muestraMapa.js') }}"></script>
 
-    {{ form_row(form.num_gente_reserva) }} 
+{% endblock %}
 
-    {{ form_row(form.save) }}
-    {# Muestra el botón de enviar #}
-{{ form_end(form) }}
+{% block stylesheets %}
+    {{ parent() }}
+     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Datos del tour a la derecha -->
+        <div class="col-md-6">
+            <h2>Datos del Tour a reservar</h2>
+             <img src="{{ asset('public/img/visitas/' ~ ruta.foto) }}" class="card-img-top" alt="{{ ruta.nombre }}">
+            <p>ID del Tour: {{ tour.getId() }}</p>
+            <p>Nombre de la Ruta: {{ tour.getCodRuta().getNombre() }}</p>
+            <p>ID del Guía: {{ tour.getIdGuide() }}</p>
+            <p>Fecha y Hora: {{ tour.getFechaHora()|date('Y-m-d H:i:s') }}</p>
+            <p>Nombre de la Ruta: {{ ruta.getNombre() }}</p>
+            <p>Descripción de la Ruta: {{ ruta.getDescripcion() }}</p>
+            <p>Participantes: {{ ruta.getparticipantes() }}</p>
+      
+<p>Coordenadas del Punto de Inicio: {{ ruta.getPuntoInicio() }}</p>
+<div id="map" style="height: 400px;" data-punto-inicio="{{ ruta.getPuntoInicio()|json_encode }}"></div>
+{# <script>
+    // Obtén las coordenadas del punto de inicio desde PHP
+    var puntoInicio = "{{ ruta.getPuntoInicio() }}";
+
+    // Elimina los paréntesis y divide las coordenadas en latitud y longitud
+    var coordenadas = puntoInicio.replace(/[()]/g, '').split(',');
+
+    // Ahora, coordenadas[0] es la latitud y coordenadas[1] es la longitud
+    var latitud = parseFloat(coordenadas[0]);
+    var longitud = parseFloat(coordenadas[1]);
+
+    // Asegúrate de que las coordenadas son válidas antes de crear el mapa
+    if (!isNaN(latitud) && !isNaN(longitud)) {
+        // Crea un mapa Leaflet centrado en las coordenadas del punto de inicio
+        var map = L.map('map').setView([latitud, longitud], 13);
+
+        // Crea un objeto LatLng con las coordenadas
+        var puntoInicioLatLng = L.latLng(latitud, longitud);
+
+        // Agrega un marcador al mapa en las coordenadas del punto de inicio
+        L.marker(puntoInicioLatLng).addTo(map);
+
+        // Agrega un mapa base (puedes cambiarlo según tus necesidades)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    } else {
+        console.error('Coordenadas no válidas:', puntoInicio);
+    }
+</script> #}
+           
+        </div>
+
+        <!-- Formulario a la izquierda -->
+        <div class="col-md-6">
+            <h2>Formulario de Reserva</h2>
+            {{ form_start(form) }}
+                {{ form_row(form.fecha_reserva, {'label': 'Fecha de Reserva'}) }}
+                {{ form_row(form.asistentes, {'label': 'Número de Asistentes'}) }}
+                {{ form_row(form.num_gente_reserva, {'label': 'Número de Gente en la Reserva'}) }}
+                {{ form_row(form.save, {'label': 'Reservar'}) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

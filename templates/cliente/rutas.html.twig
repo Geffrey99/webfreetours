@@ -2,6 +2,11 @@
 
 {% block title %}Cliente{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/controlCliente.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
 {#......................................CABEZERA.....................................................................#}
@@ -21,11 +26,11 @@
     </div>
 
     <!-- Opciones -->
-    <div class="p-2">
+    <div class="p-2 d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">
         <a class="nav-link link-success">Rutas</a>
     </div>
     <div class="p-2">
-        <a class="nav-link" id="reservas-link"  href="{{ path('app_cliente_ver_reservas') }}">Ver Reservas</a>
+        <a class="nav-link" id="reservas-link"  href="{{ path('app_cliente_ver_reservas') }}">Reservas</a>
     </div>
     <div class="p-2">
         <a class="nav-link" id="otraOpcion-link" href="#">Otra opcion</a>
@@ -45,7 +50,10 @@
 </div>
   {% endif %}
 
+{#......................................................................................................#}
 
+
+{#............................................RUTAS..........................................................#}
 <div class="container">
     <div class="row">
         {% for ruta in rutas.rutas %}
@@ -55,7 +63,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ ruta.nombre }} {{ruta.id}} </h5>
                         <p class="card-text">{{ ruta.descripcion|raw }}</p>
-                      <a href="#" data-id="{{ ruta.id }}" class="btn btn-primary reservar-tour">Reservar Tour</a>
+                      <a  data-id="{{ ruta.id }}" data-user-id="{{ app.user.id }}" class="btn btn-primary reservar-tour">Reservar Tour</a>
 
                     </div>
                 </div>
@@ -66,6 +74,10 @@
         {% endfor %}
     </div>
 </div>
+
+{#..........................................................................................................#}
+
+{#............................................MODAL..........................................................#}
 
 <div class="modal fade" id="tourModal" tabindex="-1" aria-labelledby="tourModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -83,22 +95,6 @@
       </div>
     </div>
   </div>
-</div>
-{# <div class="container">
-    <div class="row">
-        {% for ruta in rutas %}
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ ruta['nombre'] }}</h5>
-                        <p class="card-text">{{ ruta['descripcion'] }}</p>
-                        <a href="#" class="btn btn-primary">Ver programación</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div> #}
-
+</div> 
 
 {% endblock %}

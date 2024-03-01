@@ -6,9 +6,76 @@
 
 {########....CABEZERA...###########}
 
-{% include 'cliente/nav.html.twig' %}
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+<div class="hstack gap-3">
+    <!-- Logo y título -->
+    <div class="p-2">
+        <a class="nav-link" href="{{ path('app_cliente') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+        </a>
+        
+    </div>
+    <div class="p-2">
+        <h2 class="link-dangerous">FREE TOURS POR ESPAÑA</h2>
+    </div>
+
+    <!-- Opciones -->
+    <div class="p-2">
+        <a class="nav-link" href="{{ path('app_cliente_ver_rutas') }}">Rutas</a>
+    </div>
+    <div class="p-2 d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">
+        <a class="nav-link link-success">Reservas</a>
+    </div>
+    <div class="p-2">
+        <a class="nav-link" id="otraOpcion-link" href="#">Otra opcion</a>
+    </div>
+
+    <!-- Botón de cerrar sesión -->
+  <div class="p-2 dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ app.user.email }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#">Ajustes</a></li>
+        <li><a class="dropdown-item" href="#">Correo</a></li>
+        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
+    </ul>
+</div>
+</div>
+  {% endif %}
 {######################################}
 
-<h1> MIS RESERVAS </H1> 
+    <div class="container mt-5">
+        <h1 class="mb-4">Mis Reservas</h1>
 
+        {% if reservasUsuario is not empty %}
+            <ul class="list-group">
+                {% for reserva in reservasUsuario %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">Fecha de Reserva: {{ reserva.getFechaReserva()|date('Y-m-d H:i:s') }}</h5>
+                                <p class="mb-0">Asistentes: {{ reserva.getAsistentes() }}</p>
+                            </div>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
+                                Detalles del Tour
+                            </button>
+                        </div>
+
+                        <!-- Detalles del Tour colapsable -->
+                        <div class="collapse mt-3" id="tourDetails{{ reserva.getId() }}">
+                            <ul class="list-unstyled">
+                                <li><strong>Nombre del Tour:</strong> {{ reserva.getCodTour().getCodRuta().getNombre() }}</li>
+                                <li><strong>Otra propiedad del Tour:</strong> {{ reserva.getCodTour().getIdGuide() }}</li>
+                                <!-- Agrega más propiedades según sea necesario -->
+                            </ul>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="mt-4">No tienes reservas actualmente.</p>
+        {% endif %}
+    </div>
 {% endblock %}

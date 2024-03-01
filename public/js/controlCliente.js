@@ -1,10 +1,10 @@
-$(document).ready(function() {
 
+    $(document).ready(function () {
     $('.reservar-tour').click(function(e) {
         e.preventDefault();
 
         var id = $(this).data('id');
-
+        var userId = $(this).data('user-id');
         $.ajax({
             url: '/api/ruta/gettour/' + id,
             type: 'GET',
@@ -12,8 +12,7 @@ $(document).ready(function() {
                 $('#tourModalBody').empty();
                 $.each(data, function(i, tour) {
                     $('#tourModalBody').append('<p>Tour ' + tour.title + ' a las ' + tour.start + '</p>');
-                    $('#tourModalBody').append('<a href="/reservar/' + tour.id + '" class="btn btn-primary">Reservar este tour</a>');
-
+                    $('#tourModalBody').append('<a href="/reservar/' + tour.id + '?userId=' + userId + '" class="btn btn-primary">Reservar este tour</a>');
                 });
 
                 // Muestra el modal

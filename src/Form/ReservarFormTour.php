@@ -15,20 +15,20 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class ReservarFormTour extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('cod_user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'nombre',
-            ])
-            ->add('cod_tour', EntityType::class, [
-                'class' => Tour::class,
-                'choice_label' => 'id',
-            ])
+            // ->add('cod_user', HiddenType::class, [
+            //     'data' => $options['cod_user']
+ 
+            // ])
+            // ->add('cod_tour', EntityType::class, [
+            //     'class' => Tour::class,  
+            //     'choice_label' => 'id',
+            // ])
             ->add('fecha_reserva', DateTimeType::class)
             ->add('asistentes', IntegerType::class) // Agregar el campo "asistentes"
-            ->add('num_gente_reserva', IntegerType::class) // Agregar el nuevo campo
+            ->add('num_gente_reserva', IntegerType::class) // Agregar el nuevo campo  
             ->add('save', SubmitType::class, ['label' => 'Reservar Tour'])
         ;
     }

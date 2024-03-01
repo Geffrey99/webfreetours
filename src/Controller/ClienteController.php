@@ -7,6 +7,8 @@ USE App\Entity\Ruta;
 use App\Entity\Tour;
 use App\Entity\User;
 use App\Entity\UserTour;
+use App\Repository\UserTourRepository;
+use Symfony\Component\Security\Core\Security;
 use App\Form\ReservarFormTour;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +16,7 @@ USE App\Controller\Api\DevueltaRoute;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ClienteController extends AbstractController
 {
@@ -66,7 +68,7 @@ class ClienteController extends AbstractController
     }
 
   #[Route('/reservar/{tourId}', name: 'reservar_tour')]
-    public function reservar(Request $request, $tourId): Response 
+    public function reservar(Request $request, $tourId, UserInterface $user): Response 
     {
         // Obtener el tour según el ID proporcionado
         $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
@@ -77,6 +79,7 @@ class ClienteController extends AbstractController
 
         // Crear un nuevo objeto UserTour
         $userTour = new UserTour();
+        $userTour->setCodUser($user);
 
         // Crear el formulario utilizando el formulario ReservarFormTour y pasando el objeto UserTour
         $form = $this->createForm(ReservarFormTour::class, $userTour);
@@ -97,6 +100,7 @@ class ClienteController extends AbstractController
         return $this->render('cliente/tours.html.twig', [
             'form' => $form->createView(),
             'tour' => $tour, // Pasar el objeto tour a la plantilla
+            'ruta' => $tour->getCodRuta(), // Pasar el objeto ruta a la plantilla
         ]);
     }
 
@@ -104,11 +108,25 @@ class ClienteController extends AbstractController
 
 
 
-    #[Route('/misReservas', name: 'verReservas')]
-    public function verReservas(): Response
-    {
-        return $this->render('cliente/reservas.html.twig', [
-            // 'controller_name' => 'ClienteController',
-        ]);
-    }
+  #[Route('/misReservas', name: 'verReservas')]
+  public function verReservas(UserTourRepository $userTourRepository, UserInterface $user): Response
+  {
+      // Obtener el ID del usuario autenticado
+      $userId = $user->getId();
+  
+      // Verificar si el usuario está autenticado
+      if ($userId) {
+          // Obtener las reservas del usuario
+          $reservasUsuario = $userTourRepository->findBy(['cod_user' => $userId]);
+  
+          // Renderizar la vista con las reservas del usuario
+          return $this->render('cliente/reservas.html.twig', [
+              'reservasUsuario' => $reservasUsuario,
+          ]);
+      }
+  
+      // Manejar el caso en el que el usuario no está autenticado
+  
+      return $this->redirectToRoute('nombre_de_la_ruta_para_redirigir_si_no_esta_autenticado');
+  }
 }
