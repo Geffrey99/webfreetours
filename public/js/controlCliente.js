@@ -1,29 +1,52 @@
 
+$(document).ready(function () {
     $(document).ready(function () {
-    $('.reservar-tour').click(function(e) {
-        e.preventDefault();
-
-        var id = $(this).data('id');
-        var userId = $(this).data('user-id');
-        $.ajax({
-            url: '/api/ruta/gettour/' + id,
-            type: 'GET',
-            success: function(data) {
-                $('#tourModalBody').empty();
-                $.each(data, function(i, tour) {
-                    $('#tourModalBody').append('<p>Tour ' + tour.title + ' a las ' + tour.start + '</p>');
-                    $('#tourModalBody').append('<a href="/reservar/' + tour.id + '?userId=' + userId + '" class="btn btn-primary">Reservar este tour</a>');
-                });
-
-                // Muestra el modal
-                $('#tourModal').modal('show');
-            },
-            error: function(error) {
-                console.error(error);
-            }
+        $('.reservar-tour').click(function (e) {
+            e.preventDefault();
+    
+            var id = $(this).data('id');
+            var userId = $(this).data('user-id');
+            $.ajax({
+                url: '/api/ruta/gettour/' + id,
+                type: 'GET',
+                success: function (data) {
+                    // Realiza la acción deseada con los datos
+                    $.each(data, function (i, tour) {
+                        // Ejemplo: Redireccionar a la página de reserva
+                        window.location.href = '/reservar/' + tour.id + '?userId=' + userId;
+                    });
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
         });
     });
-});
+});    
+//     $('.reservar-tour').click(function(e) {
+//         e.preventDefault();
+
+//         var id = $(this).data('id');
+//         var userId = $(this).data('user-id');
+//         $.ajax({
+//             url: '/api/ruta/gettour/' + id,
+//             type: 'GET',
+//             success: function(data) {
+//                 $('#tourModalBody').empty();
+//                 $.each(data, function(i, tour) {
+//                     $('#tourModalBody').append('<p>Tour ' + tour.title + ' a las ' + tour.start + '</p>');
+//                     $('#tourModalBody').append('<a href="/reservar/' + tour.id + '?userId=' + userId + '" class="btn btn-primary">Reservar este tour</a>');
+//                 });
+
+//                 // Muestra el modal
+//                 $('#tourModal').modal('show');
+//             },
+//             error: function(error) {
+//                 console.error(error);
+//             }
+//         });
+//     });
+// });
     // $('#ruta-link').on('click', function(event) {
     //     event.preventDefault();
     //     $('#rutas-containeer').show();

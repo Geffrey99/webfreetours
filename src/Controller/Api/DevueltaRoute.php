@@ -34,6 +34,8 @@ class DevueltaRoute extends AbstractController
             // Convertir la colección de tours en un array
             $tours = $ruta->getTours()->toArray();
             $rutaVisitas = $ruta->getRutaVisitas()->toArray();
+         
+
             $serializedRutas[] = [
                 'id' => $ruta->getId(),
                 'nombre' => $ruta->getNombre(),
@@ -44,6 +46,7 @@ class DevueltaRoute extends AbstractController
                 'programacion' => $ruta->getProgramacion(),
                 'fecha_inicio' => $ruta->getFechaInicio()->format('Y-m-d H:i:s'),
                 'fecha_fin' => $ruta->getFechaFin()->format('Y-m-d H:i:s'),
+                
                 'tours' => $this->serializeTours($tours), // Pasar el array de tours
                 'rutaVisitas' => $this->serializeRutaVisitas($rutaVisitas),
             ];
@@ -73,5 +76,21 @@ class DevueltaRoute extends AbstractController
             ];
         }
         return $serializedRutaVisitas;
+    }
+
+    private function serializeLocalidad(Localidad $localidad): array {
+        return [
+            'id' => $localidad->getId(),
+            'nombre' => $localidad->getNombre(),
+            // Agrega más propiedades si es necesario
+        ];
+    }
+    
+    private function serializeProvincia(Provincia $provincia): array {
+        return [
+            'id' => $provincia->getId(),
+            'nombre' => $provincia->getNombre(),
+            // Agrega más propiedades si es necesario
+        ];
     }
 }

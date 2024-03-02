@@ -25,10 +25,9 @@ app_cliente_ver_rutas:
     path: /cliente/verRutas
     controller: App\Controller\ClienteController::verRutas
 reservar_tour:
-    path: /reservar/{tourId}
+    path: /cliente/reservar/{tourId}
     controller: 'App\Controller\ClienteController::reservar'
     methods: GET|POST
-
 app_cliente_ver_reservas:
     path: /cliente/verReservas
     controller: App\Controller\ClienteController::verReservas

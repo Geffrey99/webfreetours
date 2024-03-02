@@ -17,20 +17,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
+USE Symfony\Component\HttpFoundation\JsonResponse;
 
 class ClienteController extends AbstractController
 {
 
+    private DevueltaRoute $devueltaRoute;
     private SerializerInterface $serializer;
     private EntityManagerInterface $entityManager;
-
-    public function __construct(SerializerInterface $serializer, EntityManagerInterface $entityManager)
+    public function __construct(DevueltaRoute $devueltaRoute, SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
+        $this->devueltaRoute = $devueltaRoute;
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
     }
-
-
+    
 
     #[Route('/cliente', name: 'app_cliente')]
     public function index(): Response
@@ -43,13 +44,28 @@ class ClienteController extends AbstractController
     #[Route('/verRutas', name: 'verRutas')]
     public function verRutas(): Response
     {
-        $response = $this->forward(DevueltaRoute::class.'::uploadCreateRoute');
+        // Llamar directamente al método y obtener la respuesta
+        $response = $this->devueltaRoute->uploadCreateRoute(new Request(), $this->entityManager);
+
+        // Decodificar el contenido JSON
         $rutas = json_decode($response->getContent(), true);
-    // var_dump($rutas);
+
         return $this->render('cliente/rutas.html.twig', [
             'rutas' => $rutas,
         ]);
     }
+
+
+    // #[Route('/verRutas', name: 'verRutas')]
+    // public function verRutas(): Response
+    // {
+    //     $response = $this->forward(DevueltaRoute::class.'::uploadCreateRoute');
+    //     $rutas = json_decode($response->getContent(), true);
+    // // var_dump($rutas);
+    //     return $this->render('cliente/rutas.html.twig', [
+    //         'rutas' => $rutas,
+    //     ]);
+    // }
 
     #[Route('/ruta/{id}/tours', name: 'ruta_tours')]
     public function showTours($id): Response
@@ -77,13 +93,19 @@ class ClienteController extends AbstractController
             throw $this->createNotFoundException('Tour no encontrado');
         }
 
+        $visitas = [];
+        foreach ($tour->getCodRuta()->getRutaVisitas() as $rutaVisita) {
+            $visitas[] = $rutaVisita->getCodVisita();
+        }
+      
+
         // Crear un nuevo objeto UserTour
         $userTour = new UserTour();
         $userTour->setCodUser($user);
-
+        $userTour->setFechaReserva(new \DateTime());
         // Crear el formulario utilizando el formulario ReservarFormTour y pasando el objeto UserTour
         $form = $this->createForm(ReservarFormTour::class, $userTour);
-
+        $form->get('num_gente_reserva')->setData('0');
         // Manejar la solicitud del formulario
         $form->handleRequest($request);
 
@@ -93,7 +115,7 @@ class ClienteController extends AbstractController
             $this->entityManager->persist($userTour);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('tour_reservado');
+            return $this->redirectToRoute('verReservas');
         }
 
         // Renderizar la plantilla Twig con el formulario y los datos del tour
@@ -101,6 +123,7 @@ class ClienteController extends AbstractController
             'form' => $form->createView(),
             'tour' => $tour, // Pasar el objeto tour a la plantilla
             'ruta' => $tour->getCodRuta(), // Pasar el objeto ruta a la plantilla
+            'visitas' => $visitas, // Pasar las visitas asociadas a la ruta
         ]);
     }
 

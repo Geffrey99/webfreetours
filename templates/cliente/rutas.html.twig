@@ -1,11 +1,7 @@
-{% extends 'base.html.twig' %}
+{% extends 'cliente/index.html.twig' %}
 
-{% block title %}Cliente{% endblock %}
+{% block title %}Rutas{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('js/controlCliente.js') }}"></script>
-{% endblock %}
 
 {% block body %}
 
@@ -50,11 +46,108 @@
 </div>
   {% endif %}
 
-{#......................................................................................................#}
+{#...................................................................................  ...................#}
 
+{#...............................................filtros......................................................#}
+
+{# <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{{ path('app_cliente') }}" method="get">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar por nombre" name="nombre" value="{{ app.request.query.get('nombre') }}">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+          <P> RUTAS DISPONIBLES </P>
+        </div>
+    </div> #}
 
 {#............................................RUTAS..........................................................#}
-<div class="container">
+<div class="container mt-5">
+    <div class="row">
+        <!-- Columna de la izquierda con la información de los tours -->
+        <div class="col-md-8">
+            <div id="visitasAccordion" class="accordion">
+                {% for ruta in rutas['rutas'] %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="ruta{{ loop.index }}Heading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ruta{{ loop.index }}Collapse" aria-expanded="false" aria-controls="ruta{{ loop.index }}Collapse">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="{{ asset('public/img/visitas/' ~ ruta['foto']) }}" class="img-fluid" alt="{{ ruta['nombre'] }}" style="width: 200px; height: 200px; object-fit: cover;">
+                                    </div>
+                                    <div class="col-md-8 text-justify">
+                                        <h1 class="text-uppercase" style="color: red;"><i>{{ ruta['nombre'] }}</i></h1>
+                                        <h3>{{ ruta['descripcion']|raw }}</h3>
+                                        <h5><i class="bi bi-calendar"></i> Fechas disponibles : {{ ruta['fecha_inicio']|date('Y-m-d') ~ ' - ' ~ ruta['fecha_fin']|date('Y-m-d') }}</h5>
+                                        <p>Reserva tu tour para la fecha que desees</p>
+                                        <p><i class="fab fa-mdb"></i> PRECIO : 0€ </p>  
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="ruta{{ loop.index }}Collapse" class="accordion-collapse collapse" aria-labelledby="ruta{{ loop.index }}Heading" data-bs-parent="#visitasAccordion">
+                            <div class="accordion-body">
+                                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+                                    {% for tour in ruta['tours'] %}
+                                        <div>
+                                            {{ tour['fecha_hora'] }}
+                                            <a href="{{ path('reservar_tour', {'tourId': tour['id'], 'userId': app.user.id}) }}" class="btn btn-primary">Reservar Tour</a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+       <!-- Columna de la derecha para filtrar -->
+<div class="col-md-4">
+    <h2>Filtrar</h2>
+    <form>
+        <div class="mb-3">
+            <label for="provincia" class="form-label">Provincia</label>
+            <select class="form-select" id="provincia">
+                <!-- Aquí puedes agregar las opciones para las provincias -->
+                <option selected>Selecciona una provincia</option>
+                <option value="1">Provincia 1</option>
+                <option value="2">Provincia 2</option>
+                <option value="3">Provincia 3</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingresa un nombre">
+        </div>
+        <div class="mb-3">
+            <label for="fecha_inicio" class="form-label">Fecha de inicio</label>
+            <input type="date" class="form-control" id="fecha_inicio">
+        </div>
+        <div class="mb-3">
+            <label for="fecha_fin" class="form-label">Fecha de fin</label>
+            <input type="date" class="form-control" id="fecha_fin">
+        </div>
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
+    <div class="col-md-4 trustpoints">
+ <img src="{{ asset('img/logo.png') }}" alt="Logo" width="400px" class="">
+</div>
+</div>
+
+
+
+
+
+
+{# <div class="container">
     <div class="row">
         {% for ruta in rutas.rutas %}
             <div class="col-md-4">
@@ -73,7 +166,7 @@
             {% endif %}
         {% endfor %}
     </div>
-</div>
+</div> #}
 
 {#..........................................................................................................#}
 

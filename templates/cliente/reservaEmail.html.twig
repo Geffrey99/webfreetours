@@ -1,0 +1,10 @@
+<h3>¡Reserva confirmada!</h3>
+
+<p>Hola {{ user.username }},</p>
+<p>Tu reserva para el tour {{ tour.nombre }} en la ruta {{ ruta.nombre }} se ha confirmado con éxito.</p>
+<p>Detalles de la reserva:</p>
+<ul>
+    <li>Fecha de reserva: {{ userTour.fechaReserva|date('Y-m-d H:i:s') }}</li>
+    <li>Número de asistentes: {{ userTour.asistentes }}</li>
+    <!-- Agrega más detalles según sea necesario -->
+</ul>
