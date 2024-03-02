@@ -1,0 +1,122 @@
+{% extends 'guide/index.html.twig' %}
+
+{% block title %}Calendario|Rutas{{ parent() }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.min.js'></script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css' rel='stylesheet' />
+    <!-- Agrega el enlace al CSS de Bootstrap aquí -->
+    <!-- <link rel="stylesheet" href="ruta/a/tu/bootstrap.css"> -->
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Tus Tours</h1>
+
+                {% if tours is not empty %}
+                    <div id='calendar'></div>
+
+                    <script>
+                        $(document).ready(function() {
+                            var events = [
+                                {% for key, tour in tours %}
+                                    {
+                                        title: '{{ tour.getCodRuta().nombre }}',
+                                        start: '{{ tour.getFechaHora()|date('Y-m-d H:i:s') }}',
+                                        color: getColorForEvent('{{ tour.getFechaHora()|date('Y-m-d H:i:s') }}'),
+                                        tourDetailsContainer: '#tourDetailsContainer',
+                                        tourId: '{{ tour.id }}'
+                                    },
+                                {% endfor %}
+                            ];
+
+                            function getColorForEvent(eventDate) {
+                                var currentDate = new Date();
+                                var eventDateObj = new Date(eventDate);
+
+                                if (eventDateObj < currentDate) {
+                                    return 'red';
+                                } else if (eventDateObj.toDateString() === currentDate.toDateString()) {
+                                    return 'green';
+                                } else {
+                                    return 'yellow';
+                                }
+                            }
+
+                            var calendarEl = document.getElementById('calendar');
+                            var calendar = new FullCalendar.Calendar(calendarEl, {
+                                initialView: 'dayGridMonth',
+                                locale: 'es',
+                                events: events,
+                               eventClick: function(info) {
+                                var tourId = info.event.extendedProps.tourId;
+                                var tourDetailsContainer = info.event.extendedProps.tourDetailsContainer;
+
+                                // Oculta todos los detalles de tours
+                                $(tourDetailsContainer + ' .tourDetails').hide();
+
+                                // Muestra los detalles específicos del tour clicado
+                                $(tourDetailsContainer + ' .tourDetails[data-tour-id="' + tourId + '"]').show();
+
+                                // Establecer el valor del campo cod_tour en el formulario
+                                $('select[name="informe[cod_tour]"]').val(tourId).change();
+                            
+                        
+                                    var tourId = info.event.extendedProps.tourId;
+                                    var tourDetailsContainer = info.event.extendedProps.tourDetailsContainer;
+
+                                    // Oculta todos los detalles de tours
+                                    $(tourDetailsContainer + ' .tourDetails').hide();
+
+                                    // Muestra los detalles específicos del tour clicado
+                                    $(tourDetailsContainer + ' .tourDetails[data-tour-id="' + tourId + '"]').show();
+
+                                  $('input[name="informe[cod_tour]"]').val(parseInt(tourId));
+
+                                }
+                            });
+
+                            calendar.render();
+                        });
+                    </script>
+                {% else %}
+                    <p>No tienes tours asignados.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                <div id="tourDetailsContainer">
+                    {% for key, tour in tours %}
+                        <div class="tourDetails" data-tour-id="{{ tour.id }}" style="display: none;">
+                            <h2>Tour ID: {{ tour.id }}</h2>
+                            <ul>
+                                {% for userTour in userTours[key] %}
+                                    <li>
+                                        <strong>UserTour ID:</strong> {{ userTour.id }}<br>
+                                        <strong>Nombre:</strong> {{ userTour.getCodUser().nombre }}<br>
+                                        <strong>Fecha de Reserva:</strong> {{ userTour.getFechaReserva()|date('Y-m-d H:i:s') }}<br>
+                                        Agrega más detalles según tus necesidades
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+                 {# Renderizar el formulario Informe aquí #}
+                 {{ form_start(form) }}
+                  {{ form_widget(form) }}
+                 <button type="submit">Guardar Informe</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+         

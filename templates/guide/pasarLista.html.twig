@@ -1,0 +1,27 @@
+{% extends 'guide/index.html.twig' %}
+
+{% block title %}Calendario|Rutas{% endblock %}
+
+{% block body %}
+
+{{ parent() }}
+ <h1>Tus Tours</h1>
+
+    {% if tours is not empty %}
+        <ul>
+            {% for tour in tours %}
+                <li>
+                    <strong>ID:</strong> {{ tour.id }}<br>
+                    <strong>Nombre:</strong> {{ tour.getCodRuta().nombre}}<br>
+                    <strong>Fecha y Hora:</strong> {{ tour.getFechaHora()|date('Y-m-d H:i:s') }}<br>
+                    {# Agrega más detalles según tus necesidades #}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes tours asignados.</p>
+    {% endif %}
+
+ 
+
+    {% endblock %}

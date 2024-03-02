@@ -1,0 +1,10 @@
+{% extends 'guide/index.html.twig' %}
+
+{% block body %}
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Guardar Informe</button>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}

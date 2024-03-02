@@ -15,9 +15,22 @@ admin_dashboard:
 app_crear_ruta:
     path: /crear/ruta
     controller: App\Controller\CrearRutaController::index
+## Rutas para el guía    
 guide_dashboard:
     path: /guide
     controller: App\Controller\GuideController::index
+
+app_guide_tours_asignados:
+    path: '/guide/tours-asignados'
+    controller: 'App\Controller\GuideController::toursAsignados'    
+    
+
+app_guide_informe_formulario:
+    path: '/guide/informe/formulario'
+    controller: 'App\Controller\GuideController::informeFormulario'
+    methods: GET|POST
+
+## Rutas para el cliente    
 cliente_dashboard:
     path: /cliente
     controller: App\Controller\ClienteController::index

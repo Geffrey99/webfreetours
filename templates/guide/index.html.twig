@@ -2,6 +2,10 @@
 
 {% block title %}GUIA{% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+  {% endblock %}
+
 {% block body %}
 
 {#................CABEZERA......................#}
@@ -22,13 +26,13 @@
 
     <!-- Opciones -->
     <div class="p-2">
-        <a class="nav-link" href="#">Rutas asignadas</a>
+        <a class="nav-link"  href="{{ path('app_guide_tours_asignados') }}">Rutas asignadas</a>
     </div>
     <div class="p-2">
-        <a class="nav-link" href="#">Pasar lista</a>
+        <a class="nav-link"  href="#">Pasar lista</a>
     </div>
     <div class="p-2">
-        <a class="nav-link" href="#">Hacer informe</a>
+        <a class="nav-link"  href="#">Hacer informe</a>
     </div>
 
     <!-- Botón de cerrar sesión -->
@@ -176,6 +180,38 @@
   </div>
 {#..............................................................................................................#}
 </div>
+{# 
+ <h1>Tus Tours</h1>
 
+    {% if tours is not empty %}
+        <ul>
+            {% for tour in tours %}
+                <li>
+                    <strong>ID:</strong> {{ tour.id }}<br>
+                    <strong>Nombre:</strong> {{ tour.getCodRuta().nombre}}<br>
+                    <strong>Fecha y Hora:</strong> {{ tour.getFechaHora()|date('Y-m-d H:i:s') }}<br>
+                    {# Agrega más detalles según tus necesidades #}
+                {# </li> #}
+            {# {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes tours asignados.</p>
+    {% endif %}
+
+ {% for key, tour in tours %}
+    <h2>Tour ID: {{ tour.id }}</h2>
+    <ul>
+        {% for userTour in userTours[key] %}
+            <li>
+                <strong>UserTour ID:</strong> {{ userTour.id }}<br>
+                <strong>Nombre:</strong> {{ userTour.getCodUser().nombre }}<br>
+
+                <strong>Fecha de Reserva:</strong> {{ userTour.getFechaReserva()|date('Y-m-d H:i:s') }}<br>
+                
+                {# Agrega más detalles según tus necesidades #}
+            {# </li> #}
+        {# {% endfor %}
+    </ul>
+{% endfor %} #} 
 
 {% endblock %}
