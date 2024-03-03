@@ -38,14 +38,13 @@
         {{ app.user.email }}
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" href="#">Ajustes</a></li>
-        <li><a class="dropdown-item" href="#">Correo</a></li>
         <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
     </ul>
 </div>
 </div>
   {% endif %}
 
+{% endblock %}
 {#...................................................................................  ...................#}
 
 {#...............................................filtros......................................................#}
@@ -68,7 +67,7 @@
           <P> RUTAS DISPONIBLES </P>
         </div>
     </div> #}
-
+{% block main %}
 {#............................................RUTAS..........................................................#}
 <div class="container mt-5">
     <div class="row">

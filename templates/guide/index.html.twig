@@ -8,6 +8,7 @@
 
 {% block body %}
 
+
 {#................CABEZERA......................#}
 
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -15,8 +16,8 @@
 <div class="hstack gap-3">
     <!-- Logo y título -->
     <div class="p-2">
-        <a class="nav-link" href="{{ path('app_home') }}">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+        <a class="nav-link" href="{{ path('app_guide') }}">
+            <img src="{{ asset('img/freetour.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
         </a>
         
     </div>
@@ -30,9 +31,6 @@
     </div>
     <div class="p-2">
         <a class="nav-link"  href="#">Pasar lista</a>
-    </div>
-    <div class="p-2">
-        <a class="nav-link"  href="#">Hacer informe</a>
     </div>
 
     <!-- Botón de cerrar sesión -->

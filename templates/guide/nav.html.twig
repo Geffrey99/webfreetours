@@ -1,9 +1,12 @@
+
+{#................CABEZERA......................#}
+
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
 <div class="hstack gap-3">
     <!-- Logo y título -->
     <div class="p-2">
-        <a class="nav-link" href="{{ path('app_cliente') }}">
+        <a class="nav-link" href="{{ path('app_guide') }}">
             <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
         </a>
         
@@ -13,15 +16,13 @@
     </div>
 
     <!-- Opciones -->
-    <div class="p-2">
-        <a class="nav-link" id="ruta-link" href="{{ path('app_cliente_ver_rutas') }}">Rutas</a>
+    <div class="p-2 d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">
+        <a class="nav-link link-success"  href="{{ path('app_guide_tours_asignados') }}">Rutas asignadas</a>
     </div>
     <div class="p-2">
-        <a class="nav-link" id="reservas-link"  href="{{ path('app_cliente_ver_reservas') }}">Reservas</a>
+        <a class="nav-link"  href="#">Pasar lista</a>
     </div>
-    <div class="p-2">
-        <a class="nav-link" id="otraOpcion-link" href="#">Otra opcion</a>
-    </div>
+   
 
     <!-- Botón de cerrar sesión -->
   <div class="p-2 dropdown">
@@ -29,10 +30,9 @@
         {{ app.user.email }}
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {# <li><a class="dropdown-item" href="#">Ajustes</a></li>
-        <li><a class="dropdown-item" href="#">Correo</a></li> #}
         <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
     </ul>
 </div>
 </div>
+
   {% endif %}

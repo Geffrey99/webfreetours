@@ -11,20 +11,54 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css' rel='stylesheet' />
-    <!-- Agrega el enlace al CSS de Bootstrap aquí -->
-    <!-- <link rel="stylesheet" href="ruta/a/tu/bootstrap.css"> -->
+    <style>
+    .informe-form {
+        display: none;
+    }
+      
+    .custom-strong {
+    text-decoration: underline; 
+    color: #007bff; }
+
+    .custom-title {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: underline;
+            color: #ff0000; /* Rojo */
+            animation: pulse 2s infinite alternate;
+        }
+
+        {# @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        } #}
+    </style>
+ 
 {% endblock %}
 
+
 {% block body %}
+
+{% include 'guide/nav.html.twig' %}
+
+
+{% block content %}
+    
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h1>Tus Tours</h1>
+              <h3 class="custom-title">Programación de Tours</h3>
 
                 {% if tours is not empty %}
                     <div id='calendar'></div>
 
                     <script>
+                   
                         $(document).ready(function() {
                             var events = [
                                 {% for key, tour in tours %}
@@ -50,7 +84,11 @@
                                     return 'yellow';
                                 }
                             }
-
+                            function isTourDatePassed(eventDate) {
+                              var currentDate = new Date();
+                                var eventDateObj = new Date(eventDate);
+                             return eventDateObj < currentDate;
+                            }
                             var calendarEl = document.getElementById('calendar');
                             var calendar = new FullCalendar.Calendar(calendarEl, {
                                 initialView: 'dayGridMonth',
@@ -72,7 +110,12 @@
                         
                                     var tourId = info.event.extendedProps.tourId;
                                     var tourDetailsContainer = info.event.extendedProps.tourDetailsContainer;
-
+                                 var tourDate = info.event.start;
+                                 if (isTourDatePassed(tourDate)) {
+                                  $('.informe-form').show();
+                                   } else {
+                                  $('.informe-form').hide();
+                                   }
                                     // Oculta todos los detalles de tours
                                     $(tourDetailsContainer + ' .tourDetails').hide();
 
@@ -80,7 +123,7 @@
                                     $(tourDetailsContainer + ' .tourDetails[data-tour-id="' + tourId + '"]').show();
 
                                   $('input[name="informe[cod_tour]"]').val(parseInt(tourId));
-
+                                    $('#selectedTour').text(tourId);
                                 }
                             });
 
@@ -96,12 +139,15 @@
                 <div id="tourDetailsContainer">
                     {% for key, tour in tours %}
                         <div class="tourDetails" data-tour-id="{{ tour.id }}" style="display: none;">
-                            <h2>Tour ID: {{ tour.id }}</h2>
+                           <h1 class="text-danger fw-bold"> Informacion del Tour ID: {{ tour.id }}</h1>
+                            <h3><strong class="custom-strong">Ruta: </strong> {{ tour.getCodRuta().nombre }} </h3> <br>
                             <ul>
                                 {% for userTour in userTours[key] %}
                                     <li>
+                                        
                                         <strong>UserTour ID:</strong> {{ userTour.id }}<br>
-                                        <strong>Nombre:</strong> {{ userTour.getCodUser().nombre }}<br>
+                                        <strong>Participante:</strong> {{ userTour.getCodUser().nombre }}<br>
+                                        <strong>Acompañantes:</strong> {{ userTour.getAsistentes() }}<br>
                                         <strong>Fecha de Reserva:</strong> {{ userTour.getFechaReserva()|date('Y-m-d H:i:s') }}<br>
                                         Agrega más detalles según tus necesidades
                                     </li>
@@ -110,13 +156,34 @@
                         </div>
                     {% endfor %}
                 </div>
-                 {# Renderizar el formulario Informe aquí #}
-                 {{ form_start(form) }}
-                  {{ form_widget(form) }}
-                 <button type="submit">Guardar Informe</button>
-                {{ form_end(form) }}
+                 <div class="container mt-5">
+    
+          {{ form_start(form, {'attr': {'class': 'informe-form'}}) }}
+          <h1 class="text-danger fw-bold"> Informe del Tour</h1>
+            <div class="mb-3">
+                {{ form_label(form.imagen, 'Imagen (JPG, JPEG, PNG)') }}
+                {{ form_widget(form.imagen, {'attr': {'class': 'form-control'}}) }}
             </div>
+            <div class="mb-3">
+                {{ form_label(form.observaciones) }}
+                {{ form_widget(form.observaciones, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+                {{ form_label(form.recaudacion) }}
+                {{ form_widget(form.recaudacion, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="mb-3">
+              {{ form_label(form.cod_tour) }}
+            <span id="selectedTour" class="form-control"></span>
+              {{ form_widget(form.cod_tour, {'attr': {'class': 'form-select', 'style': 'display: none;'}}) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Informe</button>
+            {{ form_end(form) }}
+       
+         </div>
+        </div>
         </div>
     </div>
+    {% endblock %}
 {% endblock %}
          

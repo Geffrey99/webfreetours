@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 class GuideController extends AbstractController
 {
 
@@ -70,15 +70,30 @@ public function toursAsignados(Request $request): Response
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $tourId = $form->get('cod_tour')->getData();
-            $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
-        
+            if ($form->get('cod_tour')->isDisabled()) {
+                // Obtener el valor del campo directamente de la configuración del formulario
+                $tour = $form->getConfig()->getOption('data');
+            } else {
+                // Obtener el valor del campo del formulario
+                $tourId = $form->get('cod_tour')->getData();
+                $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
+            }
+            // $tourId = $form->get('cod_tour')->getData();
+            // $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
+            // $existingInforme = $this->entityManager->getRepository(Informe::class)->findOneBy(['cod_tour' => $tour]);
+
+            // if ($existingInforme) {
+            //     // Manejar el caso cuando el tour ya tiene un informe
+            //     $this->addFlash('error', 'Este tour ya tiene un informe.');
+            //     // Puedes redirigir a donde desees o simplemente retornar la respuesta
+            //     return new JsonResponse(['error' => 'Este tour ya tiene un informe.'], 400);
+            // }
             // Configurar el tour en el bucle para que sea el correcto
             $informe = new Informe();
             $informe->setCodTour($tour);
             $informe->setObservaciones($form->get('observaciones')->getData());
             $informe->setRecaudacion($form->get('recaudacion')->getData());
-            
+
             $imagenFile = $form->get('imagen')->getData();
             if ($imagenFile) {
                 $imagenFileName = $this->handleImageUpload($imagenFile);

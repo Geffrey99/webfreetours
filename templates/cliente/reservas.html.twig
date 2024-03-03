@@ -37,45 +37,58 @@
         {{ app.user.email }}
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" href="#">Ajustes</a></li>
-        <li><a class="dropdown-item" href="#">Correo</a></li>
         <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
     </ul>
 </div>
 </div>
   {% endif %}
+
 {######################################}
+{% endblock %}
+
+{% block main %}
+ 
 
     <div class="container mt-5">
         <h1 class="mb-4">Mis Reservas</h1>
 
-        {% if reservasUsuario is not empty %}
-            <ul class="list-group">
-                {% for reserva in reservasUsuario %}
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-0">Fecha de Reserva: {{ reserva.getFechaReserva()|date('Y-m-d H:i:s') }}</h5>
-                                <p class="mb-0">Asistentes: {{ reserva.getAsistentes() }}</p>
-                            </div>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
-                                Detalles del Tour
-                            </button>
-                        </div>
+{% if reservasUsuario is not empty %}
+    <ul class="list-group">
+        {% for reserva in reservasUsuario %}
+            {# Verifica si la fecha del Tour ya ha pasado #}
+            {% set fechaPasada = reserva.getCodTour().getFechaHora()|date('Y-m-d H:i:s') < 'now'|date('Y-m-d H:i:s') %}
+            
+            <li class="list-group-item {% if fechaPasada %}list-group-item-danger{% else %}list-group-item-success{% endif %}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">Fecha de tu reserva: {{ reserva.getFechaReserva()|date('Y-m-d H:i:s') }}</h5>
+                        <p class="mb-0">Asistentes: {{ reserva.getAsistentes() }}</p>
+                    </div>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
+                        Detalles del Tour
+                    </button>
+                    {% if fechaPasada %}
+                        <button class="btn btn-danger" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
+                            Hacer valoración
+                        </button>
+                    {% endif %}
+                </div>
 
-                        <!-- Detalles del Tour colapsable -->
-                        <div class="collapse mt-3" id="tourDetails{{ reserva.getId() }}">
-                            <ul class="list-unstyled">
-                                <li><strong>Nombre del Tour:</strong> {{ reserva.getCodTour().getCodRuta().getNombre() }}</li>
-                                <li><strong>Otra propiedad del Tour:</strong> {{ reserva.getCodTour().getIdGuide() }}</li>
-                                <!-- Agrega más propiedades según sea necesario -->
-                            </ul>
-                        </div>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="mt-4">No tienes reservas actualmente.</p>
-        {% endif %}
+                <!-- Detalles del Tour colapsable -->
+                <div class="collapse mt-3" id="tourDetails{{ reserva.getId() }}">
+                    <ul class="list-unstyled">
+                        <li><strong>Nombre del Tour:</strong> {{ reserva.getCodTour().getCodRuta().getNombre() }}</li>
+                        <li><strong>Fecha y Hora:</strong> {{ reserva.getCodTour().getFechaHora()|date('Y-m-d H:i:s') }}</li>
+                        <li><strong>Id Guia Asignado :</strong> {{ reserva.getCodTour().getIdGuide() }}</li>
+                        <!-- Agrega más propiedades según sea necesario -->
+                    </ul>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="mt-4">No tienes reservas actualmente.</p>
+{% endif %}
+
     </div>
 {% endblock %}

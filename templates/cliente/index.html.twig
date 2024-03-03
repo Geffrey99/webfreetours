@@ -3,17 +3,16 @@
 {% block title %}Cliente{% endblock %}
 
 
-
-
-
-
 {% block body %}
 
-{#......................................CABEZERA.....................................................................#}
 
 {% include 'cliente/nav.html.twig' %}
 
-{% include 'cliente/cuerpo.html.twig' %}
 
+{% endblock %}
+
+{% block main %}
+
+{% include 'cliente/cuerpo.html.twig' %}
 
 {% endblock %}
