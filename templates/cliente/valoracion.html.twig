@@ -1,0 +1,103 @@
+{% extends 'cliente/index.html.twig' %}
+
+{% block title %}Mis Valoraciones | {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+  <style>
+.card:hover {
+    transform: scale(1.04);
+    transition: transform .2s;
+}
+</style>
+{% endblock %}
+
+
+{% block body %}
+      
+    <script>
+        {% for flashMessage in app.flashes('error') %}
+          
+            alert("{{ flashMessage }}");
+           
+        {% endfor %}
+
+        {% for flashMessage in app.flashes('success') %}
+          
+            alert("{{ flashMessage }}");
+        
+        {% endfor %}
+    </script>
+    
+
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+<div class="hstack gap-3">
+    <!-- Logo y título -->
+    <div class="p-2">
+        <a class="nav-link" href="{{ path('app_cliente') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+        </a>
+        
+    </div>
+    <div class="p-2">
+        <h2 class="link-dangerous">FREE TOURS POR ESPAÑA</h2>
+    </div>
+
+    <!-- Opciones -->
+    <div class="p-2">
+       <a class="nav-link" id="ruta-link" href="{{ path('app_cliente_ver_rutas') }}">Rutas</a>
+    </div>
+    <div class="p-2">
+        <a class="nav-link" id="reservas-link"  href="{{ path('app_cliente_ver_reservas') }}">Reservas</a>
+    </div>
+    <div class="p-2 d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">
+        <a class="nav-link link-success" id="otraOpcion-link" href="{{path('app_cliente_valoracion') }}">Valoraciones</a>
+    </div>
+
+    <!-- Botón de cerrar sesión -->
+  <div class="p-2 dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ app.user.email }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
+    </ul>
+</div>
+</div>
+  {% endif %}
+
+
+
+{% endblock %}
+
+{% block main %}
+  <div class="container mt-2">
+    <h3 class="mb-4 display-1 text-success text-decoration-underline text-uppercase text-center">Historial de valoraciones</h3>
+    {% if valoracionesUsuario is not empty %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for valoracion in valoracionesUsuario %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm rounded mb-3 bg-success text-white">
+                        <div class="card-body">
+                            {# <h5 class="card-title">Fecha de la Valoración: {{ valoracion.createdAt|date('Y-m-d H:i:s') }}</h5> #}
+                            <p class="card-text">Nota Guía: {{ valoracion.notaGuia }}</p>
+                            <p class="card-text">Nota Ruta: {{ valoracion.notaRuta }}</p>
+                            <p class="card-text">Comentario: {{ valoracion.comentario }}</p>
+                        </div>
+                        <!-- Detalles de la Reserva -->
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-light text-dark"><strong>Nombre del Tour:</strong> {{ valoracion.codReserva.codTour.codRuta.nombre }}</li>
+                            <li class="list-group-item bg-light text-dark"><strong>Fecha y Hora del Tour:</strong> {{ valoracion.codReserva.codTour.fechaHora|date('Y-m-d H:i:s') }}</li>
+                            <li class="list-group-item bg-light text-dark"><strong>Id Guía Asignado:</strong> {{ valoracion.codReserva.codTour.idGuide }}</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="mt-4">No tienes valoraciones actualmente.</p>
+    {% endif %}
+</div>
+{% endblock %}

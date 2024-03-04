@@ -47,21 +47,21 @@ class DevueltaRoute extends AbstractController
                 'fecha_inicio' => $ruta->getFechaInicio()->format('Y-m-d H:i:s'),
                 'fecha_fin' => $ruta->getFechaFin()->format('Y-m-d H:i:s'),
                 
-                'tours' => $this->serializeTours($tours), // Pasar el array de tours
+                'tours' => $this->serializeTours($tours), 
                 'rutaVisitas' => $this->serializeRutaVisitas($rutaVisitas),
             ];
         }
         return $serializedRutas;
     }
     
-    // El método serializeTours() espera un array de tours
+   
     private function serializeTours(array $tours): array {
         $serializedTours = [];
         foreach ($tours as $tour) {
             $serializedTours[] = [
                 'id' => $tour->getId(),
                 'fecha_hora' => $tour->getFechaHora()->format('Y-m-d H:i:s'),
-                // Agrega más propiedades si es necesario
+               
             ];
         }
         return $serializedTours;
@@ -72,7 +72,7 @@ class DevueltaRoute extends AbstractController
         foreach ($rutaVisitas as $rutaVisita) {
             $serializedRutaVisitas[] = [
                 'id' => $rutaVisita->getId(),
-                // Agrega más propiedades si es necesario
+                
             ];
         }
         return $serializedRutaVisitas;
@@ -82,7 +82,7 @@ class DevueltaRoute extends AbstractController
         return [
             'id' => $localidad->getId(),
             'nombre' => $localidad->getNombre(),
-            // Agrega más propiedades si es necesario
+           
         ];
     }
     
@@ -90,7 +90,7 @@ class DevueltaRoute extends AbstractController
         return [
             'id' => $provincia->getId(),
             'nombre' => $provincia->getNombre(),
-            // Agrega más propiedades si es necesario
+            
         ];
     }
 }

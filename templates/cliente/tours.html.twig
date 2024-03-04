@@ -44,7 +44,7 @@
         <a class="nav-link" id="reservas-link"  href="{{ path('app_cliente_ver_reservas') }}">Reservas</a>
     </div>
     <div class="p-2">
-        <a class="nav-link" id="otraOpcion-link" href="#">Otra opcion</a>
+        <a class="nav-link" id="otraOpcion-link" href="#">Valoraciones</a>
     </div>
 
     <!-- Botón de cerrar sesión -->
@@ -65,9 +65,18 @@
 
 {% block main %}
 <main> 
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="row">
-         <h1> <p> {{ ruta.getNombre() }} <p> </h1>
+
+<button type="button" class="btn btn-success position-relative">
+  INFORMACION DEL TOUR QUE VAS A RESERVAR
+  <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+    <span class="visually-hidden">New alerts</span>
+  </span>
+</button>
+
+
+         <h1 class="text-uppercase" style="color: #6d4d00;"> <p> {{ ruta.getNombre() }} <p> </h1>
         <div class="col-md-6">
             
       
@@ -146,13 +155,13 @@
         </div>
 
         <div class="col-md-6">
-            <div class="bg-light p-4 rounded">
-                <h2 class="text-primary mb-4">Formulario de Reserva</h2>
+            <div class="bg-light p-4 rounded btn-outline-primary">
+                <h2 class="text-uppercase text-success mb-4">Formulario de Reserva</h2>
                 {{ form_start(form) }}
                     {{ form_row(form.fecha_reserva, {'label': 'Fecha de Reserva', 'attr': {'class': 'form-control', 'readonly': true}}) }}
                     {{ form_row(form.asistentes, {'label': 'Número de Asistentes', 'attr': {'class': 'form-control'}}) }}
-                    {{ form_widget(form.num_gente_reserva, {'attr': {'style': 'display:none'}}) }}
-                    {{ form_row(form.save, {'label': 'Reservar', 'attr': {'class': 'btn btn-primary btn-lg btn-block'}}) }}
+                    {{ form_widget(form.num_gente_reserva, {'attr': {'style': 'display:none'}}) }} <br>
+                    {{ form_row(form.save, {'label': 'Reservar', 'attr': {'class': 'btn btn-warning btn-lg btn-block btn-outline-success'}}) }}
                 {{ form_end(form) }}
             </div>
          <p><strong>Punto de Encuentro:</strong> {{ ruta.getPuntoInicio() }}</p>

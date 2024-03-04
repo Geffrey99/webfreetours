@@ -17,17 +17,85 @@
     }
       
     .custom-strong {
-    text-decoration: underline; 
-    color: #007bff; }
+       TEXT-ALIGN: center;
+    font-family: math;
+    FONT-VARIANT-NUMERIC: diagonal-fractions;
+    COLOR: darkred;
+    }
+
+    .custom-title-I {
+        font-family: 'Courier New', monospace;
+        font-size: 2rem;
+        font-weight: bold;
+        text-decoration: underline;
+        color: #4c614d; /* Rojo */
+        animation: pulse 2s infinite alternate;
+    }
 
     .custom-title {
             font-family: 'Courier New', monospace;
             font-size: 2rem;
             font-weight: bold;
             text-decoration: underline;
-            color: #ff0000; /* Rojo */
+               color: #720000;
             animation: pulse 2s infinite alternate;
         }
+
+    .button {
+        background-color: #4c614d; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }    
+
+    .subtitulo {
+        font-family: 'Courier New', monospace;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-decoration: underline;
+        color: black;
+        animation: pulse 2s infinite alternate;
+         FONT-VARIANT-NUMERIC: diagonal-fractions;
+    }
+
+      .subBtitulo {
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+
+        color: black;
+        animation: pulse 2s infinite alternate;
+    }
+
+
+
+
+     .informe-form {
+        background-color: #f8f9fa; /* Color de fondo */
+        border: 1px solid #dee2e6; /* Borde */
+        border-radius: .25rem; /* Bordes redondeados */
+        padding: 1.5rem; /* Espaciado interno */
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); /* Sombra */
+    }
+    .informe-form .form-control {
+        border: 2px solid #6c757d; /* Borde de los inputs */
+    }
+    .informe-form .button {
+        display: block; /* Hace que el botón sea de bloque */
+        width: 100%; /* Hace que el botón cubra todo el ancho */
+    }
+
+    .main {
+    BACKGROUND-COLOR: #fbf2d7;
+    }
+
+
 
         {# @keyframes pulse {
             from {
@@ -43,15 +111,16 @@
 
 
 {% block body %}
-
 {% include 'guide/nav.html.twig' %}
+{% endblock %}
 
-
-{% block content %}
+{% block main %}
     
-    <div class="container-fluid">
+    <div class="container-fluid" style="
+    padding: 15px;">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="BACKGROUND-COLOR: #ffffff;
+    BORDER: double;">
               <h3 class="custom-title">Programación de Tours</h3>
 
                 {% if tours is not empty %}
@@ -98,13 +167,11 @@
                                 var tourId = info.event.extendedProps.tourId;
                                 var tourDetailsContainer = info.event.extendedProps.tourDetailsContainer;
 
-                                // Oculta todos los detalles de tours
+                               
                                 $(tourDetailsContainer + ' .tourDetails').hide();
-
-                                // Muestra los detalles específicos del tour clicado
+                                
                                 $(tourDetailsContainer + ' .tourDetails[data-tour-id="' + tourId + '"]').show();
 
-                                // Establecer el valor del campo cod_tour en el formulario
                                 $('select[name="informe[cod_tour]"]').val(tourId).change();
                             
                         
@@ -135,55 +202,57 @@
                 {% endif %}
             </div>
 
-            <div class="col-md-6">
-                <div id="tourDetailsContainer">
-                    {% for key, tour in tours %}
-                        <div class="tourDetails" data-tour-id="{{ tour.id }}" style="display: none;">
-                           <h1 class="text-danger fw-bold"> Informacion del Tour ID: {{ tour.id }}</h1>
-                            <h3><strong class="custom-strong">Ruta: </strong> {{ tour.getCodRuta().nombre }} </h3> <br>
-                            <ul>
-                                {% for userTour in userTours[key] %}
-                                    <li>
-                                        
-                                        <strong>UserTour ID:</strong> {{ userTour.id }}<br>
-                                        <strong>Participante:</strong> {{ userTour.getCodUser().nombre }}<br>
+          <div class="col-md-6">
+    <div id="tourDetailsContainer">
+        {% for key, tour in tours %}
+            <div class="tourDetails" data-tour-id="{{ tour.id }}" style="display: none;">
+                <h1 class="fw-bold custom-strong"> Informacion del TourID: {{ tour.id }}</h1>
+                <h3 class="custom-title"> RUTA: {{ tour.getCodRuta().nombre }} </h3> <br>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for userTour in userTours[key] %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm rounded mb-3 bg-light">
+                                <div class="card-body">
+                                    <p class="subtitulo">   
+                                        <strong>UserTourID:</strong> {{ userTour.id }}<br> <P>
+                                     <P class="subBtitulo"><strong>Participante:</strong> {{ userTour.getCodUser().nombre }}<br>
                                         <strong>Acompañantes:</strong> {{ userTour.getAsistentes() }}<br>
                                         <strong>Fecha de Reserva:</strong> {{ userTour.getFechaReserva()|date('Y-m-d H:i:s') }}<br>
-                                        Agrega más detalles según tus necesidades
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
-                 <div class="container mt-5">
-    
-          {{ form_start(form, {'attr': {'class': 'informe-form'}}) }}
-          <h1 class="text-danger fw-bold"> Informe del Tour</h1>
-            <div class="mb-3">
-                {{ form_label(form.imagen, 'Imagen (JPG, JPEG, PNG)') }}
-                {{ form_widget(form.imagen, {'attr': {'class': 'form-control'}}) }}
             </div>
-            <div class="mb-3">
-                {{ form_label(form.observaciones) }}
-                {{ form_widget(form.observaciones, {'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="mb-3">
-                {{ form_label(form.recaudacion) }}
-                {{ form_widget(form.recaudacion, {'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="mb-3">
-              {{ form_label(form.cod_tour) }}
-            <span id="selectedTour" class="form-control"></span>
-              {{ form_widget(form.cod_tour, {'attr': {'class': 'form-select', 'style': 'display: none;'}}) }}
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar Informe</button>
-            {{ form_end(form) }}
-       
-         </div>
+        {% endfor %}
+    </div>
+
+         <div class="container mt-2">
+    {{ form_start(form, {'attr': {'class': 'informe-form'}}) }}
+    <h1 class="custom-title-I"> Informe del Tour</h1>
+    <div class="mb-3">
+        {{ form_label(form.imagen, 'Imagen (JPG, JPEG, PNG)') }}
+        {{ form_widget(form.imagen, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.observaciones) }}
+        {{ form_widget(form.observaciones, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.recaudacion) }}
+        {{ form_widget(form.recaudacion, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="mb-3">
+        {{ form_label(form.cod_tour) }}
+        <span id="selectedTour" class="form-control"></span>
+        {{ form_widget(form.cod_tour, {'attr': {'class': 'form-select', 'style': 'display: none;'}}) }}
+    </div>
+    <button type="submit" class="btn btn-success button">Guardar Informe</button>
+    {{ form_end(form) }}
+</div>
         </div>
         </div>
     </div>
     {% endblock %}
-{% endblock %}
+
          

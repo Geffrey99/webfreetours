@@ -1,5 +1,5 @@
 <?php
-// src/Controller/Api/RutaApi.php
+
 
 namespace App\Controller\Api;
 
@@ -54,7 +54,7 @@ class RutaApi extends AbstractController
     #[Route("/insert", name: "insert", methods: ["POST"])]
     public function insert(Request $request): JsonResponse
     {
-        // Obtener los datos en formato JSON
+       
         $data = $request->request->all();
         // $data = json_decode($request->getContent(), true);
         // $data = json_decode($request->request->get('data'), true);
@@ -81,7 +81,7 @@ class RutaApi extends AbstractController
         
         $fecha_fin = \DateTime::createFromFormat('Y-m-d', $data['fecha_fin']);
         if ($fecha_fin === false) {
-            // La fecha no pudo ser parseada, maneja el error aquí
+           
             throw new \Exception('La fecha de fin no es válida.');
         }
         $ruta->setFechaFin($fecha_fin);
@@ -97,28 +97,28 @@ class RutaApi extends AbstractController
     #[Route("/assign_programacion", name: "assign_programacion", methods: ["POST"])]
     public function assignProgramacion(Request $request): JsonResponse
     {
-        // Obtener los datos en formato JSON
+       
         $data = json_decode($request->getContent(), true);
     
-        // Obtener el ID de la ruta desde los datos enviados por el cliente
+       
         $rutaId = $data['rutaId'] ?? null;
     
-        // Verificar si se proporcionó el ID de la ruta
+        // Verifica si se proporcionó el ID de la ruta
         if ($rutaId === null) {
             return new JsonResponse(['error' => 'ID de ruta no proporcionado'], JsonResponse::HTTP_BAD_REQUEST);
         }
     
-        // Obtener la ruta existente por su ID
+        // Obtiene la ruta existente por su ID
         $ruta = $this->entityManager->getRepository(Ruta::class)->find($rutaId);
     
         if (!$ruta) {
             return new JsonResponse(['error' => 'Ruta no encontrada'], JsonResponse::HTTP_NOT_FOUND);
         }
     
-        // Obtener los datos de programación
+        // Obtiene los datos de programación
         $programacionData = $data['programacion'] ?? [];
     
-        // Asignar la programación a la entidad Ruta
+        
         $ruta->setProgramacion($programacionData);
     
         foreach ($data['programacion'] as $programacion) {
@@ -128,17 +128,17 @@ class RutaApi extends AbstractController
             $fechaInicio = \DateTime::createFromFormat('d/m/Y', $fechaInicio);
             $fechaFin = \DateTime::createFromFormat('d/m/Y', $fechaFin);
     
-            // Crear un objeto DateInterval para representar un día
+           
             $unDia = new \DateInterval('P1D');
     
-            // Crear un objeto DatePeriod para representar el rango de fechas
+           
             $rangoFechas = new \DatePeriod($fechaInicio, $unDia, $fechaFin->add($unDia));
     
             foreach ($rangoFechas as $fecha) {
-                // Crear una nueva instancia de Tour
+               
                 $tour = new Tour();
     
-                // Establecer los atributos del tour
+                
                 $tour->setCodRuta($ruta);
                 $fecha_hora = \DateTime::createFromFormat('Y-m-d H:i', $fecha->format('Y-m-d') . ' ' . $programacion['hora'], new \DateTimeZone('Europe/Berlin'));
                 // var_dump($fecha_hora);
@@ -146,15 +146,15 @@ class RutaApi extends AbstractController
                 $tour->setFechaHora($fecha_hora);
                 $tour->setIdGuide($programacion['guia']);
     
-                // Persistir el tour en la base de datos
+               
                 $this->entityManager->persist($tour);
             }
         }
     
-        // Actualizar la entidad Ruta en la base de datos
+        
         $this->entityManager->flush();
     
-        // Devolver una respuesta JSON exitosa
+       
         return new JsonResponse(['message' => 'Programación asignada Y TOUR CREADOS CON EXITO'], JsonResponse::HTTP_OK);
     }
     
@@ -167,7 +167,7 @@ class RutaApi extends AbstractController
             return new Response(null, Response::HTTP_NOT_FOUND);
         }
         $data = json_decode($request->getContent(), true);
-        // Aquí puedes actualizar la entidad Ruta con los datos recibidos en $data
+       
     }
 
     #[Route("/delete/{id}", name: "delete", methods: ["DELETE"])]

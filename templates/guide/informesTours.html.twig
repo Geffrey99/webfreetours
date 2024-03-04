@@ -1,0 +1,125 @@
+{% extends 'guide/index.html.twig' %}
+
+{% block title %}Mis Informes | {{parent()}}{% endblock %}
+
+{% block body %}
+
+  {# <script>
+        {% for flashMessage in app.flashes('error') %}
+          
+            alert("{{ flashMessage }}");
+           
+        {% endfor %}
+
+        {% for flashMessage in app.flashes('success') %}
+          
+            alert("{{ flashMessage }}");
+        
+        {% endfor %}
+    </script> #}
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+<div class="hstack gap-3">
+    <!-- Logo y título -->
+    <div class="p-2">
+        <a class="nav-link" href="{{ path('app_guide') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+        </a>
+        
+    </div>
+    <div class="p-2">
+        <h2 class="link-dangerous">FREE TOURS POR ESPAÑA</h2>
+    </div>
+
+    <!-- Opciones -->
+    <div class="p-2">
+        <a class="nav-link"  href="{{ path('app_guide_tours_asignados') }}">Rutas asignadas</a>
+    </div>
+
+     <div class="p-2 d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">
+        <a class="nav-link link-success" href="{{ path('app_guide_informe') }}">Informes de tour</a>
+    </div>
+
+    <div class="p-2">
+        <a class="nav-link"  href="#">Pasar lista</a>
+    </div>
+   
+
+    <!-- Botón de cerrar sesión -->
+  <div class="p-2 dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ app.user.email }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
+    </ul>
+</div>
+</div>
+
+  {% endif %}
+{% endblock %}
+
+
+
+
+
+{% block main %}    
+<style>
+.card:hover {
+    transform: scale(1.03);
+    transition: transform .2s;
+}
+.card-img-top {
+    height: 150px; /* Ajusta el tamaño de la imagen */
+    object-fit: cover; /* Asegura que la imagen cubra todo el espacio disponible */
+    transition: transform .2s;
+}
+.card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #7a0808;
+      text-shadow: 2px 2px 2px rgb(45 248 64 / 50%);
+    font-family: math;
+    
+}
+
+.main {
+     BACKGROUND-COLOR: #fbf2d7;
+}
+
+</style>
+
+<div class="container">
+    <h1 class="mb-4 display-1 titulo fw-bold text-uppercase">INFORMES DE TOURS REALIZADOS</h1>
+
+    {% if informesUsuario is not empty %}
+        <div class="row row-cols-1 row-cols-md-5 g-4"> <!-- Cambia a un grid de cinco columnas -->
+            {% for informe in informesUsuario %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm rounded mb-3 bg-primary text-white border border-3 border-dark">
+                        <button type="button" class="btn btn-danger position-absolute top-0 end-0 m-2">{{ informe.getCodTour().getCodRuta().getNombre() }}</button>
+                        <img src="{{ asset('public/img/visitas/' ~ informe.getImagen()) }}" class="card-img-top" alt="Informe Image">
+                        <div class="card-body">
+                            {# <h5 class="card-title">Fecha que se realizo:</strong> {{ informe.cod_tour.getCodRuta() }}</h5> #}
+                            <p class="card-text"><strong>Observaciones:</strong> {{ informe.getObservaciones() }}</p>
+                            <p class="card-text"><strong>Recaudación:</strong> {{ informe.getRecaudacion() }}</p>
+                            <p class="card-text"><strong>Fecha y Hora del Tour:</strong> {{ informe.getCodTour().getFechaHora()|date('Y-m-d H:i:s') }}</p>
+
+                            <span class="d-none">ooooo</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="mt-4">No tienes informes actualmente.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

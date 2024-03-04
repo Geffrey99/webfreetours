@@ -6,7 +6,43 @@
 {{ parent() }}
   {% endblock %}
 
+
+{% block stylesheets %}
+    {{ parent() }}
+    
+    <style>
+   .card {
+        position: relative;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .btn-reservar {
+        width: 100%;
+        background-color: black;
+        color: white;
+        margin-top: auto; /* Empuja el botón hacia abajo */
+    }
+
+    .main {
+        background-color: #faf3d2a1;
+    }
+
+
+</style>
+{% endblock %}
+
+
+
 {% block body %}
+
+
 
 
 {#................CABEZERA......................#}
@@ -17,7 +53,7 @@
     <!-- Logo y título -->
     <div class="p-2">
         <a class="nav-link" href="{{ path('app_guide') }}">
-            <img src="{{ asset('img/freetour.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" width="100" class="d-inline-block align-text-top">
         </a>
         
     </div>
@@ -29,6 +65,10 @@
     <div class="p-2">
         <a class="nav-link"  href="{{ path('app_guide_tours_asignados') }}">Rutas asignadas</a>
     </div>
+     <div class="p-2">
+        <a class="nav-link" href="{{ path('app_guide_informe') }}">Informes de tour</a>
+    </div>
+
     <div class="p-2">
         <a class="nav-link"  href="#">Pasar lista</a>
     </div>
@@ -39,8 +79,8 @@
         {{ app.user.email }}
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" href="#">Ajustes</a></li>
-        <li><a class="dropdown-item" href="#">Correo</a></li>
+        {# <li><a class="dropdown-item" href="#">Ajustes</a></li>
+        <li><a class="dropdown-item" href="#">Correo</a></li> #}
         <li><a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
     </ul>
 </div>
@@ -48,55 +88,10 @@
 
   {% endif %}
 
+{% endblock %}
 
 
-
-{#.............CUERPO...................#}
-
-
-
-
-
-
-
-  <div
-    {# id="intro-example" #}
-    class="text-center bg-image imageHeader"
-   
-  >
-    <div class="mask">
-      <div class="d-flex justify-content-center align-items-center h-100">
-        <div class="text-white mb-2">
-          {# <h1 class="mb-3">FREETOURS.GZ</h1> #}
-          <h5 class="mt-3 mb-4">¡BIENVENIDO! ENCUENTRA TU PRÓXIMO TOUR</h5>
-          <div class="btn btn-outline-light">
-           <div data-mdb-ripple-init
-            class="btn btn-lg m-2"> 
-         <form  class="d-flex"  role="search">
-            <input class="form-control me-2" type="search" placeholder="¿Málaga, Barcelona ó ....?" aria-label="Search">
-            {# <button class="btn btn-outline-success" type="submit">Search</button> #}
-       </form>
-       </div>
-          <p
-          data-mdb-ripple-init
-            class="btn btn-lg m-2">
-            <input class="form-control me-2"  type="text" placeholder="dd/mm/aa" id="datepicker"></p>
- 
-         <button class="btn btn-outline-success m-2" type="submit">Buscar</button>
-      
-
-        </div>
-      </div>
-      </div>
-       
-    </div>
-  </div>
-
-
-
-
-
-
+{% block main %}
 
 
 {#..........................CARRUSEL CONBINADO CON TARJETAS.................................................................................#}
@@ -150,7 +145,7 @@
          <div class="card-body">
          <h5 class="card-title text-center text-capitalize tendencia">Destinos favoritos</h5>
           {# <p class="card-text text-center text-info"> Las ciudades mas visitadas en esta época del año....</p> #}
-          <img src="{{ asset('img/calificacion.png') }}" class="d-block w-100" >
+          {# <img src="{{ asset('img/calificacion.png') }}" class="d-block w-100" > #}
        </div>
         
         <!-- Controles -->
@@ -178,38 +173,55 @@
   </div>
 {#..............................................................................................................#}
 </div>
-{# 
- <h1>Tus Tours</h1>
 
-    {% if tours is not empty %}
-        <ul>
-            {% for tour in tours %}
-                <li>
-                    <strong>ID:</strong> {{ tour.id }}<br>
-                    <strong>Nombre:</strong> {{ tour.getCodRuta().nombre}}<br>
-                    <strong>Fecha y Hora:</strong> {{ tour.getFechaHora()|date('Y-m-d H:i:s') }}<br>
-                    {# Agrega más detalles según tus necesidades #}
-                {# </li> #}
-            {# {% endfor %}
-        </ul>
-    {% else %}
-        <p>No tienes tours asignados.</p>
-    {% endif %}
 
- {% for key, tour in tours %}
-    <h2>Tour ID: {{ tour.id }}</h2>
-    <ul>
-        {% for userTour in userTours[key] %}
-            <li>
-                <strong>UserTour ID:</strong> {{ userTour.id }}<br>
-                <strong>Nombre:</strong> {{ userTour.getCodUser().nombre }}<br>
+{#.......................TOURS DE LA BASE DE DATOS-------------------------------------------------------------------------------------------------------------------#} 
 
-                <strong>Fecha de Reserva:</strong> {{ userTour.getFechaReserva()|date('Y-m-d H:i:s') }}<br>
-                
-                {# Agrega más detalles según tus necesidades #}
-            {# </li> #}
-        {# {% endfor %}
-    </ul>
-{% endfor %} #} 
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold text-uppercase">Las Rutas Más Destacadas</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for ruta in rutas['rutas'] %}
+            <div class="col">
+                <div class="card h-100 animate__animated animate__fadeIn">
+                    <img src="{{ asset('public/img/visitas/' ~ ruta['foto']) }}" class="card-img-top" alt="{{ ruta['nombre'] }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title text-uppercase" style="color: green;"><strong> <i>{{ ruta['nombre'] }}</i> </strong></h5>
+                        {# <p class="card-text">{{ ruta['descripcion']|raw }}</p> #}
+                        <p class="card-text"> <i> Fechas:<strong> {{ ruta['fecha_inicio']|date('Y-m-d') ~ ' - ' ~ ruta['fecha_fin']|date('Y-m-d') }}</strong></i> </p>
+                        <p class="card-text" ><i class="fab fa-mdb"></i> PRECIO: <strong style="color: red;"> 0€ </strong></p>
+                        <button type="button" class="btn btn-reservar" data-bs-toggle="modal" data-bs-target="#reservarModal">
+                            Reservar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="reservarModal" tabindex="-1" aria-labelledby="reservarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservarModalLabel">Reservar Tour</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Agrega aquí el contenido del modal, como formularios de inicio de sesión o registro -->
+                <p>NO PUEDES RESERVAR DESDE TU PERFIL GUIA - SÉ CLIENTE</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 {% endblock %}

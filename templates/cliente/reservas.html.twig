@@ -2,6 +2,21 @@
 
 {% block title %}Reservas{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            // Verifica si la variable Twig indica que la valoración ya existe
+            {% if app.request.method == 'POST' %}
+                {% if existe %}
+                    // Muestra el modal de valoración existente
+                    $('#modal-valoracion-existente').modal('show');
+                {% endif %}
+            {% endif %}
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
 
 {########....CABEZERA...###########}
@@ -28,7 +43,7 @@
         <a class="nav-link link-success">Reservas</a>
     </div>
     <div class="p-2">
-        <a class="nav-link" id="otraOpcion-link" href="#">Otra opcion</a>
+        <a class="nav-link" id="otraOpcion-link" href="{{path('app_cliente_valoracion') }}">Valoraciones</a>
     </div>
 
     <!-- Botón de cerrar sesión -->
@@ -49,8 +64,8 @@
 {% block main %}
  
 
-    <div class="container mt-5">
-        <h1 class="mb-4">Mis Reservas</h1>
+    <div class="container mt-2">
+        <h2 class="mb-4 display-1 text-success text-decoration-underline text-uppercase text-center">Gestión de reservas</h3>
 
 {% if reservasUsuario is not empty %}
     <ul class="list-group">
@@ -60,17 +75,51 @@
             
             <li class="list-group-item {% if fechaPasada %}list-group-item-danger{% else %}list-group-item-success{% endif %}">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0">Fecha de tu reserva: {{ reserva.getFechaReserva()|date('Y-m-d H:i:s') }}</h5>
-                        <p class="mb-0">Asistentes: {{ reserva.getAsistentes() }}</p>
-                    </div>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
-                        Detalles del Tour
+                    <button class="btn btn-link text-start p-0" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
+                        <div>
+                            <h5 class="mb-0">Fecha de tu reserva: {{ reserva.getFechaReserva()|date('Y-m-d H:i:s') }}</h5>
+                            <p class="mb-0">Asistentes: {{ reserva.getAsistentes() }}</p>
+                        </div>
                     </button>
                     {% if fechaPasada %}
-                        <button class="btn btn-danger" type="button" data-bs-toggle="collapse" data-bs-target="#tourDetails{{ reserva.getId() }}" aria-expanded="false" aria-controls="tourDetails{{ reserva.getId() }}">
-                            Hacer valoración
-                        </button>
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#valoracionModal{{ reserva.getId() }}">
+    Hacer valoración
+</button>
+
+<!-- Formulario de Valoración -->
+<!-- Formulario de Valoración -->
+<div class="modal fade" id="valoracionModal{{ reserva.getId() }}" tabindex="-1" aria-labelledby="valoracionModalLabel{{ reserva.getId() }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="valoracionModalLabel{{ reserva.getId() }}">Valoración del Tour</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ path('ruta_para_procesar_valoracion') }}" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="cod_reserva" value="{{ reserva.getId() }}">
+                    <div class="mb-3">
+                        <label for="nota_guia" class="form-label">Nota Guía:</label>
+                        <input type="number" name="nota_guia" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nota_ruta" class="form-label">Nota Ruta:</label>
+                        <input type="number" name="nota_ruta" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comentario" class="form-label">Comentario:</label>
+                        <textarea name="comentario" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Enviar Valoración</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
                     {% endif %}
                 </div>
 
@@ -90,5 +139,51 @@
     <p class="mt-4">No tienes reservas actualmente.</p>
 {% endif %}
 
+
     </div>
+
+
+
+<!-- Agrega este código al final de tu archivo Twig para definir el modal -->
+<div class="modal fade" id="modal-valoracion-existente" tabindex="-1" role="dialog" aria-labelledby="modal-valoracion-existente-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-valoracion-existente-label">Ya has realizado una valoración</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Ya has realizado una valoración para esta reserva.</p>
+                <!-- Puedes agregar más contenido al modal según tus necesidades -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <!-- Puedes agregar más botones o acciones según tus necesidades -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script>
+    function mostrarFormularioValoracion(idReserva) {
+        // Oculta todos los formularios de valoración
+        $('[id^=form-valoracion]').collapse('hide');
+        
+        // Muestra el formulario de valoración correspondiente a la reserva seleccionada
+        $('#form-valoracion-' + idReserva).collapse('show');
+    }
+</script>
+
+
+ 
+
 {% endblock %}

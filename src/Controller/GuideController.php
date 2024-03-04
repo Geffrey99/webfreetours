@@ -9,20 +9,33 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Tour;
 use App\Entity\UserTour;
 use App\Entity\Informe;
+use App\Entity\Ruta;
+use App\Entity\User;
+use App\Controller\Api\DevueltaRoute;
+use App\Repository\InformeRepository;
 use App\Form\InformeType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+
 class GuideController extends AbstractController
 {
 
-private $entityManager;
 
-public function __construct(EntityManagerInterface $entityManager)
+private DevueltaRoute $devueltaRoute;
+private SerializerInterface $serializer;
+private EntityManagerInterface $entityManager;
+public function __construct(DevueltaRoute $devueltaRoute, SerializerInterface $serializer, EntityManagerInterface $entityManager)
 { 
+    $this->devueltaRoute = $devueltaRoute;
+    $this->serializer = $serializer;
     $this->entityManager = $entityManager;
+
 }
 
 
@@ -30,25 +43,13 @@ public function __construct(EntityManagerInterface $entityManager)
     public function index(): Response
     {
 
-        $user = $this->getUser();
-
-        if (in_array('ROLE_GUIDE', $user->getRoles(), true)) {
-
-            $tours = $this->entityManager->getRepository(Tour::class)->findBy(['id_guide' => $user->getId()]);
-            // return $this->redirectToRoute('guide_dashboard');
-         
-            $userTours = [];
-            foreach ($tours as $tour) {
-                $userTours[] = $this->entityManager->getRepository(UserTour::class)->findBy(['cod_tour' => $tour->getId()]);
-            }
+        $response = $this->devueltaRoute->uploadCreateRoute(new Request(), $this->entityManager);
+        $rutas = json_decode($response->getContent(), true);
+      
         return $this->render('guide/index.html.twig', [
             'controller_name' => 'GuideController',
-            'tours'=>$tours,
-            'userTours' => $userTours,
-        ]);
-      }  else {
-            return $this->redirectToRoute('app_home');
-        }
+            'rutas'=> $rutas
+        ]);  
     }
 
 
@@ -78,17 +79,15 @@ public function toursAsignados(Request $request): Response
                 $tourId = $form->get('cod_tour')->getData();
                 $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
             }
-            // $tourId = $form->get('cod_tour')->getData();
-            // $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
-            // $existingInforme = $this->entityManager->getRepository(Informe::class)->findOneBy(['cod_tour' => $tour]);
 
-            // if ($existingInforme) {
-            //     // Manejar el caso cuando el tour ya tiene un informe
-            //     $this->addFlash('error', 'Este tour ya tiene un informe.');
-            //     // Puedes redirigir a donde desees o simplemente retornar la respuesta
-            //     return new JsonResponse(['error' => 'Este tour ya tiene un informe.'], 400);
-            // }
-            // Configurar el tour en el bucle para que sea el correcto
+            $existingInforme = $this->entityManager->getRepository(Informe::class)->findOneBy(['cod_tour' => $tour]);
+            if ($existingInforme) {
+
+                 return $this->redirectToRoute('app_guide_informe');
+
+               
+            }
+          
             $informe = new Informe();
             $informe->setCodTour($tour);
             $informe->setObservaciones($form->get('observaciones')->getData());
@@ -104,9 +103,7 @@ public function toursAsignados(Request $request): Response
 
                 $this->addFlash('success', 'Informe creado con éxito.');
 
-                // Puedes agregar aquí una lógica para actualizar la página o cargar los datos necesarios
             
-            // Puedes agregar aquí una lógica para actualizar la página o cargar los datos necesarios
         }
 
         return $this->render('guide/tours_asignados.html.twig', [
@@ -119,6 +116,35 @@ public function toursAsignados(Request $request): Response
         return $this->redirectToRoute('app_home');
     }
 }
+
+
+#[Route('/misInformes', name: 'mis_informes')]
+public function misInformes(InformeRepository $informeRepository): Response
+{
+   
+    $user = $this->getUser();
+
+        if ($user && in_array('ROLE_GUIDE', $user->getRoles(), true)) {
+            $toursAsignados = $this->entityManager->getRepository(Tour::class)->findBy(['id_guide' => $user->getId()]);
+            
+            $informesUsuario = [];
+            foreach ($toursAsignados as $tour) {
+                $informe = $informeRepository->findOneBy(['cod_tour' => $tour->getId()]);
+                if ($informe) {
+                    $informesUsuario[] = $informe;
+                }
+            }
+
+            return $this->render('guide/informesTours.html.twig', [
+                'informesUsuario' => $informesUsuario,
+            ]);
+        }
+
+        // Redirigir si el usuario no está autenticado o no es un guía
+        return $this->redirectToRoute('app_home');
+    }
+
+
 
 
 private function handleImageUpload(UploadedFile $file): string
@@ -158,7 +184,7 @@ public function formularioInforme(Request $request, int $tourId): Response
 
                 $this->addFlash('success', 'Informe creado con éxito.');
 
-                // Puedes agregar aquí una lógica para actualizar la página o cargar los datos necesarios
+                
             }
 
             return $this->render('guide/informe.html.twig', [
@@ -166,7 +192,7 @@ public function formularioInforme(Request $request, int $tourId): Response
             ]);
         } else {
             $this->addFlash('error', 'No se puede crear un informe para este tour.');
-            // Puedes manejar el caso cuando la fecha no ha pasado, por ejemplo, mostrando un mensaje en la página
+           
         }
     } else {
         return $this->redirectToRoute('app_home');
@@ -174,47 +200,4 @@ public function formularioInforme(Request $request, int $tourId): Response
 }
 
 
-
-
-//     #[Route('/guide', name: 'app_guide')]
-// public function index(): Response
-// {
-//     $user = $this->getUser();
-
-//     if (in_array('ROLE_GUIDE', $user->getRoles(), true)) {
-//         // Obtener todos los tours relacionados con el guía
-//         $tours = $this->entityManager->getRepository(Tour::class)->findBy(['id_guide' => $user->getId()]);
-
-//         // Cargar información adicional relacionada con los tours y usuarios en una sola consulta
-//         $toursWithUserTours = $this->entityManager->getRepository(Tour::class)
-//             ->createQueryBuilder('t')
-//             ->select('t', 'ut') // Seleccionar el tour y los userTours
-//             ->leftJoin('t.userTours', 'ut') // Hacer una LEFT JOIN con userTours
-//             ->where('t.id_guide = :guideId')
-//             ->setParameter('guideId', $user->getId())
-//             ->getQuery()
-//             ->getResult();
-
-//         return $this->render('guide/index.html.twig', [
-//             'controller_name' => 'GuideController',
-//             'tours' => $toursWithUserTours,
-//         ]);
-//     } else {
-//         return $this->redirectToRoute('app_home');
-//     }
-
-
- /**
-     * @Route("/seleccionar-guias", name="seleccionar_guias")
-     */
-    // public function seleccionarGuias()
-    // {
-    //     $entityManager = $this->getDoctrine()->getManager();
-    //     $userRepository = $entityManager->getRepository('App\Entity\User');
-
-    //     // Seleccionar usuarios con el rol 'ROLE_GUIDE'
-    //     $guias = $userRepository->findBy(['roles' => ['ROLE_GUIDE']]);
-
-    //     return $this->render('crear_ruta/index.html.twig', ['guias' => $guias]);
-    // }
 }

@@ -32,10 +32,10 @@ class TourApi extends AbstractController
     #[Route('/gettours', name: 'api_tours')]
     public function getTours(): Response
     {
-        // Obtén los tours desde tu repositorio
+        
         $tours = $this->entityManager->getRepository(Tour::class)->findAll();
     
-        // Convierte los tours a un formato que FullCalendar pueda entender
+       
         $toursArray = [];
         foreach ($tours as $tour) {
             $toursArray[] = [
@@ -43,43 +43,43 @@ class TourApi extends AbstractController
                 'title' => $tour->getCodRuta()->getNombre() . ' - ' . $tour->getFechaHora()->format('H:i'),
                // 'hora' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
                'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
-                // Agrega aquí otros campos según sea necesario
+               
             ];
         }
     
-        // Devuelve los datos en formato JSON
+       
         return new JsonResponse($toursArray);
     }
 
     #[Route('/gettour/{id}', name: 'api_tour')]
     public function getToursByRuta($id): Response
     {
-        // Obtén la ruta desde tu repositorio
+       
         $ruta = $this->entityManager->getRepository(Ruta::class)->find($id);
     
         if (!$ruta) {
             throw $this->createNotFoundException('No se encontró la ruta con id '.$id);
         }
     
-        // Obtén los tours relacionados con la ruta
-        $tours = $ruta->getTours(); // Asume que tienes un método getTours en tu entidad Ruta
+       
+        $tours = $ruta->getTours();
     
-        // Convierte los tours a un formato que puedas utilizar
+       
         $toursArray = [];
         foreach ($tours as $tour) {
             $toursArray[] = [
                  'id' => $tour->getId(),
-                'title' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
-                'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
-                // Agrega aquí otros campos según sea necesario
+                'title' => $tour->getFechaHora()->format('H:i'),  
+                'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  
+                
             ];
         }
     
-        // Devuelve los datos en formato JSON
+       
         return new JsonResponse($toursArray);
     }
     
 
-    // Devuelve los datos en formato JSON
+   
 
 }    

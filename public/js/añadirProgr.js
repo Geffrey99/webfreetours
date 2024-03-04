@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
 
-    // Evento click para el botón de guardar
+   
     $("#guardar").click(function(e) {
         e.preventDefault();
 
@@ -35,7 +35,7 @@ $(document).ready(function() {
         var guiaNombre = $("#selectGuia option:selected").text();
         
 
-        // Agregar fila a la tabla
+       
         var fila = $("<tr>").appendTo("#tabla tbody");
         fila.data("guiaId", guiaId);
         $("<td>").text(from + " - " + to).appendTo(fila);

@@ -40,8 +40,8 @@ class RutaVisitaController extends AbstractController
         $visitasIds = json_decode($request->request->get('visitasIds'));
         
         $rutaId = $request->request->get('rutaId');
-// var_dump($visitasIds);
-// var_dump($rutaId);
+        // var_dump($visitasIds);
+        // var_dump($rutaId);
         // Buscar la Ruta
         $ruta = $this->rutaRepository->find($rutaId);
 
