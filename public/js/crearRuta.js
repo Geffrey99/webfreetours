@@ -9,7 +9,7 @@ $(function(){
     });
     
    
-    // Resto de tu código...
+   
 
     $(textarea).richText({
         height: "auto",
@@ -54,7 +54,6 @@ $(function(){
     });
 
     
-//######_______SELECCIONAR LA FECHA Y HORA (INICIO Y FIN) DEL EVENTO (DATETIMEPICKER)
 
 
 

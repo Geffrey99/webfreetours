@@ -123,7 +123,7 @@ class RutaApi extends AbstractController
     
         foreach ($data['programacion'] as $programacion) {
             // Convertir las fechas al formato 'Y-m-d'
-            echo date_default_timezone_get(); 
+            // echo date_default_timezone_get(); 
             list($fechaInicio, $fechaFin) = explode(' - ', $programacion['rangoFecha']);
             $fechaInicio = \DateTime::createFromFormat('d/m/Y', $fechaInicio);
             $fechaFin = \DateTime::createFromFormat('d/m/Y', $fechaFin);
@@ -142,7 +142,7 @@ class RutaApi extends AbstractController
                 $tour->setCodRuta($ruta);
                 $fecha_hora = \DateTime::createFromFormat('Y-m-d H:i', $fecha->format('Y-m-d') . ' ' . $programacion['hora'], new \DateTimeZone('Europe/Berlin'));
                 // var_dump($fecha_hora);
-                var_dump($fecha_hora->format('Y-m-d H:i:s'));
+                // var_dump($fecha_hora->format('Y-m-d H:i:s'));
                 $tour->setFechaHora($fecha_hora);
                 $tour->setIdGuide($programacion['guia']);
     
@@ -155,7 +155,7 @@ class RutaApi extends AbstractController
         $this->entityManager->flush();
     
        
-        return new JsonResponse(['message' => 'Programación asignada Y TOUR CREADOS CON EXITO'], JsonResponse::HTTP_OK);
+        return new JsonResponse(['message' => 'Programación asignada Y TOUR CREADOS CON EXITO']);
     }
     
     

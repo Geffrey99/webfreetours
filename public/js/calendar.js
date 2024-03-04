@@ -1,10 +1,10 @@
 $(document).ready(function() {
-    var request_calendar = "/api/ruta/gettours";  // URL de tu API
+    var request_calendar = "/api/ruta/gettours";  
 
     var calendarEl = $('#calendar');
     var calendar = new FullCalendar.Calendar(calendarEl[0], {
         initialView: 'dayGridMonth',
-        locale: 'es',  // Configuración en español
+        locale: 'es',  
 
         events: function(fetchInfo, successCallback, failureCallback) {
             $.ajax({
@@ -15,9 +15,8 @@ $(document).ready(function() {
                     var events = data.map(function(event) {
                         return {
                             title: event.title,
-                            // hora: event.hora,
                             start: event.start,
-                            // Agrega aquí otros campos según sea necesario
+                           
                         };
                     });
                     successCallback(events);
@@ -29,15 +28,30 @@ $(document).ready(function() {
         },
 
         eventContent: function(info) {
-            return {
-                html: `
-                <div style="overflow: hidden; font-size: 12px; position: relative; cursor: pointer; font-family: 'Inter', sans-serif;">
-                    <div><strong>${info.event.title}</strong></div>
-                    
-                   
-                </div>
-                `
-            };
+
+            var now = new Date();
+            var eventDate = new Date(info.event.start);
+
+            // Comparar la fecha del evento con la fecha actual
+            if (eventDate < now) {
+                // Evento pasado: resaltar en rojo
+                return {
+                    html: `
+                        <div style="overflow: hidden; font-size: 12px; position: relative; cursor: pointer; font-family: 'Inter', sans-serif; color: red;">
+                            <div><strong>${info.event.title}</strong></div>
+                        </div>
+                    `
+                };
+            } else {
+                // Evento futuro: resaltar en verde
+                return {
+                    html: `
+                        <div style="overflow: hidden; font-size: 12px; position: relative; cursor: pointer; font-family: 'Inter', sans-serif; color: green;">
+                            <div><strong>${info.event.title}</strong></div>
+                        </div>
+                    `
+                };
+            }
         },
 
         eventMouseEnter: function(mouseEnterInfo) {

@@ -20,6 +20,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
 USE Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\MessageGenerator;
+
 
 class ClienteController extends AbstractController
 {
@@ -81,7 +83,7 @@ class ClienteController extends AbstractController
 
 
   #[Route('/reservar/{tourId}', name: 'reservar_tour')]
-    public function reservar(Request $request, $tourId, UserInterface $user): Response 
+    public function reservar(Request $request, $tourId, UserInterface $user, MessageGenerator $messageGenerator): Response 
     {
         // Obtener el tour según el ID proporcionado
         $tour = $this->entityManager->getRepository(Tour::class)->find($tourId);
@@ -111,6 +113,21 @@ class ClienteController extends AbstractController
             $userTour->setCodTour($tour);
             $this->entityManager->persist($userTour);
             $this->entityManager->flush();
+
+            $nombreUsuario = $userTour->getCodUser()->getNombre(); // Reemplaza 'nombreUsuario' con el nombre real del campo en tu entidad UserTour
+            $fechaReserva = $userTour->getFechaReserva()->format('Y-m-d H:i:s');
+            $Asistentes = $userTour->getAsistentes();
+            // Agrega más campos según tu estructura de formulario y entidad
+    
+            $cuerpoCorreo = "Gracias por reservar el tour. Detalles de la reserva:\n";
+            $cuerpoCorreo .= "Nombre del usuario: $nombreUsuario\n";
+            $cuerpoCorreo .= "Fecha de reserva: $fechaReserva\n";
+            $cuerpoCorreo .= "Asistentes: $Asistentes\n";
+            // Agrega más líneas según la información que desees incluir
+    
+            // Llama al método sendMail del servicio MessageGenerator
+            $correo = $user->getEmail();  // O la dirección de correo relevante
+            $messageGenerator->sendMail($correo, $cuerpoCorreo);
 
             return $this->redirectToRoute('verReservas');
         }

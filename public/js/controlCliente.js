@@ -10,9 +10,9 @@ $(document).ready(function () {
                 url: '/api/ruta/gettour/' + id,
                 type: 'GET',
                 success: function (data) {
-                    // Realiza la acción deseada con los datos
+                    
                     $.each(data, function (i, tour) {
-                        // Ejemplo: Redireccionar a la página de reserva
+                        
                         window.location.href = '/reservar/' + tour.id + '?userId=' + userId;
                     });
                 },

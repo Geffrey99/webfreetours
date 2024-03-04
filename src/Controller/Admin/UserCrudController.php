@@ -31,7 +31,7 @@ class UserCrudController extends AbstractCrudController
             IdField::new('id')->onlyOnDetail(),
             TextField::new('email'),
             ArrayField::new('ROLES'),
-            PasswordField::new('password'),
+            // PasswordField::new('password'),
             BooleanField::new('is_verified'),
             TextField::new('nombre'),
             ImageField::new('foto')

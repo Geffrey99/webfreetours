@@ -18,6 +18,12 @@ class Informe
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Tour $cod_tour = null;
 
+    /**
+ * @ORM\OneToOne(targetEntity=Tour::class, inversedBy="informe", cascade={"persist", "remove"})
+ * @ORM\JoinColumn(name="cod_tour_id", referencedColumnName="id", onDelete="CASCADE")
+ */
+
+
     #[ORM\Column(length: 255)]
     private ?string $imagen = null;
 

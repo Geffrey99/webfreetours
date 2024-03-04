@@ -44,11 +44,11 @@ $(document).ready(function() {
         $("<td>").text(guiaNombre).appendTo(fila);
     });
 
-    // Evento click para el botón de recoger datos y enviarlos al servidor
+    
     $("#btnCrearProgramacion").click(function() {
         var datos = [];
 
-        // Iterar sobre cada fila de la tabla
+       
         $("#tabla tbody tr").each(function() {
             var fila = $(this);
 
@@ -58,7 +58,7 @@ $(document).ready(function() {
             // var guia = fila.find("td:nth-child(4)").text();
             var guiaId = fila.data("guiaId");
 
-            // Añadir un objeto con los datos de la fila al array
+            
             datos.push({
                 rangoFecha: rangoFecha,
                 dias: dias,
@@ -67,26 +67,29 @@ $(document).ready(function() {
             });
         });
         var rutaId = localStorage.getItem('rutaId');
-        // Enviar los datos al servidor
+        
         $.ajax({
-            url: '/api/ruta/assign_programacion', // Reemplaza con la ruta correcta en tu aplicación
+            url: '/api/ruta/assign_programacion',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({  rutaId: rutaId , programacion: datos }),
+            data: JSON.stringify({ rutaId: rutaId, programacion: datos }),
             success: function(response) {
-                console.log(response); // Hacer algo con la respuesta del servidor si es necesario
+                console.log(response);
                 swal({
                     icon: 'success',
-                    title: '¡Programacion de ruta!' .rutaId + ' creada correctamente!',
+                    title: '¡Programación de ruta creada correctamente!',
                     text: 'Tours creados.',
+                }).then(function() {
+                    window.location = "/admin";
                 });
+                
             },
             error: function(error) {
                 console.error(error);
                 swal({
                     icon: 'error',
                     title: '¡Error!',
-                    text: 'Hubo un problema al crear la programacion. Inténtalo de nuevo.',
+                    text: 'Hubo un problema al crear la programación. Inténtalo de nuevo.',
                 });
             }
         });

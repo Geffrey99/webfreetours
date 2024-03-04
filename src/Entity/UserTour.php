@@ -24,6 +24,9 @@ class UserTour
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fecha_reserva = null;
+    
+    #[ORM\OneToOne(mappedBy: 'cod_reserva', targetEntity: Valoracion::class, cascade: ['persist', 'remove'])]
+    private ?Valoracion $valoracion = null;
 
     #[ORM\Column]
     private ?int $asistentes = null;

@@ -25,6 +25,12 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    
+    App\Service\MessageGenerator:
+        arguments:
+            $logger: '@logger'
+            $adminEmail: 'geffrey@freetour.es'  # Configura aquí la dirección de correo deseada
+            $mailer: '@mailer'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

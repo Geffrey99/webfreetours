@@ -39,11 +39,11 @@ $(document).ready(function() {
         console.log('Fecha de fin:', fechaFin);
         console.log('Datos del formulario:', formData);
     
-        // Verificar si los campos requeridos están llenos
+        
         if (!validarCampos()) {
             return;
         }
-        // Enviar los datos a la API
+        
         $.ajax({
             url: '/api/ruta/insert',
             type: 'POST',
@@ -75,17 +75,16 @@ $(document).ready(function() {
 
 
     function validarCampos() {
-        // Obtener los valores de los campos
+       
         const nombre = $('#inputTitulo').val().trim();
         const descripcion = $('#textarea').val().trim();
         const foto = $('input[type="file"][id^="images-"]')[0].files[0];
         const puntoInicioX = $('#x').val().trim();
         const puntoInicioY = $('#y').val().trim();
         const participantes = $('#aforo').val().trim();
-        const fechaInicio = obtenerFechaInicio(); // Debes implementar esta función
-        const fechaFin = obtenerFechaFin(); // Debes implementar esta función
-    
-        // Verificar si los campos requeridos están llenos
+        const fechaInicio = obtenerFechaInicio(); 
+        const fechaFin = obtenerFechaFin(); 
+       
         if (nombre === '' || descripcion === '' || !foto || puntoInicioX === '' || puntoInicioY === '' || participantes === '' || !fechaInicio || !fechaFin) {
             // Mostrar mensaje de error con SweetAlert
             swal({
@@ -93,24 +92,22 @@ $(document).ready(function() {
                 title: 'Error',
                 text: 'Por favor, completa todos los campos requeridos.',
             });
-            return false; // Detener el envío del formulario
+            return false; 
         }
     
-        // Todos los campos están llenos, continuar con el envío del formulario
+        
         return true;
     }
 
 
     function obtenerFechaInicio() {
-        // Lógica para obtener la fecha de inicio
-        // ...
-        return '2024-00-00'; // Ejemplo
+        return '2024-00-00'; 
     }
     
     function obtenerFechaFin() {
-        // Lógica para obtener la fecha de fin
-        // ...
-        return '2024-00-00'; // Ejemplo
+       
+       
+        return '2024-00-00'; 
     }
 
 

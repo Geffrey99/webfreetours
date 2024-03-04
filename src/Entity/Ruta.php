@@ -33,13 +33,13 @@ class Ruta
     #[ORM\Column]
     private ?int $participantes = null;
 
-    #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: Tour::class)]
+    #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: Tour::class, cascade: ['persist', 'remove'])]
     private Collection $tours;
 
     #[ORM\Column(type: "json")]
     private ?array $programacion = null;
 
-    #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: RutaVisita::class)]
+    #[ORM\OneToMany(mappedBy: 'cod_ruta', targetEntity: RutaVisita::class, cascade: ['persist', 'remove'])]
     private Collection $rutaVisitas;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

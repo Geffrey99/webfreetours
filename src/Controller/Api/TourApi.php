@@ -40,10 +40,12 @@ class TourApi extends AbstractController
         foreach ($tours as $tour) {
             $toursArray[] = [
                 // 'id' => $tour->getId(),
-                'title' => $tour->getCodRuta()->getNombre() . ' - ' . $tour->getFechaHora()->format('H:i'),
+
+                'title' => $tour->getCodRuta()->getNombre() . ' - ' . $tour->getFechaHora()->format('H:i') . ' - IdGuia: ' . $tour->getIdGuide(),
                // 'hora' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
                'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
-               
+              // 'guia'=> $tour->getIdGuide(),
+            //    'end' => $tour->getFechaHora()->modify('+2 hours')->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
             ];
         }
     

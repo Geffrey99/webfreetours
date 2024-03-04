@@ -24,8 +24,11 @@ class Tour
     #[ORM\ManyToOne(inversedBy: 'tours')]
     private ?Ruta $cod_ruta = null;
 
-    #[ORM\OneToMany(mappedBy: 'cod_tour', targetEntity: UserTour::class)]
+    #[ORM\OneToMany(mappedBy: 'cod_tour', targetEntity: UserTour::class, cascade: ['persist', 'remove'])]
     private Collection $userTours;
+
+    #[ORM\OneToOne(mappedBy: 'cod_tour', targetEntity:Informe::class, cascade: ['persist', 'remove'])]
+    private ?Informe $informe = null;
 
     #[ORM\Column(length: 255)]
     private ?string $id_guide = null;

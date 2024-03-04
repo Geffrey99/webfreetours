@@ -32,7 +32,7 @@ $(document).ready(function() {
                 rutaId: rutaId  
             },
             success: function(response) {
-                // Manejar la respuesta del servidor
+               
                 console.log('RutaVisita creada con éxito:', response);
             },
             error: function(error) {
