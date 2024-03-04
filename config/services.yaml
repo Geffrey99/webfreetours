@@ -1,8 +1,5 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+###############__para configuracion de servicios
+#######################################
 parameters:
     fotos_perfil: 'public/img/perfil/'
     fotos_visitas: 'public/img/visitas/'
@@ -29,8 +26,20 @@ services:
     App\Service\MessageGenerator:
         arguments:
             $logger: '@logger'
-            $adminEmail: 'geffrey@freetour.es'  # Configura aquí la dirección de correo deseada
+            $adminEmail: 'geffrey@freetour.es' 
             $mailer: '@mailer'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+   
+    App\Command\CrearAdminUserCommand:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $passwordEncoder: '@security.password_hasher'
+        tags:
+            - { name: 'console.command' }
+
+##para cifrar contraseñas
+security:
+    password_hashers:
+        App\Entity\User:
+            algorithm: auto
+            cost: 12

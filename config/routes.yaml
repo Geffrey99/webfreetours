@@ -32,6 +32,15 @@ app_guide_informe:
     controller: App\Controller\GuideController::misInformes
     methods: GET|POST
 
+app_pasar_lista:
+    path: /guide/pasarLista
+    controller: App\Controller\GuideController::pasarLista
+
+update_user_tour_num_gente_reserva:
+    path: '/api/user-tour/{id}/update-num-gente-reserva'
+    controller: 'App\Controller\Api\UserTourLista::updateNumGenteReserva'
+    methods: ['POST']
+  
 
 ##-------------------------------------------------------------- Rutas para el cliente    
 cliente_dashboard:

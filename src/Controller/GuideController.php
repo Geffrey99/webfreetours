@@ -200,4 +200,39 @@ public function formularioInforme(Request $request, int $tourId): Response
 }
 
 
+
+#[Route('/pasarLista', name: 'app_pasar_lista')]
+public function PasarLista(Request $request): Response
+{
+    $user = $this->getUser();
+
+    if (in_array('ROLE_GUIDE', $user->getRoles(), true)) {
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $tours = $this->entityManager->getRepository(Tour::class)->findAll();
+        $userTours = [];
+
+        foreach ($tours as $tour) {
+            // Añade el tour solo si es de la fecha actual
+            if ($tour->getFechaHora()->format('Y-m-d') == $today->format('Y-m-d')) {
+                $tourUserTours = $this->entityManager->getRepository(UserTour::class)->findBy([
+                    'cod_tour' => $tour->getId(),
+                ]);
+
+                $userTours[] = [
+                    'tour' => $tour,
+                    'userTours' => $tourUserTours,
+                ];
+            }
+        }
+
+        return $this->render('guide/pasarLista.html.twig', [
+            'userTours' => $userTours,
+            'today' => $today,
+        ]);
+    } else {
+        return $this->redirectToRoute('app_home');
+    }
+}
 }
