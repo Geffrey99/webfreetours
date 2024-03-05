@@ -55,6 +55,13 @@ class RutaCrudController extends AbstractCrudController
 }
 
 
+public function editRedirect(AdminContext $context){
+    $entityInstance = $context->getEntity()->getInstance();
+    $id= $entityInstance->getId();
+    
+    return $this->redirectToRoute('edit-route',['id' => $id]);
+}
+
 public function configureActions(Actions $actions): Actions
     {
         return $actions
@@ -63,12 +70,40 @@ public function configureActions(Actions $actions): Actions
                     ->linkToRoute('app_crear_ruta', []);
                    
             })
-            ->disable(Action::EDIT);
+            ->update(Crud::PAGE_INDEX, Action::EDIT,function(Action $action){
+                return $action
+                    ->linkToCrudAction('editRedirect') //Redirijir Action::EDIT a formulario personalizado en plantilla twig
+                    ->setIcon('fa fa-file-alt') // Icono personalizado 
+                    ->setLabel("Editar") // Label personalizado
+                ;
+            });
+            // ->disable(Action::EDIT);
             // ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
             //     return $action
             //         ->linkToRoute('app_editar_ruta', []);
             // });
-    }
+            }
+
+
+   
+
+
+    // public function configureActions(Actions $actions): Actions
+    // {
+    //     return $actions
+
+    //         ->update(Crud::PAGE_INDEX, Action::EDIT,function(Action $action){
+    //             return $action
+    //                 ->linkToCrudAction('editRedirect') //Redirijir Action::EDIT a formulario personalizado en plantilla twig
+    //                 ->setIcon('fa fa-file-alt') // Icono personalizado 
+    //                 ->setLabel("Editar") // Label personalizado
+    //             ;
+    //         })
+    //     ;
+    // }
+
+
+
 
 
 

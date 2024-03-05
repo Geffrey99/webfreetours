@@ -3,13 +3,36 @@
 {% block myjavascripts %}
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
-    <script src="js/jquery-ui.js"></script>
+    <script src="{{ asset('js/jquery-ui.js') }}" ></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
-     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.min.js'></script>
+     {# <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/index.global.min.js'></script> #}
     <script src="{{ asset('js/calendar.js') }}"></script>
   
 {% endblock %}
 
 {% block main %}
+
     <div style="max-width: 1000px; margin: auto" id='calendar'></div>
+
+    <div class="modal" id="editEventModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Evento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Agregar campos de entrada para editar la información del evento -->
+        <label for="eventTitle">Título del Evento</label>
+        <input type="text" id="eventTitle" class="form-control">
+        <!-- Agregar más campos según sea necesario -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="saveChangesBtn">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

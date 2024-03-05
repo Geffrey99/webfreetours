@@ -60,12 +60,12 @@ $(document).ready(function() {
 
             var newEl = $('<div>');
             var newElTitle = mouseEnterInfo.event.title;
+            var tourId = mouseEnterInfo.event.id;
             newEl.html(`
-                <div
-                    class="fc-hoverable-event"
-                    style="position: absolute; bottom: 100%; left: 0; width: 300px; height: auto; background-color: white; z-index: 50; border: 1px solid #e2e8f0; border-radius: 0.375rem; padding: 0.75rem; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;"
+                <div class="fc-hoverable-event"
+                     style="position: absolute; bottom: 100%; left: 0; width: 300px; height: auto; background-color: white; z-index: 50; border: 1px solid #e2e8f0; border-radius: 0.375rem; padding: 0.75rem; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer;"
                 >
-                    <strong>${newElTitle}</strong>
+                    <strong class="edit-tour-btn" data-toggle="modal" data-target="#editEventModal" data-tour-id="${tourId}">${newElTitle}</strong>
                 </div>
             `);
             el.after(newEl);
@@ -77,4 +77,28 @@ $(document).ready(function() {
     });
 
     calendar.render();
+
+    $(document).on('click', '.edit-tour-btn', function() {
+        var tourId = $(this).data('tour-id');
+        console.log('ID de tour:', tourId);
+        // Aquí puedes hacer una solicitud al servidor para obtener los detalles del tour con el ID 'tourId' y cargar la información en el modal.
+        // Puedes usar AJAX o cualquier otra técnica que prefieras.
+        // Luego, actualiza los campos de entrada del modal con la información del evento.
+        // Por ejemplo:
+        $('#eventTitle').val(newElTitle);
+        // Actualiza otros campos según sea necesario.
+    });
+    $('#saveChangesBtn').on('click', function() {
+        // Obtener los valores actualizados desde los campos de entrada del modal
+        var updatedTitle = $('#eventTitle').val();
+        // Obtener el ID del evento que se está editando
+        var tourId = $('.edit-tour-btn').data('tour-id');
+    
+        // Aquí puedes hacer una solicitud al servidor para actualizar la información del evento con los nuevos valores.
+        // Puedes usar AJAX o cualquier otra técnica que prefieras.
+    
+        // Después de actualizar el evento en el servidor, cierra el modal
+        $('#editEventModal').modal('hide');
+    });
+
 });

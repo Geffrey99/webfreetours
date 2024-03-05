@@ -22,7 +22,6 @@ class TourApi extends AbstractController
 {
     private SerializerInterface $serializer;
     private EntityManagerInterface $entityManager;
-
     public function __construct(SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
         $this->serializer = $serializer;
@@ -48,10 +47,10 @@ class TourApi extends AbstractController
             //    'end' => $tour->getFechaHora()->modify('+2 hours')->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
             ];
         }
-    
-       
         return new JsonResponse($toursArray);
     }
+
+    
 
     #[Route('/gettour/{id}', name: 'api_tour')]
     public function getToursByRuta($id): Response

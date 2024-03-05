@@ -26,7 +26,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PasswordField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\DashboardControllerInterface;
+use Symfony\Component\HttpFoundation\Request; 
+use App\Repository\UserRepository;
+use App\Repository\RutaRepository;
+use App\Repository\VisitaRepository;
+use App\Repository\LocalidadRepository;
+use App\Repository\ProvinciaRepository;
+use App\Repository\TourRepository;
+use App\Repository\LocalitidadRepository;
 
 use Doctrine\ORM\EntityManagerInterface;  
 
@@ -84,7 +94,7 @@ class DashboardController extends AbstractDashboardController
         return parent::configureUserMenu($user)
           ->setName($user->getNombre() . ' /' . $user->getEmail() . '');
             // ->displayUserName(true) // Muestra el nombre del usuario
-            // // ->setAvatarUrl('public/img/perfil/' . $Foto)
+            // ->setAvatarUrl('public/img/perfil/' . $Foto);
             // // ->displayUserAvatar(true) // Muestra la imagen del usuario
             // //  ->setavatarEmail($user->getEmail())
             // ->addMenuItems([
@@ -102,4 +112,19 @@ class DashboardController extends AbstractDashboardController
     }
 
 
+
+    #[Route('/edit-route', name: 'edit-route')]
+    public function editarRuta(EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository/*, $id*/): Response
+    {
+        $id = $request->query->get('id');
+        $route = $entityManager->getRepository(Ruta::class)->find($id);
+        // dd(json_decode($route->getProgramation()));
+        return $this->render('crear_ruta/editar_ruta.html.twig', [
+            'id' => $id,
+            'route' => $route,
+           // 'programations' => json_decode($route->getProgramation()),
+            'localities' => $entityManager->getRepository(Localidad::class)->findAll(),
+            'guides' => $entityManager->getRepository(User::class)->findByRoles(['ROLE_GUIDE'])
+        ]);
+    }
 }

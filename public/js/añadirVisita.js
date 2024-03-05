@@ -13,10 +13,6 @@ $(document).ready(function() {
 
     $( "#sortable1, #sortable2, #sortable3" ).disableSelection();
 
-
-
-
-
     $('#btnCrearVisitasTour').click(function() {
         console.log("dfdfsdfs");
         var visitasIds = $('#sortable2 .visita').map(function() {
