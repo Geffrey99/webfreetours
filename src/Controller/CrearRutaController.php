@@ -5,23 +5,32 @@ namespace App\Controller;
 use App\Entity\Visita;
 use App\Entity\localidad;
 use App\Entity\User;
+use app\Entity\Ruta;
 use App\Repository\UserRepository;
+use App\Repository\RutaRepository;
+USE App\Repository\VisitaRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;  // Asegúrate de importar la clase necesaria
-use App\Repository\VisitaRepository;  // Asegúrate de importar la clase necesaria
+use Doctrine\ORM\EntityManagerInterface;  
+USE Symfony\Component\HttpFoundation\Request;
 use App\Repository\LocalidadRepository;
+USE Symfony\Component\Serializer\SerializerInterface;
+use App\Controller\Api\DevueltaRoute;
 class CrearRutaController extends AbstractController
 {
-    private $entityManager;
-
-    // Inyecta el EntityManager en el constructor
-    public function __construct(EntityManagerInterface $entityManager)
+    private DevueltaRoute $devueltaRoute;
+    private SerializerInterface $serializer;
+    private EntityManagerInterface $entityManager;
+    public function __construct(DevueltaRoute $devueltaRoute, SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
+        $this->devueltaRoute = $devueltaRoute;
+        $this->serializer = $serializer;
         $this->entityManager = $entityManager;
     }
 
+    
+    #[Route('/crear/ruta', name: 'app_crear_ruta')]
     public function index(VisitaRepository $visitaRepository, LocalidadRepository $localidadesRepository, UserRepository $userRepository ): Response
     {
         $localidades = $localidadesRepository->findAllLocalidades();
@@ -52,12 +61,26 @@ class CrearRutaController extends AbstractController
 
     public function seleccionarGuias()
     {
-        // Utiliza el EntityManager para acceder a la base de datos
+        
         $userRepository = $this->entityManager->getRepository('App\Entity\User');
 
-        // Seleccionar usuarios con el rol 'ROLE_GUIDE'
+        
         $guias = $userRepository->findBy(['roles' => ['ROLE_GUIDE']]);
 
         return $guias;
     }
+
+    #[Route('/editar/ruta', name: 'app_editar_ruta')]
+    public function editarRuta(): Response
+    {
+        // $response = $this->devueltaRoute->uploadCreateRoute(new Request(), $this->entityManager);
+        // $rutas = json_decode($response->getContent(), true);
+    
+        return $this->render('crear_ruta/editar_ruta.html.twig', [
+            // 'rutas' => $rutas
+        ]);
+    }
+
+
+
 }

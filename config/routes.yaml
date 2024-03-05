@@ -15,6 +15,14 @@ admin_dashboard:
 app_crear_ruta:
     path: /crear/ruta
     controller: App\Controller\CrearRutaController::index
+app_editar_ruta:
+    path: /editar/ruta
+    controller: App\Controller\CrearRutaController::editarRuta
+update_ruta:
+    path: '/api/ruta/update{id}'
+    controller: 'App\Controller\Api\RutaApi::update'
+    methods: ['PUT']
+
 ##------------------------------------------------------------- Rutas para el guía    
 guide_dashboard:
     path: /guide

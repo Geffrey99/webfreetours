@@ -158,17 +158,82 @@ class RutaApi extends AbstractController
         return new JsonResponse(['message' => 'Programación asignada Y TOUR CREADOS CON EXITO']);
     }
     
+
     
+
+
     #[Route("/update/{id}", name: "update", methods: ["PUT"])]
-    public function update(Request $request, $id, RutaRepository $rutaRepository): Response
+    public function update(Request $request, $id, RutaRepository $rutaRepository): JsonResponse
     {
         $ruta = $rutaRepository->find($id);
+    
         if (!$ruta) {
-            return new Response(null, Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['message' => 'Ruta no encontrada'], Response::HTTP_NOT_FOUND);
         }
-        $data = json_decode($request->getContent(), true);
-       
+    
+        // Obten los datos del cuerpo de la solicitud
+        $nombre = $request->request->get('nombre');
+        $descripcion = $request->request->get('descripcion');
+        $foto = $request->files->get('foto');
+        $puntoInicio = $request->request->get('punto_inicio');
+        $participantes = $request->request->get('participantes');
+        $fechaInicio = $request->request->get('fecha_inicio');
+        $fechaFin = $request->request->get('fecha_fin');
+    
+        // Actualiza los campos según sea necesario
+        $ruta->setNombre($nombre ?? null);
+        $ruta->setDescripcion($descripcion ?? null);
+    
+        // Procesa la foto si se proporciona
+        if ($foto) {
+            $fileName = md5(uniqid()) . '.' . $foto->guessExtension();
+            $foto->move($this->getParameter('fotos_visitas'), $fileName);
+            $ruta->setFoto($fileName);
+        }
+    
+        // Procesa el punto de inicio
+        $puntoInicioArray = explode(',', $puntoInicio);
+        if (count($puntoInicioArray) == 2) {
+            $puntoInicioX = trim($puntoInicioArray[0]);
+            $puntoInicioY = trim($puntoInicioArray[1]);
+            $ruta->setPuntoInicio(['x' => $puntoInicioX, 'y' => $puntoInicioY]);
+        } else {
+            $ruta->setPuntoInicio(null);
+        }
+    
+        $ruta->setParticipantes($participantes ?? null);
+    
+        // Procesa las fechas
+        $fechaInicio = \DateTime::createFromFormat('Y-m-d', $fechaInicio);
+        if ($fechaInicio === false) {
+            throw new \Exception('La fecha de inicio no es válida: ' . $fechaInicio);
+        }
+        $ruta->setFechaInicio($fechaInicio);
+    
+        $fechaFin = \DateTime::createFromFormat('Y-m-d', $fechaFin);
+        if ($fechaFin === false) {
+            throw new \Exception('La fecha de fin no es válida: ' . $fechaFin);
+        }
+        $ruta->setFechaFin($fechaFin);
+    
+        // ... Otros campos de la entidad ...
+    
+        // Guarda los cambios
+        $this->getDoctrine()->getManager()->flush();
+    
+        return new JsonResponse(['message' => 'Ruta actualizada correctamente'], Response::HTTP_OK);
     }
+    
+    // #[Route("/update/{id}", name: "update", methods: ["PUT"])]
+    // public function update(Request $request, $id, RutaRepository $rutaRepository): Response
+    // {
+    //     $ruta = $rutaRepository->find($id);
+    //     if (!$ruta) {
+    //         return new Response(null, Response::HTTP_NOT_FOUND);
+    //     }
+    //     $data = json_decode($request->getContent(), true);
+       
+    // }
 
     #[Route("/delete/{id}", name: "delete", methods: ["DELETE"])]
     public function delete($id, RutaRepository $rutaRepository): Response

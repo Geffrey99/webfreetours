@@ -1,0 +1,240 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% block content_title %}Editar Ruta {% endblock %}
+{% block title %}Editar Ruta{% endblock %}
+
+
+  
+      {% block mystylesheets %}
+<link rel="stylesheet" href="{{ asset('css/jquery-ui.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery-ui.structure.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery-ui.theme.css') }}">
+<link rel="stylesheet" href="{{ asset('css/richtext.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/image-uploader.min.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="{{ asset('css/jquery.datetimepicker.css') }}">
+
+<link rel="stylesheet" href="{{ asset('css/estilo.css') }}">
+
+    
+    {% endblock %}
+
+
+{% block myjavascripts %}
+  
+<script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('js/jquery.richtext.min.js') }}"></script>
+<script src="{{ asset('js/image-uploader.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>    
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://kit.fontawesome.com/91464fdedc.js" crossorigin="anonymous"></script>
+
+
+{# <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> #}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script src="{{ asset('js/crearRuta.js') }}"></script>
+<script src="{{ asset('js/añadirRuta.js') }}"></script>
+<script src="{{ asset('js/extraerVisitas.js') }}"></script>
+<script src="{{ asset('js/añadirVisita.js') }}"></script>
+
+<script src="{{ asset('js/editarRuta.js') }}"></script>
+{# <script src="{{ asset('js/generarTour.js') }}"></script> #}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock %}
+
+
+{% block main %}
+<body>
+    {# <div id="modal"> #}
+        <div id="main">
+
+{#####_________________________________________PESTAÑA CREAR/RUTA_____________________________######}
+                <div id="tabs">
+                    <ul>
+                    <li><a href="#tabs-1">Ruta</a></li>
+
+                    </ul>
+                    <div id="tabs-1">
+                     <label for="rutaSelect">Selecciona una Ruta:</label>
+                     <select id="rutaSelect" name="rutaSelect">
+                    {# {% for ruta in rutas['rutas'] %}
+                     <option value="{{ ruta.id }}" >{{ ruta.nombre }} id: {{ruta.id}}</option>
+                        {% endfor %} #}
+                          </select>
+                    <div class="primerLinea">
+                      <div>
+                        <label for="titulo">Titulo:</label>
+                        <input type="text" name="titulo" id="inputTitulo" required>
+                      </div>
+                      <div>
+                        <label for="fechaRuta">Fecha inicio y fin </label> 
+                        <input type="text" id="daterange" name="daterange" required value="" /> 
+                        </div>
+                        <div>
+                        <label for="aforo" required >Aforo:</label>
+                        <input type="number" min="6" max="20" id="aforo"> 
+                        </div>
+                        </div>
+                         <br>
+                      
+                        <div class="primerLinea">
+                        <div>
+                          <label for="puntoEncuentro" class="subt">Punto de encuentro:</label>
+                        <button id="btnMapa">Mapa</button>
+                        </div>
+                        <div>
+                        <label for="x" required>EjeX:</label>
+                        <input type="number" name="x" id="x">
+                        </div>
+                        <div>
+                        <label for="y" required>EjeY:</label>
+                        <input type="number" name="y" id="y">
+                      </div>
+                      </div>
+                      <br>
+                        <div id="modal"></div>
+                        <label for="descripcion" class="subt">Descripción:</label>
+                        <textarea name="descripcion" id="textarea" cols="1" rows="1"></textarea>
+                        <label for="subirImagen" class="subt">Subir Imagen:</label>
+                          <form action="url" enctype="multipart/form-data" id="foto">
+                        <div id="input-images" class"input-images"></div>
+                        </form>
+                      
+                        
+                        <br>
+                           <button class="btn btn-primary" type="button" id="btnEditar" >EDITAR RUTA</button>
+                    </div>
+{#####_________________________________________PESTAÑA VISITAS____________________________________________________######}
+
+                {# <div id="tabs-2">
+                  <label for="">Selecciona una localidad</label>
+                  <select name="" id="salutation" class="salutation">
+                    <option disabled selected>Click en una</option>
+                    {% for localidad in localidades %}
+                      <option value="{{ localidad.id }}">{{ localidad.nombre }}</option>
+                    {% endfor %}
+                  </select>
+                  <br>
+                  <div class="titulosVisitas">
+                    <label for="">Lugares disponibles</label>
+                    <label for="">Lugares elegidos</label>
+                  </div>
+                  <div id="items" class="items">
+                    <ul id="sortable1" class="droptrue">
+                      {% for visita in visitas %}
+                        <li class="visita" data-localidad="{{ visita.cod_localidad}}" data-visita-id="{{ visita.id }}">
+                          <div class="image-container">
+                            <img src="{{ asset('public/img/visitas/' ~ visita.foto) }}" alt="{{ visita.nombre }}">
+                            <p class="text-center">{{ visita.nombre }}</p>
+                          </div>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                    <ul id="sortable2" class="droptrue">
+                      
+                    </ul>
+                  </div>
+                  <br>
+                    <button class="btn btn-primary" type="button" Id="btnCrearVisitasTour">CREAR VISITAS</button>
+                </div> #}
+
+{#_____________________________________________PESTAÑA PROGRAMACION__________________________________________________#}
+                    {# <div id="tabs-3">
+                        <div class="fechaPeriodo">
+                        <label for="periodo">Periodo</label> 
+                       <input type="text" name="datefilter" value="" />
+                          </div>
+                          <div id="diasSemana">
+                            <div>
+                              <input type="checkbox" id="lunes" name="dia" value="L">
+                              <label for="lunes">Lunes</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="martes" name="dia" value="M">
+                              <label for="martes">Martes</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="miercoles" name="dia" value="X">
+                            <label for="miercoles">Miércoles</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="jueves" name="dia" value="J">
+                              <label for="jueves">Jueves</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="viernes" name="dia" value="V">
+                              <label for="viernes">Viernes</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="sabado" name="dia" value="S">
+                              <label for="sabado">Sábado</label>
+                            </div>
+                            <div>
+                              <input type="checkbox" id="domingo" name="dia" value="D">
+                              <label for="domingo">Domingo</label>
+                            </div>
+                          </div>
+                          <div id="otrasOpcion">
+                          <div>
+                            <label for="salutation">Hora </label>
+                            <input type="time" id="time" />
+                          </div>           
+                          <div>  
+                          <form>
+                          <label for="selectGuia">Selecciona un guía</label>
+                           <select name="selectGuia" id="selectGuia">
+                           <option disabled selected>....</option>
+                             {% for guia in guias %}
+                             <option value="{{guia.id}}" >{{ guia.nombre }}</option>
+                             {% endfor %}
+                            </select> 
+                           </form>
+                          </div> 
+                         </div>
+                        <br>
+                        <div class="btnn">
+                         <button class="bttnEstilo" id="guardar">Archivar</button>
+                        </div>                 
+                          <br>
+                          <table id="tabla" border="1">
+                            <thead>
+                              <tr>
+                                <th>Rango de fecha</th>
+                                <th>Días</th>
+                                <th>Hora</th>
+                                <th>Guía</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                          </table>
+                          <br>
+                     <button class="btn btn-danger" type="button" id="btnCrearProgramacion">CREAR PROGRAMACION Y GENERAR TOUR</button>
+                    </div>
+                      
+                </div> #}
+
+{##________________________________________BOTONES CONTROLERS_______________________________________________________##}                
+                {# <div class="d-grid gap-2"> #}
+                
+                
+                   
+                    {# <button class="btn btn-danger" type="button" id="btnTour">GENERAR TOUR</button> #}
+                  {# </div>         
+        </div>
+         #}
+{# <div id="errorModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="errorMessage"></p>
+    </div>
+</div> #}
+    {# </div> #}
+{# </body> #}
+{% endblock %}

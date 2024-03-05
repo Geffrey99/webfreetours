@@ -25,6 +25,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\PasswordField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 
 
 use Doctrine\ORM\EntityManagerInterface;  
@@ -55,6 +56,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Gestión de tours');
         // yield MenuItem::linkToRoute('CrearRuta', 'fa fa-edit', 'app_crear_ruta');
         yield MenuItem::linkToCrud('Rutas', 'fas fa-route', Ruta::class);
+        yield MenuItem::linkToRoute('Editar Ruta', 'far fa-route', 'app_editar_ruta');
         yield MenuItem::linkToCrud('Visitas', 'fa fa-building', Visita::class);
         yield MenuItem::linkToCrud('Tours', 'fa fa-map', Tour::class);
         yield MenuItem::linkToRoute('Planificacion', 'fa-regular fa-calendar', 'app_calendar');

@@ -24,6 +24,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\JsonField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\TextAlign;
+
+
+
 
 class RutaCrudController extends AbstractCrudController
 {
@@ -47,61 +51,39 @@ class RutaCrudController extends AbstractCrudController
         CollectionField::new('rutaVisitas')
             ->setLabel('Visitas')
             ->onlyOnDetail() // Esto mostrará las visitas solo en la página de detalles
-            // ->formatValue(function ($value) {
-            //     $value = $value->toArray();
-            //     return array_map(function ($rutaVisita) {
-            //         // Aquí puedes personalizar qué datos de las rutaVisitas quieres mostrar
-            //         // Por ejemplo, si rutaVisita tiene una propiedad 'nombre', podrías hacer:
-            //         return $rutaVisita->getId();
-            //     }, $value);
-            // }),
     ];
 }
 
-// public function configureActions(Actions $actions):Actions {
-//     return $actions
-//     ->add(Crud::PAGE_INDEX, Action::DETAIL)
-// }
 
-
-    // ... el resto del código ...
-
-  
-        // ... el resto del código ...
-    
 public function configureActions(Actions $actions): Actions
-{
-    // $create = Action::new('create', 'Crear Ruta')
-    //     ->setTemplatePath('crear_ruta/index.html.twig') // Usa la ruta correcta a tu plantilla
-    //     ->setCssClass('btn btn-success')
-    //     ->linkToCrudAction('new');
+    {
+        return $actions
+            ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action) {
+                return $action
+                    ->linkToRoute('app_crear_ruta', []);
+                   
+            })
+            ->disable(Action::EDIT);
+            // ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
+            //     return $action
+            //         ->linkToRoute('app_editar_ruta', []);
+            // });
+    }
 
-    return $actions
-        ->update(Crud::PAGE_INDEX, Action::NEW, function (Action $action){
-            return $action->linkToRoute('app_crear_ruta', []);
-        }); // Agrega la acción personalizada al índice
-}
+
 
 public function configureCrud(Crud $crud): Crud
 {
     return $crud
-        // ...
-
-        // the max number of entities to display per page
+       
         ->setPaginatorPageSize(5)
-        // the number of pages to display on each side of the current page
-        // e.g. if num pages = 35, current page = 7 and you set ->setPaginatorRangeSize(4)
-        // the paginator displays: [Previous]  1 ... 3  4  5  6  [7]  8  9  10  11 ... 35  [Next]
-        // set this number to 0 to display a simple "< Previous | Next >" pager
+        
         ->setPaginatorRangeSize(4)
-        // ->setAutofocusSearch()
+       
         ->setPaginatorFetchJoinCollection(true)
-        // ->setSearchFields(['nombre'])
+       
 
-        // // these are advanced options related to Doctrine Pagination
-        // // (see https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/tutorials/pagination.html)
-        // ->setPaginatorUseOutputWalkers(true)
-        // ->setPaginatorFetchJoinCollection(true)
+       
     ;
 }
 
