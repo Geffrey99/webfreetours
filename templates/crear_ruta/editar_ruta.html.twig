@@ -60,54 +60,61 @@
 {#####_________________________________________PESTAÑA CREAR/RUTA_____________________________######}
                 <div id="tabs">
                     <ul>
-                    <li><a href="#tabs-1">Ruta</a></li>
-
+                    <li><a href="#tabs-1">Ruta."{{ route.Id }}"</a></li>
                     </ul>
                     <div id="tabs-1">
-                     <label for="rutaSelect">Selecciona una Ruta:</label>
-                     <select id="rutaSelect" name="rutaSelect">
-                    {# {% for ruta in rutas['rutas'] %}
-                     <option value="{{ ruta.id }}" >{{ ruta.nombre }} id: {{ruta.id}}</option>
-                        {% endfor %} #}
-                          </select>
                     <div class="primerLinea">
                       <div>
-                        <label for="titulo">Titulo:</label>
-                        <input type="text" name="titulo" id="inputTitulo" required>
-                      </div>
+                     <label for="titulo">Titulo:</label>
+                     <input type="hidden" id="rutaId" value="{{ route.Id }}">
+                     <input type="text" name="titulo" id="inputTitulo" value="{{ route.nombre }}" required>
+                     </div>
                       <div>
-                        <label for="fechaRuta">Fecha inicio y fin </label> 
-                        <input type="text" id="daterange" name="daterange" required value="" /> 
-                        </div>
-                        <div>
-                        <label for="aforo" required >Aforo:</label>
-                        <input type="number" min="6" max="20" id="aforo"> 
-                        </div>
+                     <label for="fechaRuta">Fecha inicio y fin </label> 
+                    <input type="text" id="daterange" name="daterange" value="{{ route.fechaInicio|date('d/m/Y H:i') ~ ' - ' ~ route.fechaFin|date('d/m/Y H:i') }}" required />
+                     </div>
+                     <div>
+                     <label for="aforo" required >Aforo:</label>
+                    <input type="number" min="6" max="20" id="aforo" value="{{ route.participantes }}"> 
+                      </div>
                         </div>
                          <br>
                       
                         <div class="primerLinea">
-                        <div>
-                          <label for="puntoEncuentro" class="subt">Punto de encuentro:</label>
-                        <button id="btnMapa">Mapa</button>
-                        </div>
-                        <div>
-                        <label for="x" required>EjeX:</label>
-                        <input type="number" name="x" id="x">
-                        </div>
-                        <div>
-                        <label for="y" required>EjeY:</label>
-                        <input type="number" name="y" id="y">
-                      </div>
-                      </div>
+             {% set coordenadas = route.getPuntoInicio() %}
+{% set coordenadasArray = coordenadas|trim('(')|trim(')')|split(', ') %}
+
+<div>
+    <label for="puntoEncuentro" class="subt">Punto de encuentro:</label>
+    <button id="btnMapa">Mapa</button>
+</div>
+<div>
+    <label for="x" required>EjeX:</label>
+    <input type="number" name="x" id="x" value="{{ coordenadasArray[0]|default('') }}" required>
+</div>
+<div>
+    <label for="y" required>EjeY:</label>
+    <input type="number" name="y" id="y" value="{{ coordenadasArray[1]|default('') }}" required>
+</div>
+</div>
                       <br>
                         <div id="modal"></div>
-                        <label for="descripcion" class="subt">Descripción:</label>
-                        <textarea name="descripcion" id="textarea" cols="1" rows="1"></textarea>
-                        <label for="subirImagen" class="subt">Subir Imagen:</label>
-                          <form action="url" enctype="multipart/form-data" id="foto">
-                        <div id="input-images" class"input-images"></div>
-                        </form>
+                 <label for="descripcion" class="subt">Descripción:</label>
+<textarea name="descripcion" id="textarea" cols="1" rows="1">{{ route.descripcion }}</textarea>
+
+                     <label for="subirImagen" class="subt">Subir Imagen:</label>
+<form action="url" enctype="multipart/form-data" id="foto">
+    <div id="input-images" class"input-images">
+        {% if route.FOTO is defined %}
+            <div class="uploaded-image">
+                <img src="{{ path('mostrar_imagen', {'nombreImagen': route.FOTO}) }}" alt="Imagen de la Ruta" width="300px">
+                <!-- Puedes agregar un botón de eliminación o edición si lo deseas -->
+            </div>
+        {% endif %}
+    </div>
+</form>
+
+
                       
                         
                         <br>

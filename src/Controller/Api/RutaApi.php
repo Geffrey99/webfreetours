@@ -162,7 +162,7 @@ class RutaApi extends AbstractController
     
 
 
-    #[Route("/update/{id}", name: "update", methods: ["PUT"])]
+    #[Route("/update/{id}", name: "update", methods: ["POST"])]
     public function update(Request $request, $id, RutaRepository $rutaRepository): JsonResponse
     {
         $ruta = $rutaRepository->find($id);
@@ -181,48 +181,41 @@ class RutaApi extends AbstractController
         $fechaFin = $request->request->get('fecha_fin');
     
         // Actualiza los campos según sea necesario
-        $ruta->setNombre($nombre ?? null);
-        $ruta->setDescripcion($descripcion ?? null);
+        $ruta->setNombre(array_key_exists('nombre', $request->request->all()) ? $nombre : $ruta->getNombre());
+        $ruta->setDescripcion(array_key_exists('descripcion', $request->request->all()) ? $descripcion : $ruta->getDescripcion());
     
-        // Procesa la foto si se proporciona
         if ($foto) {
             $fileName = md5(uniqid()) . '.' . $foto->guessExtension();
             $foto->move($this->getParameter('fotos_visitas'), $fileName);
             $ruta->setFoto($fileName);
         }
     
-        // Procesa el punto de inicio
-        $puntoInicioArray = explode(',', $puntoInicio);
-        if (count($puntoInicioArray) == 2) {
-            $puntoInicioX = trim($puntoInicioArray[0]);
-            $puntoInicioY = trim($puntoInicioArray[1]);
-            $ruta->setPuntoInicio(['x' => $puntoInicioX, 'y' => $puntoInicioY]);
-        } else {
-            $ruta->setPuntoInicio(null);
+        $ruta->setPuntoInicio(array_key_exists('punto_inicio', $request->request->all()) ? $puntoInicio : $ruta->getPuntoInicio());
+        $ruta->setParticipantes(array_key_exists('participantes', $request->request->all()) ? $participantes : $ruta->getParticipantes());
+    
+        if (array_key_exists('fecha_inicio', $request->request->all()) && $fechaInicio !== null) {
+            $fechaInicio = \DateTime::createFromFormat('Y-m-d', $fechaInicio);
+            if ($fechaInicio !== false && $fechaInicio !== null) {
+                $ruta->setFechaInicio($fechaInicio);
+            }
         }
     
-        $ruta->setParticipantes($participantes ?? null);
-    
-        // Procesa las fechas
-        $fechaInicio = \DateTime::createFromFormat('Y-m-d', $fechaInicio);
-        if ($fechaInicio === false) {
-            throw new \Exception('La fecha de inicio no es válida: ' . $fechaInicio);
+        if (array_key_exists('fecha_fin', $request->request->all()) && $fechaFin !== null) {
+            $fechaFin = \DateTime::createFromFormat('Y-m-d', $fechaFin);
+            if ($fechaFin !== false && $fechaFin !== null) {
+                $ruta->setFechaFin($fechaFin);
+            }
         }
-        $ruta->setFechaInicio($fechaInicio);
-    
-        $fechaFin = \DateTime::createFromFormat('Y-m-d', $fechaFin);
-        if ($fechaFin === false) {
-            throw new \Exception('La fecha de fin no es válida: ' . $fechaFin);
-        }
-        $ruta->setFechaFin($fechaFin);
+        
     
         // ... Otros campos de la entidad ...
     
         // Guarda los cambios
-        $this->getDoctrine()->getManager()->flush();
+        $this->entityManager->flush();
     
         return new JsonResponse(['message' => 'Ruta actualizada correctamente'], Response::HTTP_OK);
     }
+    
     
     // #[Route("/update/{id}", name: "update", methods: ["PUT"])]
     // public function update(Request $request, $id, RutaRepository $rutaRepository): Response

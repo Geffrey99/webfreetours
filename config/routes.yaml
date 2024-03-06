@@ -21,7 +21,7 @@ app_editar_ruta:
 update_ruta:
     path: '/api/ruta/update{id}'
     controller: 'App\Controller\Api\RutaApi::update'
-    methods: ['PUT']
+    methods: ['POST']
 
 ##------------------------------------------------------------- Rutas para el guía    
 guide_dashboard:

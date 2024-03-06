@@ -37,8 +37,9 @@ use App\Repository\LocalidadRepository;
 use App\Repository\ProvinciaRepository;
 use App\Repository\TourRepository;
 use App\Repository\LocalitidadRepository;
-
-use Doctrine\ORM\EntityManagerInterface;  
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -66,7 +67,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Gestión de tours');
         // yield MenuItem::linkToRoute('CrearRuta', 'fa fa-edit', 'app_crear_ruta');
         yield MenuItem::linkToCrud('Rutas', 'fas fa-route', Ruta::class);
-        yield MenuItem::linkToRoute('Editar Ruta', 'far fa-route', 'app_editar_ruta');
+      //  yield MenuItem::linkToRoute('Editar Ruta', 'far fa-route', 'app_editar_ruta');
         yield MenuItem::linkToCrud('Visitas', 'fa fa-building', Visita::class);
         yield MenuItem::linkToCrud('Tours', 'fa fa-map', Tour::class);
         yield MenuItem::linkToRoute('Planificacion', 'fa-regular fa-calendar', 'app_calendar');
@@ -114,17 +115,30 @@ class DashboardController extends AbstractDashboardController
 
 
     #[Route('/edit-route', name: 'edit-route')]
-    public function editarRuta(EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository/*, $id*/): Response
+    public function editarRuta(EntityManagerInterface $entityManager, Request $request, UserRepository $userRepository, SerializerInterface $serializer/*, $id*/): Response
     {
         $id = $request->query->get('id');
         $route = $entityManager->getRepository(Ruta::class)->find($id);
         // dd(json_decode($route->getProgramation()));
+        $fechaInicio = $serializer->normalize($route->getFechaInicio(), null, [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s']);
+          $fechaFin = $serializer->normalize($route->getFechaFin(), null, [DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s']);
         return $this->render('crear_ruta/editar_ruta.html.twig', [
             'id' => $id,
             'route' => $route,
            // 'programations' => json_decode($route->getProgramation()),
-            'localities' => $entityManager->getRepository(Localidad::class)->findAll(),
-            'guides' => $entityManager->getRepository(User::class)->findByRoles(['ROLE_GUIDE'])
+            // 'localities' => $entityManager->getRepository(Localidad::class)->findAll(),
+            // 'guides' => $entityManager->getRepository(User::class)->findByRoles(['ROLE_GUIDE'])
         ]);
     }
+
+    #[Route('/mostrar-imagen/{nombreImagen}', name: 'mostrar_imagen')]
+public function mostrarImagen($nombreImagen)
+{
+    $rutaImagen = $this->getParameter('fotos_visitas').'/'.$nombreImagen;
+
+    return new Response(file_get_contents($rutaImagen), 200, [
+        'Content-Type' => 'image/*',
+        'Content-Disposition' => 'inline; filename="'.$nombreImagen.'"',
+    ]);
+}
 }

@@ -31,19 +31,16 @@ class TourApi extends AbstractController
     #[Route('/gettours', name: 'api_tours')]
     public function getTours(): Response
     {
-        
         $tours = $this->entityManager->getRepository(Tour::class)->findAll();
-    
-       
         $toursArray = [];
         foreach ($tours as $tour) {
             $toursArray[] = [
                 // 'id' => $tour->getId(),
 
-                'title' => $tour->getCodRuta()->getNombre() . ' - ' . $tour->getFechaHora()->format('H:i') . ' - IdGuia: ' . $tour->getIdGuide(),
+                'title' => $tour->getCodRuta()->getNombre() . ' - ' . $tour->getFechaHora()->format('H:i') . ' - IdGuia: ' . $tour->getIdGuide() . ' - IdTour: ' . $tour->getId(),
                // 'hora' => $tour->getFechaHora()->format('H:i'),  // Formato de hora
                'start' => $tour->getFechaHora()->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
-              // 'guia'=> $tour->getIdGuide(),
+               'IdTour' => $tour->getId(), 
             //    'end' => $tour->getFechaHora()->modify('+2 hours')->format(\DateTimeInterface::ATOM),  // FullCalendar necesita el formato ISO8601
             ];
         }
